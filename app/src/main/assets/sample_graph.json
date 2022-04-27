@@ -1,0 +1,19 @@
+{
+  "nodes": [
+    { "id": "entranceExitGate1", "label": "gate" },
+    { "id": "gorillaViewpoint1", "label": "exhibit" },
+    { "id": "gatorViewpoint1", "label": "exhibit" },
+    { "id": "elephantOdyssey", "label": "exhibit" },
+    { "id": "arcticFoxViewpoint", "label": "exhibit" },
+    { "id": "elephantFoxIntersection", "label": "intersection" }
+  ],
+  "edges": [
+    { "source": "entranceExitGate1", "target": "elephantOdyssey", "weight": 3.0 },
+    { "source": "entranceExitGate1", "target": "gatorViewpoint1", "weight": 2.0},
+    { "source": "gatorViewpoint1", "target": "arcticFoxViewpoint", "weight": 3.0},
+    { "source": "gorillaViewpoint1", "target": "elephantOdyssey", "weight": 2.0},
+    { "source": "elephantOdyssey", "target": "arcticFoxViewpoint", "weight": 2.0},
+    { "source": "arcticFoxViewpoint", "target": "gorillaViewpoint1", "weight": 3.0},
+    { "source": "gorillaViewpoint1", "target": "elephantFoxIntersection", "weight": 1.0}
+  ]
+}
