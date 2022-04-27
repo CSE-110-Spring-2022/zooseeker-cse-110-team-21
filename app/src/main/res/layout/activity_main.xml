@@ -8,14 +8,31 @@
 
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="258dp"
+        android:id="@+id/search_bar"
+        android:layout_width="315dp"
         android:layout_height="50dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:hint="Search for Animals"
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintEnd_toStartOf="@+id/speech_buton"
+        app:layout_constraintHorizontal_bias="0.128"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/speech_buton"
+        android:layout_width="68dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="7dp"
+        android:onClick="getSpeechInput"
+        android:text="@string/speech_button"
+        app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search_bar"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

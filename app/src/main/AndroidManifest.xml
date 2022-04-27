@@ -9,7 +9,6 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        <<!--change back to android:theme="@style/AppTheme.Team21_ZooSeeker"> if needed -->>
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".MainActivity"
