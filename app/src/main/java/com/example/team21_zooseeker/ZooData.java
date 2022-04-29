@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.zooseeker.assets_example;
+package com.example.team21_zooseeker;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
