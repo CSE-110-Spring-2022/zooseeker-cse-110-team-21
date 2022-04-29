@@ -34,13 +34,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         search_bar = findViewById(R.id.search_bar);
 
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, COUNTRIES);
-        search_bar.setAdapter(adapter);
-
+        List<String> animals = new ArrayList<>();
         List<Node> node = Node.loadJSON(this,"exhibits.json");
+        for (int i = 0; i < node.size(); i++){
+            if (node.get(i).kind.equals("exhibit")){
+                animals.add(node.get(i).name);
+            }
+        }
 
+        animals.add("Grizzly Bear");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, animals);
+        search_bar.setAdapter(adapter);
 
     }
 
