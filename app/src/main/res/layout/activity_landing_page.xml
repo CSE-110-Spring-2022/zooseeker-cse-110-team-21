@@ -7,17 +7,50 @@
     tools:context=".LandingPageActivity">
 
     <Button
-        android:id="@+id/start_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="341dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginBottom="342dp"
+        android:id="@+id/fake_search_bar"
+        android:layout_width="330dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="360dp"
+        android:clickable="true"
+        android:completionThreshold="1"
+        android:gravity="center"
+        android:hint="@string/search_hint"
+        android:inputType="text"
+        android:maxLines="1"
         android:onClick="start"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="268dp"
+        android:layout_height="288dp"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="Welcome to the San Diego ZooSeeker App!"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/plan_Button"
+        android:layout_width="61dp"
+        android:layout_height="63dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/trans_circle"
+        android:paddingLeft="20dp"
+        android:paddingTop="35dp"
+        android:text="@string/plan_text"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.981" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

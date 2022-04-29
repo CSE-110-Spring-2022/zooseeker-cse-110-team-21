@@ -13,6 +13,7 @@ public class LandingPageActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+
     }
 
     public void start(View v){
