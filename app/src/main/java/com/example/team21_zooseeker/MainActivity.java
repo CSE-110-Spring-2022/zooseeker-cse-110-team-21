@@ -1,17 +1,13 @@
 package com.example.team21_zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.lifecycle.ViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
             "Belgium", "France", "Italy", "Germany", "Spain"
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,13 +37,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        animals.add("Grizzly Bear");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, animals);
         search_bar.setAdapter(adapter);
-
     }
-
 
     // Source: https://www.youtube.com/watch?v=0bLwXw5aFOs
     // gets speech from user and places the words into search_Bar
