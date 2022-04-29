@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, COUNTRIES);
         search_bar.setAdapter(adapter);
 
+        List<Node> node = Node.loadJSON(this,"exhibits.json");
+
+
     }
 
 
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && resultCode == 0) {
+        if (data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             search_bar.setText(result.get(0), true);
 
