@@ -41,4 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public void onAnimalButtonClick(View view) {
+
+    }
+
 }
