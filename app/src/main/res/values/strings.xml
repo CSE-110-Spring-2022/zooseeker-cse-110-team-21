@@ -3,5 +3,6 @@
     <string name="search_bar">search_bar</string>
     <string name="search_hint">Search for Animals</string>
     <string name="speech_button">Tap</string>
+    <string name="first_animal">First Animal</string>
 
 </resources>
