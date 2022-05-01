@@ -1,11 +1,15 @@
 package com.example.team21_zooseeker;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.hardware.biometrics.BiometricManager;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Build;
@@ -20,8 +24,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.IDN;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Route extends AppCompatActivity {
+
+    private Graph<String, IdentifiedWeightedEdge> g;
+    private Map<String, ZooData.VertexInfo> vInfo;
+    private Map<String, ZooData.EdgeInfo> eInfo;
+
+    public RecyclerView recyclerView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -29,36 +45,122 @@ public class Route extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
-        //Create graph
-        Graph<String, DefaultWeightedEdge> g = null;
-        try {
-            //Reads in graph from JSON file
-            g = createGraphFromJSON(this,"sample_graph.json");
-        } catch (IOException e) {
-            e.printStackTrace();
+        // "source" and "sink" are graph terms for the start and end
+        String start = "entrance_exit_gate";
+        String goal = "elephant_odyssey";
+
+        // 1. Load the graph...
+        g = ZooData.loadZooGraphJSON(this, "sample_zoo_graph.json");
+
+        // 2. Load the information about our nodes and edges...
+        vInfo = ZooData.loadVertexInfoJSON(this, "sample_node_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(this, "sample_edge_info.json");
+
+        //singleShortestPath(start, goal);
+        List<String> userSelection = new ArrayList<String>();
+        userSelection.add("gorillas");
+        userSelection.add("gators");
+        userSelection.add("arctic_foxes");
+        userSelection.add(goal);
+        //calculateRoute(start, userSelection);
+
+        List<String> initialList = initialDirections(start, userSelection);
+        for(String s : initialList){
+            System.out.println(s);
         }
 
-        //Tests the generated graph against a shortest algorithm function from jgrpaht
-        calculateShortestPath(g);
+        RouteAdapter adapter = new RouteAdapter();
+        adapter.setHasStableIds(true);
 
-        finish();
+        recyclerView = findViewById(R.id.exhibit_text);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        adapter.setDirections(initialList);
     }
 
-    public void calculateShortestPath(Graph<String, DefaultWeightedEdge> g) {
-        GraphPath<String, DefaultWeightedEdge> shortest_path = DijkstraShortestPath.findPathBetween(g, "entranceExitGate1", "arcticFoxViewpoint");
-        System.out.println("Shortest path from entranceExitGate1 to arcticFoxViewpoint: \n" + shortest_path.toString());
+    void singleShortestPath(String start, String goal){
+
+        GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
+        System.out.printf("The shortest path from '%s' to '%s' is:\n", start, goal);
+
+        int i = 1;
+        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
+            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
+                    i,
+                    g.getEdgeWeight(e),
+                    eInfo.get(e.getId()).street,
+                    vInfo.get(g.getEdgeSource(e).toString()).name,
+                    vInfo.get(g.getEdgeTarget(e).toString()).name);
+            i++;
+        }
     }
 
-    public static Graph<String, DefaultWeightedEdge> createGraphFromJSON(Context context, String path) throws IOException {
-        Graph<String, DefaultWeightedEdge> g = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    GraphPath<String, IdentifiedWeightedEdge> findNextClosestExhibit(String current, List<String> exhibits){
+        double minWeight = Double.MAX_VALUE;
+        GraphPath<String, IdentifiedWeightedEdge> nextPath = null;
+        for(String exhibit : exhibits) {
 
-        JSONImporter<String, DefaultWeightedEdge> jsonImporter = new JSONImporter<>();
-        jsonImporter.setVertexFactory(label -> label);
-
-        InputStream input = context.getAssets().open(path);
-        Reader reader = new InputStreamReader(input);
-        jsonImporter.importGraph(g, reader);
-
-        return g;
+            GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, current, exhibit);
+            if(path.getWeight() < minWeight){
+                minWeight = path.getWeight();
+                nextPath = path;
+            }
+        }
+        return nextPath;
     }
+
+    List<GraphPath<String, IdentifiedWeightedEdge>> calculateRoute(String start, List<String> exhibits){
+        List<GraphPath<String, IdentifiedWeightedEdge>> route =
+                new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
+        String current = start;
+        GraphPath<String, IdentifiedWeightedEdge> nextPath = null;
+
+        while((nextPath = findNextClosestExhibit(current, exhibits)) != null){
+            route.add(nextPath);
+            exhibits.remove(current);
+            current = vInfo.get(nextPath.getEndVertex()).id;
+            exhibits.remove(current);
+        }
+
+        route.add(DijkstraShortestPath.findPathBetween(g, current, start));
+
+        //print statements to test
+
+        for(GraphPath<String, IdentifiedWeightedEdge> path : route){
+            int count = 1;
+
+            List<String> vertices = path.getVertexList();
+            int size = vertices.size();
+            for(int i = 0; i < size-1; i++){
+                IdentifiedWeightedEdge e = g.getEdge(vertices.get(i), vertices.get(i+1));
+                System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
+                        count,
+                        g.getEdgeWeight(e),
+                        eInfo.get(e.getId()).street,
+                        vInfo.get(vertices.get(i)).name,
+                        vInfo.get(vertices.get(i+1)).name);
+                count++;
+            }
+            System.out.printf("-------------------------------------------\n");
+        }
+
+        return route;
+    }
+
+    List<String> initialDirections(String start, List<String> exhibits){
+        List<GraphPath<String, IdentifiedWeightedEdge>> route = calculateRoute(start, exhibits);
+        List<String> dispStrings = new ArrayList<String>();
+
+        double weight = 0;
+        for(GraphPath<String, IdentifiedWeightedEdge> path : route){
+            weight += path.getWeight();
+            String exhibit = vInfo.get(path.getEndVertex()).name;
+
+            dispStrings.add(exhibit + ", " + weight + "ft\n");
+        }
+        return dispStrings;
+    }
+
+
 }

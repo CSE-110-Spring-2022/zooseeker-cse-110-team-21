@@ -29,6 +29,13 @@ android {
 
 dependencies {
 
+    def gson_version = "2.9.0"
+    def jgrapht_version = "1.5.0"
+
+    implementation "com.google.code.gson:gson:$gson_version"
+    implementation "org.jgrapht:jgrapht-core:$jgrapht_version"
+    implementation "org.jgrapht:jgrapht-io:$jgrapht_version"
+
     implementation 'org.jgrapht:jgrapht-core:1.5.0'
     implementation group: 'org.jgrapht', name: 'jgrapht-io', version: '1.5.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
