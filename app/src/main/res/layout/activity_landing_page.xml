@@ -4,39 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".MainActivity">
+    tools:context=".LandingPageActivity">
 
-
-    <AutoCompleteTextView
-        android:id="@+id/search_bar"
+    <Button
+        android:id="@+id/fake_search_bar"
         android:layout_width="330dp"
         android:layout_height="41dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="360dp"
+        android:clickable="true"
         android:completionThreshold="1"
+        android:gravity="center"
         android:hint="@string/search_hint"
         android:inputType="text"
         android:maxLines="1"
+        android:onClick="start"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/speech_button"
-        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/speech_button"
-        android:layout_width="28dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="7dp"
-        android:background="@drawable/ic_mic"
-        android:onClick="getSpeechInput"
-        app:layout_constraintBottom_toBottomOf="@+id/search_bar"
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="268dp"
+        android:layout_height="288dp"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="Welcome to the San Diego ZooSeeker App!"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/search_bar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.705" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/plan_Button"
@@ -53,6 +52,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.981" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

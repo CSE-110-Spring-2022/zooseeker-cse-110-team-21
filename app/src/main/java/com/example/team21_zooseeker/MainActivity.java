@@ -1,50 +1,52 @@
 package com.example.team21_zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.lifecycle.ViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText search_bar;
-    private List<String> selectedAnimals = new ArrayList<>(Arrays.asList());
-    private Button selectButton;
-    private Button selectButton2;
+    private AutoCompleteTextView search_bar;
+    public  ArrayList<String> animalNames;
+
+    // ignore copied from
+    // https://www.youtube.com/watch?v=JB3ETK5mh3c
+    private static final String[] COUNTRIES = new String[] {
+            "Belgium", "France", "Italy", "Germany", "Spain"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         search_bar = findViewById(R.id.search_bar);
 
-        Map<String, ZooData.VertexInfo> vInfo = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
+        List<String> animals = new ArrayList<>();
+        List<Node> node = Node.loadJSON(this,"exhibits.json");
+        for (int i = 0; i < node.size(); i++){
+            if (node.get(i).kind.equals("exhibit")){
+                animals.add(node.get(i).name);
+            }
+        }
 
-        this.selectButton = (Button)findViewById(R.id.button);
-        String firstVertex = vInfo.get(vInfo.keySet().toArray()[0]).getName();
-        this.selectButton.setText(firstVertex);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, animals);
+        search_bar.setAdapter(adapter);
 
-        this.selectButton2 = (Button)findViewById(R.id.button2);
-        String secondVertex = vInfo.get(vInfo.keySet().toArray()[1]).getName();
-        this.selectButton2.setText(secondVertex);
-
-        Log.d("vInfo", vInfo.toString());
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     // Source: https://www.youtube.com/watch?v=0bLwXw5aFOs
+    // gets speech from user and places the words into search_Bar
     public void getSpeechInput(View view) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -56,20 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            search_bar.setText(result.get(0));
+            search_bar.setText(result.get(0), true);
 
         }
-    }
 
-    public void onAnimalButtonClick(View view) {
-        // Push our animal object_id into List<object_id>
-        this.selectButton = (Button)findViewById(view.getId());
-        this.selectedAnimals.add(selectButton.getText().toString());
-        for (String animal : selectedAnimals) {
-            Log.d("animal name", animal);
-        }
     }
 }
