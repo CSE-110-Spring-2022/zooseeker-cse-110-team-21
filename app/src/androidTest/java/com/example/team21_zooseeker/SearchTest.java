@@ -77,6 +77,8 @@ public class SearchTest {
 
 
             assertEquals(search.getText().toString(), "AppleJack");
+            assertNotEquals(search.getText().toString(), "Arctic");
+
 
         });
 
