@@ -86,8 +86,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // Fetch the user selected animal
         String animal = parent.getItemAtPosition(position).toString();
 
-        // append to List of selected Animals
+        // append to List of selected Animals or show an alert if it has already been selected
+        int prevAnimalCount = this.selectedAnimals.size();
         this.selectedAnimals.add(animal);
+        if (prevAnimalCount == this.selectedAnimals.size()) {
+            Utilities.showAlert(this, "You have already selected this animal.");
+        }
 
         // Update the exhibit counter
         this.counterDisplay.setText(String.valueOf(selectedAnimals.size()));
