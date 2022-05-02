@@ -2,8 +2,6 @@ name: Run Android Unit Tests
 on:
   push:
     branches: [ Search_Animals ]
-  pull_request:
-    branches: [ Search_Animals ]
 
 jobs:
   test:
