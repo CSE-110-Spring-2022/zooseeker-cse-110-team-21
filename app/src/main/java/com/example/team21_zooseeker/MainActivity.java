@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         search_bar = findViewById(R.id.search_bar);
 
+        // NOTE: milestone 2 integrate search by tag
         List<String> animals = new ArrayList<>();
         List<Node> node = Node.loadJSON(this,"exhibits.json");
         for (int i = 0; i < node.size(); i++){
