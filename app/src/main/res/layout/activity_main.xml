@@ -70,7 +70,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/plan_btn"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#87B37A"

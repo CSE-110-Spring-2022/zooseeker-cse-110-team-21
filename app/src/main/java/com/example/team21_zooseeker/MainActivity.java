@@ -21,7 +21,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private AutoCompleteTextView search_bar;
     private TextView counterDisplay;
-    private Set<String> selectedAnimals = new HashSet<String>();
+    protected Set<String> selectedAnimals = new HashSet<String>();
 
     // ignore copied from
     // https://www.youtube.com/watch?v=JB3ETK5mh3c
@@ -93,9 +93,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Utilities.showAlert(this, "You have already selected this animal.");
         }
 
+        Log.d("exhibits: ", this.selectedAnimals.toString());
+
         // Update the exhibit counter
         this.counterDisplay.setText(String.valueOf(selectedAnimals.size()));
-
         // Clear search bar
         this.search_bar.setText("");
     }
