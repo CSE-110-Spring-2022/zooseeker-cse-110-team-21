@@ -15,6 +15,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Iterator;
+
 @RunWith(AndroidJUnit4.class)
 public class SelectAnimalsTest {
     @Rule
@@ -33,6 +35,22 @@ public class SelectAnimalsTest {
             activity.selectedAnimals.add("Gorillas");
             activity.selectedAnimals.add("Alligators");
             assertEquals("3", String.valueOf(activity.selectedAnimals.size()));
+        });
+    }
+
+    @Test
+    public void selectAnimals_test() {
+        ActivityScenario<MainActivity> scenario = scenarioRule.getScenario();
+        scenario.moveToState(Lifecycle.State.CREATED);
+
+        scenario.onActivity(activity -> {
+            activity.selectedAnimals.add("Elephant Odyssey");
+            activity.selectedAnimals.add("Gorillas");
+            activity.selectedAnimals.add("Alligators");
+
+            assert(activity.selectedAnimals.contains("Gorillas"));
+            assert(activity.selectedAnimals.contains("Alligators"));
+            //assert(activity.selectedAnimals.contains("Arctic Foxes"));
         });
     }
 }
