@@ -5,17 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private AutoCompleteTextView search_bar;
-    public  ArrayList<String> animalNames;
+    private TextView counterDisplay;
+    private Set<String> selectedAnimals = new HashSet<String>();
 
     // ignore copied from
     // https://www.youtube.com/watch?v=JB3ETK5mh3c
@@ -28,7 +34,10 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // get objects
         search_bar = findViewById(R.id.search_bar);
+        counterDisplay = findViewById(R.id.exhibit_counter);
 
         List<String> animals = new ArrayList<>();
         List<Node> node = Node.loadJSON(this,"exhibits.json");
@@ -43,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         search_bar.setAdapter(adapter);
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+        // When user clicks on search result item, this will trigger onItemClick function that will
+        // populate the selectedAnimals set accordingly.
+        search_bar.setOnItemClickListener(this);
     }
 
     // Source: https://www.youtube.com/watch?v=0bLwXw5aFOs
@@ -63,8 +76,23 @@ public class MainActivity extends AppCompatActivity {
         if (data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             search_bar.setText(result.get(0), true);
-
         }
 
+    }
+
+    // This function will retrieve the name of the animal selected and add it to the selectedAnimals
+    // set if it's not a duplicate selection.
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Fetch the user selected animal
+        String animal = parent.getItemAtPosition(position).toString();
+
+        // append to List of selected Animals
+        this.selectedAnimals.add(animal);
+
+        // Update the exhibit counter
+        this.counterDisplay.setText(String.valueOf(selectedAnimals.size()));
+
+        // Clear search bar
+        this.search_bar.setText("");
     }
 }
