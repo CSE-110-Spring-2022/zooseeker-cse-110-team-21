@@ -3,6 +3,7 @@ package com.example.team21_zooseeker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.hardware.biometrics.BiometricManager;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import org.jgrapht.*;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -45,9 +47,17 @@ public class Route extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
+        SharedPreferences preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+
+        Set<String> userSelectionSet = preferences.getStringSet("set", null);
+        List<String> userSelection = new ArrayList<String>();
+
+        for (String s : userSelectionSet) {
+            userSelection.add(s);
+        }
+
         // "source" and "sink" are graph terms for the start and end
         String start = "entrance_exit_gate";
-        String goal = "elephant_odyssey";
 
         // 1. Load the graph...
         g = ZooData.loadZooGraphJSON(this, "sample_zoo_graph.json");
@@ -55,14 +65,6 @@ public class Route extends AppCompatActivity {
         // 2. Load the information about our nodes and edges...
         vInfo = ZooData.loadVertexInfoJSON(this, "sample_node_info.json");
         eInfo = ZooData.loadEdgeInfoJSON(this, "sample_edge_info.json");
-
-        //singleShortestPath(start, goal);
-        List<String> userSelection = new ArrayList<String>();
-        userSelection.add("gorillas");
-        userSelection.add("gators");
-        userSelection.add("arctic_foxes");
-        userSelection.add(goal);
-        //calculateRoute(start, userSelection);
 
         List<String> initialList = initialDirections(start, userSelection);
         for(String s : initialList){
@@ -157,10 +159,8 @@ public class Route extends AppCompatActivity {
             weight += path.getWeight();
             String exhibit = vInfo.get(path.getEndVertex()).name;
 
-            dispStrings.add(exhibit + ", " + weight + "ft\n");
+            dispStrings.add(exhibit + ", " + weight + "ft");
         }
         return dispStrings;
     }
-
-
 }

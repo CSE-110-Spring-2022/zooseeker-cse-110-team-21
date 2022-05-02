@@ -19,7 +19,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
     public void setDirections(List<String> directions){
         this.directions.clear();
         this.directions = directions;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     @NonNull
@@ -32,10 +32,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
         return new ViewHolder(view);
     }
 
-    //@Override
-    //public long getItemId(int position){
-    //    return directions.get(position).id;
-    //}
+    @Override
+    public long getItemId(int position){
+        return position;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -65,6 +65,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
         public void setExhibitText(String exdst){
             exhibitDist = exdst;
             this.textView.setText(exdst);
+        }
+
+        public String getExhibitDist(){
+            return exhibitDist;
         }
     }
 
