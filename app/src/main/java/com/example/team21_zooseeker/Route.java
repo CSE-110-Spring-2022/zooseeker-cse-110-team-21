@@ -39,6 +39,8 @@ public class Route extends AppCompatActivity {
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
 
+    public SharedPreferences preferences;
+
     public RecyclerView recyclerView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -47,13 +49,15 @@ public class Route extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
 
-        SharedPreferences preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+        preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
 
-        Set<String> userSelectionSet = preferences.getStringSet("set", null);
+        Set<String> userSelectionSet = preferences.getStringSet("fullZoo", null);
         List<String> userSelection = new ArrayList<String>();
 
-        for (String s : userSelectionSet) {
-            userSelection.add(s);
+        if(userSelectionSet != null) {
+            for (String s : userSelectionSet) {
+                userSelection.add(s);
+            }
         }
 
         // "source" and "sink" are graph terms for the start and end
