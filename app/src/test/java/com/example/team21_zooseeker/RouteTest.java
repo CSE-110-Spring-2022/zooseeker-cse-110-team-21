@@ -61,7 +61,7 @@ public class RouteTest {
             fullZoo.add("lions");
             fullZoo.add("gators");
 
-            activity.setUserSelection("fullZoo", fullZoo);
+            activity.setUserSelection("set", fullZoo);
 
         });
 
