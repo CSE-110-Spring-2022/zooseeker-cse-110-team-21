@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView counterDisplay;
     protected Set<String> selectedAnimals = new HashSet<String>();
     private Map<String, ZooData.VertexInfo> node;
+    private Map<String, String> nameToId;
 
 
     public SharedPreferences prefs;
@@ -49,10 +51,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         List<String> animals = new ArrayList<>();
         node = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
+
+        nameToId = new HashMap<String, String>();
+
         for (String str : node.keySet()){
-            if (node.get(str).kind.equals("EXHIBIT")){
+            if (node.get(str).kind.equals(ZooData.VertexInfo.Kind.EXHIBIT)){
                 animals.add(node.get(str).name);
             }
+
+            nameToId.put(node.get(str).name, str);
 
             System.out.println("STR: " + str + "\tNAME: " + node.get(str).name + "\tKIND: " + node.get(str).kind);
 
@@ -108,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // set if it's not a duplicate selection.
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Fetch the user selected animal
-        String animal = node.get(parent.getItemAtPosition(position).toString()).id;
+        String animal = nameToId.get(parent.getItemAtPosition(position).toString());
+        System.out.println("ITEM CLICKED: " + animal);
 
         // append to List of selected Animals or show an alert if it has already been selected
         int prevAnimalCount = this.selectedAnimals.size();
