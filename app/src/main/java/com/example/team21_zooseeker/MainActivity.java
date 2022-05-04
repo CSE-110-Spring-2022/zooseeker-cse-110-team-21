@@ -1,14 +1,10 @@
 package com.example.team21_zooseeker;
-
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         prefs = getSharedPreferences("shared_prefs", MODE_PRIVATE);
         editor = prefs.edit();
 
@@ -58,11 +52,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (node.get(str).kind.equals(ZooData.VertexInfo.Kind.EXHIBIT)){
                 animals.add(node.get(str).name);
             }
-
             nameToId.put(node.get(str).name, str);
-
-            System.out.println("STR: " + str + "\tNAME: " + node.get(str).name + "\tKIND: " + node.get(str).kind);
-
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -77,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public void onPlanButtonClicked(View view) {
+        if (this.selectedAnimals.isEmpty()) {
+            Utilities.showAlert(this, "Your plan is empty! Please select some animals.");
+            return;
+        }
         setUserSelection("set", this.selectedAnimals);
         Intent intent = new Intent(this, Route.class);
         startActivity(intent);
@@ -102,13 +96,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             search_bar.setText(result.get(0), true);
         }
-
     }
 
     // This function will retrieve the name of the animal selected and add it to the selectedAnimals
@@ -116,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Fetch the user selected animal
         String animal = nameToId.get(parent.getItemAtPosition(position).toString());
-        System.out.println("ITEM CLICKED: " + animal);
 
         // append to List of selected Animals or show an alert if it has already been selected
         int prevAnimalCount = this.selectedAnimals.size();
@@ -124,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (prevAnimalCount == this.selectedAnimals.size()) {
             Utilities.showAlert(this, "You have already selected this animal.");
         }
-
         Log.d("exhibits: ", this.selectedAnimals.toString());
 
         // Update the exhibit counter
