@@ -53,7 +53,7 @@ public class Route extends AppCompatActivity {
         //User Selection set in sharedPreferences as a Set<String>
         preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
 
-        Set<String> userSelectionSet = preferences.getStringSet("fullZoo", null);
+        Set<String> userSelectionSet = preferences.getStringSet("set", null);
         List<String> userSelection = new ArrayList<String>();
 
         //RouteCalc works with List<String>, so we convert the Set to a list
