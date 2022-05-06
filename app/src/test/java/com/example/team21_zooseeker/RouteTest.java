@@ -73,7 +73,62 @@ public class RouteTest {
             RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
-            assertEquals("Alligators, 110.0ft", holder.getExhibitDist());
+            assertEquals("Alligators, 110ft", holder.getExhibitDist());
         });
     }
+
+    @Test
+    public void testOneExhibitSelected(){
+        ActivityScenario<MainActivity> mainScenario = scenarioRule.getScenario();
+
+        mainScenario.moveToState(Lifecycle.State.CREATED);
+
+        mainScenario.onActivity(activity -> {
+            Set<String> fullZoo = new HashSet<String>();
+            //Selected only the elephant_odyssey
+            fullZoo.add("elephant_odyssey");
+            activity.setUserSelection("set", fullZoo);
+
+        });
+
+        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
+        routeScenario.moveToState(Lifecycle.State.CREATED);
+
+        routeScenario.onActivity(routeActivity -> {
+
+            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
+
+            assertEquals("Elephant Odyssey, 510ft", holder.getExhibitDist());
+        });
+    }
+
+    @Test
+    public void testAllNearByExhibit(){
+        ActivityScenario<MainActivity> mainScenario = scenarioRule.getScenario();
+
+        mainScenario.moveToState(Lifecycle.State.CREATED);
+
+        mainScenario.onActivity(activity -> {
+            Set<String> fullZoo = new HashSet<String>();
+            fullZoo.add("gorillas");
+            fullZoo.add("arctic_foxes");
+            fullZoo.add("gators");
+            activity.setUserSelection("set", fullZoo);
+
+        });
+
+        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
+        routeScenario.moveToState(Lifecycle.State.CREATED);
+
+        routeScenario.onActivity(routeActivity -> {
+
+            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
+
+            assertEquals("Alligators, 110ft", holder.getExhibitDist());
+        });
+    }
+
+
 }
