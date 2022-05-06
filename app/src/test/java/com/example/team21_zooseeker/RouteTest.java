@@ -40,8 +40,6 @@ public class RouteTest {
     @Rule
     public ActivityScenarioRule<MainActivity> scenarioRule = new ActivityScenarioRule<>(MainActivity.class);
 
-    //@Rule
-    //public ActivityScenarioRule<Route> routeScenarioRule = new ActivityScenarioRule<>(Route.class);
 
     @Before
     public void setup(){

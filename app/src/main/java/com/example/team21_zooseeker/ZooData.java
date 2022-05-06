@@ -26,7 +26,9 @@ public class ZooData {
             // The SerializedName annotation tells GSON how to convert
             // from the strings in our JSON to this Enum.
             @SerializedName("gate") GATE,
-            @SerializedName("exhibit") EXHIBIT, 
+
+            @SerializedName("exhibit") EXHIBIT,
+
             @SerializedName("intersection") INTERSECTION
         }
 
@@ -34,6 +36,21 @@ public class ZooData {
         public Kind kind;
         public String name;
         public List<String> tags;
+
+        @Override
+        public String toString () {
+            return "\nVertexInfo{" +
+                    "id='" + id + '\'' +
+                    ", kind=" + kind +
+                    ", name='" + name + '\'' +
+                    ", tags=" + tags +
+                    '}';
+        }
+
+        public String getName () {
+            return name;
+        }
+
     }
 
     public static class EdgeInfo {
@@ -41,7 +58,7 @@ public class ZooData {
         public String street;
     }
 
-    public static Map<String, ZooData.VertexInfo> loadVertexInfoJSON(Context context, String path) {
+    public static Map<String, VertexInfo> loadVertexInfoJSON(Context context, String path) {
         try {
             InputStream inputStream = context.getAssets().open(path);
             Reader reader = new InputStreamReader(inputStream);
@@ -64,7 +81,7 @@ public class ZooData {
 
             return indexedZooData;
         }
-        catch(IOException e){
+            catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyMap();
         }
