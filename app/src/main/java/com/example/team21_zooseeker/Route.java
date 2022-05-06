@@ -77,6 +77,7 @@ public class Route extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        adapter.setDirections(initialList);
+        //call to subList makes it so the exit gate isn't shown in the overview
+        adapter.setDirections(initialList.subList(0, initialList.size() - 1));
     }
 }

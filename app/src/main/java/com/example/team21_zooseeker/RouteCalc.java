@@ -48,7 +48,7 @@ public class RouteCalc {
             weight += path.getWeight();
             String exhibit = vInfo.get(path.getEndVertex()).name;
 
-            dispStrings.add(exhibit + ", " + weight + "ft");
+            dispStrings.add(exhibit + ", " + (int)weight + "ft");
         }
         return dispStrings;
     }
