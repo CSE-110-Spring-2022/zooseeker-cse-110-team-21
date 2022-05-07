@@ -2,23 +2,23 @@ package com.example.team21_zooseeker;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Pair;
-import android.view.View;
-import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AppCompatActivity;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.util.Pair;
+import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private AutoCompleteTextView search_bar;
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
            Additionally, we can type in a substring of "mammal", e.g. "mm" and "Foxes" will appear as an option
            in the autocomplete.
         */
+
         StringFilterArrayAdapter adapter = new StringFilterArrayAdapter(this,
                 android.R.layout.simple_list_item_1, name_tags);
 

@@ -1,10 +1,10 @@
 package com.example.team21_zooseeker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LandingPageActivity extends AppCompatActivity {
 
@@ -13,7 +13,6 @@ public class LandingPageActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-
     }
 
     public void start(View v){

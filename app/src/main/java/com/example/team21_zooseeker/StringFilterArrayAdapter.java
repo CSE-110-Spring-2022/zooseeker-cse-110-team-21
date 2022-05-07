@@ -9,8 +9,6 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
 
 // adapted from https://stackoverflow.com/questions/24545345/how-to-bind-autocompletetextview-from-hashmap
 public class StringFilterArrayAdapter extends ArrayAdapter implements Filterable {
@@ -61,7 +59,7 @@ public class StringFilterArrayAdapter extends ArrayAdapter implements Filterable
                         String tag = original.get(i).second.toLowerCase();
 
                         // adds to the filter if any letter in the constraint is contained in the tags or animal name
-                        if (tag.contains(constraint.toString().toLowerCase()) || name.contains(constraint.toString().toLowerCase())) {
+                        if ((tag.contains(constraint.toString().toLowerCase()) && !constraint.toString().contains(","))|| name.contains(constraint.toString().toLowerCase())) {
                             autoCompleteList.add(original.get(i));
                         }
                     }

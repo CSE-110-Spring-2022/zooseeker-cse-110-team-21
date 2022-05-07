@@ -50,10 +50,10 @@ dependencies {
 
 
     implementation "com.google.code.gson:gson:$gson_version"
-    implementation "org.jgrapht:jgrapht-core:$jgrapht_version"
-    implementation "org.jgrapht:jgrapht-io:$jgrapht_version"
+    implementation "org.jgrapht:jgrapht-core:1.5.1"
+    implementation "org.jgrapht:jgrapht-io:1.5.1"
 
-    implementation group: 'org.jgrapht', name: 'jgrapht-io', version: '1.5.0'
+    implementation group: 'org.jgrapht', name: 'jgrapht-io', version: '1.5.1'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
