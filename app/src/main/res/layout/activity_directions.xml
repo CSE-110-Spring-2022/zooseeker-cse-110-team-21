@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DirectionsActivity">
+    tools:context=".activities.directions.DirectionsActivity">
 
     <TextView
         android:id="@+id/directions_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Directions"
+        android:text="@string/directions"
         android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -33,11 +33,13 @@
 
     <Button
         android:id="@+id/next_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#87B37A"
+        android:drawableTop="@android:drawable/ic_media_ff"
         android:onClick="onNextBtnClicked"
-        android:text="Next"
+        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
@@ -45,12 +47,14 @@
 
     <Button
         android:id="@+id/prev_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="#87B37A"
+        android:drawableTop="@android:drawable/ic_media_rew"
         android:onClick="onPrevBtnClicked"
-        android:text="Previous"
+        android:text="@string/previous"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

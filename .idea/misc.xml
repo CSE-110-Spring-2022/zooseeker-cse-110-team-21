@@ -3,15 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< HEAD
-=======
         <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.16893115942028986" />
->>>>>>> c46f3af4bf548d51acd80048ac8676196d96e15b
         <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/layout/activity_main.xml" value="0.2391304347826087" />
-        <entry key="app/src/main/res/layout/activity_directions.xml" value="0.231927490234375" />
+        <entry key="app/src/main/res/layout/activity_directions.xml" value="0.27590332031250003" />
         <entry key="app/src/main/res/layout/activity_landing_page.xml" value="0.3117015451624774" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.7603424072265628" />
         <entry key="app/src/main/res/layout/activity_route.xml" value="0.2210144927536232" />
+        <entry key="app/src/main/res/layout/activity_search_select.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/custom_list_item.xml" value="0.18652149145153984" />
         <entry key="app/src/main/res/layout/directions_card_item.xml" value="0.2693237304687501" />
         <entry key="app/src/main/res/layout/exhibit_distance.xml" value="0.2210144927536232" />
@@ -19,7 +17,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Embedded JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
