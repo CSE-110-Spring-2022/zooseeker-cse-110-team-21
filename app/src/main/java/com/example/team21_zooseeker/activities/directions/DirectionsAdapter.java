@@ -1,16 +1,17 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.directions;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.team21_zooseeker.R;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.ViewHolder> {
     ArrayList<DirectionItem> directionsList;
@@ -49,6 +50,7 @@ public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView exhibitTitle, exhibitName, directionsDesc;
+        Button nextBtn, prevBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,6 +58,8 @@ public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.Vi
             exhibitTitle = itemView.findViewById(R.id.exhibit_title);
             exhibitName = itemView.findViewById(R.id.exhibit_name);
             directionsDesc = itemView.findViewById(R.id.directions_description);
+            nextBtn = itemView.findViewById(R.id.next_btn);
+            prevBtn = itemView.findViewById(R.id.prev_btn);
         }
     }
 }

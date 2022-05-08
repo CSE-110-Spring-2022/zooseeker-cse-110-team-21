@@ -1,18 +1,17 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.route;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.example.team21_zooseeker.helpers.ZooData;
+import com.example.team21_zooseeker.activities.directions.DirectionItem;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class RouteCalc {
     private Graph<String, IdentifiedWeightedEdge> g;

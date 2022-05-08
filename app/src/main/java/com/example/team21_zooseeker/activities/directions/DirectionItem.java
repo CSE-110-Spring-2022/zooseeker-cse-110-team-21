@@ -1,4 +1,4 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.directions;
 
 public class DirectionItem {
     private String name;

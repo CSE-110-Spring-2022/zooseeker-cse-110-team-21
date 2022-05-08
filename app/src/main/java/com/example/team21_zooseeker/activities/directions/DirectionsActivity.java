@@ -1,21 +1,17 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.directions;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.helpers.SharedPrefs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DirectionsActivity extends AppCompatActivity {
     ViewPager2 viewPager;
@@ -43,35 +39,41 @@ public class DirectionsActivity extends AppCompatActivity {
         prevBtn.setVisibility(View.INVISIBLE);
         if (directions.size() == 1)
             nextBtn.setVisibility(View.INVISIBLE);
+        else
+            nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
     }
 
     public void onNextBtnClicked(View view) {
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex + 1, true);
-        setBtnInvisibilities(currentIndex + 1);
+        setBtnFeatures(currentIndex + 1);
     }
 
     public void onPrevBtnClicked(View view) {
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex - 1, true);
-        setBtnInvisibilities(currentIndex - 1);
+        setBtnFeatures(currentIndex - 1);
     }
 
-    public void setBtnInvisibilities(int index) {
+    public void setBtnFeatures(int index) {
         int exhibitCounter = directions.size();
         Log.d("index", String.valueOf(index));
 
         if (index == exhibitCounter - 1) {
             nextBtn.setVisibility(View.INVISIBLE);
             prevBtn.setVisibility(View.VISIBLE);
+            prevBtn.setText(directions.get(viewPager.getCurrentItem() - 1).getName());
         }
         else if (index == 0) {
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
         }
         else {
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.VISIBLE);
+            nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
+            prevBtn.setText(directions.get(viewPager.getCurrentItem() - 1).getName());
         }
     }
 }

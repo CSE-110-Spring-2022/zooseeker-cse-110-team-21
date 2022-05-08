@@ -1,18 +1,15 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.team21_zooseeker.activities.directions.DirectionItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SharedPrefs {
     public static void saveList(Context context, ArrayList<DirectionItem> list, String key){

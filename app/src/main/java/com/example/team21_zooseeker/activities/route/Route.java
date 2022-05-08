@@ -1,22 +1,23 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.route;
 
 
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.hardware.biometrics.BiometricManager;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
+
+import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.helpers.SharedPrefs;
+import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
