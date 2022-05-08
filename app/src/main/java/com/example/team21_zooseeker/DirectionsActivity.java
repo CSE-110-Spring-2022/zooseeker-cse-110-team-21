@@ -20,7 +20,7 @@ import java.util.Map;
 public class DirectionsActivity extends AppCompatActivity {
     ViewPager2 viewPager;
     Button nextBtn, prevBtn;
-    private List<DirectionItem> directions = new ArrayList<>();
+    ArrayList<DirectionItem> directions = new ArrayList<DirectionItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,7 @@ public class DirectionsActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_btn);
         prevBtn = findViewById(R.id.prev_btn);
 
-//        directions = SharedPrefs.loadDir("directions", this);
-        directions.add(new DirectionItem("Name1", "1.\n2.\n3.\n"));
-        directions.add(new DirectionItem("Name2", "1.\n2.\n3.\n"));
-        directions.add(new DirectionItem("Name3", "1.\n2.\n3.\n"));
+        directions = SharedPrefs.loadList(this, "directions");
 
         DirectionsAdapter directionsAdapter = new DirectionsAdapter(directions);
         viewPager.setAdapter(directionsAdapter);

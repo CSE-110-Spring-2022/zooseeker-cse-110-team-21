@@ -2,41 +2,34 @@ package com.example.team21_zooseeker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SharedPrefs {
-    public static void saveMap(Context context, String key, Map<String, String> inputMap) {
-        SharedPreferences pSharedPref = context.getSharedPreferences("shared_prefs",
-                Context.MODE_PRIVATE);
-        if (pSharedPref != null){
-            Gson gson = new Gson();
-            String hashMapString = gson.toJson(inputMap);
-            //save in shared prefs
-            pSharedPref.edit().putString(key, hashMapString).apply();
-        }
+    public static void saveList(Context context, ArrayList<DirectionItem> list, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();
+
     }
 
-    public static Map<String, String> loadMap(String key, Context context) {
-        Map<String, String> outputMap = new HashMap<String, String>();
-        SharedPreferences pSharedPref = context.getSharedPreferences("shared_prefs",
-                Context.MODE_PRIVATE);
-        try{
-            //get from shared prefs
-            String storedHashMapString = pSharedPref.getString(key, (new JSONObject()).toString());
-            java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>(){}.getType();
-            Gson gson = new Gson();
-            return  gson.fromJson(storedHashMapString, type);
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return outputMap;
+    public static ArrayList<DirectionItem> loadList(Context context, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(key, null);
+        Type type = new TypeToken<ArrayList<DirectionItem>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 }

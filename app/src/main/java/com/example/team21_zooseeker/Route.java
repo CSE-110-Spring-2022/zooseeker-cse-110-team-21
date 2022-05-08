@@ -14,30 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.jgrapht.*;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.json.JSONImporter;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.IDN;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class Route extends AppCompatActivity {
@@ -88,12 +69,11 @@ public class Route extends AppCompatActivity {
 
         adapter.setDirections(initialList);
 
-        SharedPrefs.saveMap(this, "directions", routeCalc.directions);
+        SharedPrefs.saveList(this, routeCalc.directions, "directions");
     }
 
     public void onBeginDirectionsClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
         startActivity(intent);
-        System.out.println("Begin directions clicked!!");
     }
 }

@@ -9,12 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.ViewHolder> {
-    List<DirectionItem> directionsList = new ArrayList<>();
+    ArrayList<DirectionItem> directionsList;
 
-    public DirectionsAdapter(List<DirectionItem> directionsList) {
+    public DirectionsAdapter(ArrayList<DirectionItem> directionsList) {
         this.directionsList = directionsList;
     }
 
@@ -30,7 +31,13 @@ public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DirectionItem directionsText = directionsList.get(position);
 
-        holder.exhibitTitle.setText("Exhibit " + (position + 1));
+        String title = "";
+        if (position + 1 == this.getItemCount())
+            title = "End of Itinerary";
+        else
+            title = "Exhibit " + (position + 1);
+
+        holder.exhibitTitle.setText(title);
         holder.exhibitName.setText(directionsText.getName());
         holder.directionsDesc.setText(directionsText.getDirDesc());
     }
