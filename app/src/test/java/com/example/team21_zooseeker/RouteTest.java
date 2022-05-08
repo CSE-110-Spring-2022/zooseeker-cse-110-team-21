@@ -66,7 +66,7 @@ public class RouteTest {
             RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
-            assertEquals("Alligators, 110ft", holder.getExhibitDist());
+            assertEquals("Alligators, 110.0ft", holder.getExhibitDist());
         });
     }
 
@@ -92,7 +92,7 @@ public class RouteTest {
             RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
-            assertEquals("Elephant Odyssey, 510ft", holder.getExhibitDist());
+            assertEquals("Elephant Odyssey, 510.0ft", holder.getExhibitDist());
         });
     }
 
@@ -119,7 +119,7 @@ public class RouteTest {
             RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
-            assertEquals("Alligators, 110ft", holder.getExhibitDist());
+            assertEquals("Alligators, 110.0ft", holder.getExhibitDist());
         });
     }
 
