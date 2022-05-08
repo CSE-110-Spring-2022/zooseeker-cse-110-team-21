@@ -1,8 +1,10 @@
 package com.example.team21_zooseeker;
 
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.biometrics.BiometricManager;
 import android.os.Bundle;
@@ -16,6 +18,11 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.View;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.jgrapht.*;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -41,6 +48,7 @@ public class Route extends AppCompatActivity {
 
     public SharedPreferences preferences;
     public RecyclerView recyclerView;
+    public SharedPreferences.Editor editor;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -52,6 +60,7 @@ public class Route extends AppCompatActivity {
 
         //User Selection set in sharedPreferences as a Set<String>
         preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+        editor = preferences.edit();
 
         Set<String> userSelectionSet = preferences.getStringSet("set", null);
         List<String> userSelection = new ArrayList<String>();
@@ -78,5 +87,13 @@ public class Route extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         adapter.setDirections(initialList);
+
+        SharedPrefs.saveMap(this, "directions", routeCalc.directions);
+    }
+
+    public void onBeginDirectionsClicked(View view) {
+        Intent intent = new Intent(this, DirectionsActivity.class);
+        startActivity(intent);
+        System.out.println("Begin directions clicked!!");
     }
 }

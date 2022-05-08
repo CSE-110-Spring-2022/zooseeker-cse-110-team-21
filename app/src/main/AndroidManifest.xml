@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".Directions"
+            android:name=".DirectionsActivity"
             android:exported="false" />
         <activity
             android:name=".Route"

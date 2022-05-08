@@ -1,19 +1,24 @@
 package com.example.team21_zooseeker;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class RouteCalc {
     private Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
+    protected Map<String, String> directions;
 
     public RouteCalc(Context context){
         // 1. Load the graph...
@@ -135,7 +140,30 @@ public class RouteCalc {
                         vInfo.get(vertices.get(i+1)).name);
                 count++;
             }
+            System.out.println(vInfo.get(path.getEndVertex()).name);
             System.out.printf("-------------------------------------------\n");
+        }
+    }
+
+    public void getDirections(List<GraphPath<String, IdentifiedWeightedEdge>> route){
+        directions = new HashMap<>();
+        for(GraphPath<String, IdentifiedWeightedEdge> path : route) {
+            int count = 1;
+
+            List<String> vertices = path.getVertexList();
+            int size = vertices.size();
+            String str = "";
+            for(int i = 0; i < size-1; i++){
+                IdentifiedWeightedEdge e = g.getEdge(vertices.get(i), vertices.get(i+1));
+                str += String.format("%d. Walk %.0f meters along %s from '%s' to '%s'.\n",
+                        count,
+                        g.getEdgeWeight(e),
+                        eInfo.get(e.getId()).street,
+                        vInfo.get(vertices.get(i)).name,
+                        vInfo.get(vertices.get(i+1)).name);
+                count++;
+            }
+            directions.put(vInfo.get(path.getEndVertex()).name, str);
         }
     }
 
