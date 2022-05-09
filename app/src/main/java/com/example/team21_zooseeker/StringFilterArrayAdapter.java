@@ -1,4 +1,4 @@
-package com.example.team21_zooseeker.helpers;
+package com.example.team21_zooseeker;
 
 import android.content.Context;
 import android.util.Pair;

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
 import com.example.team21_zooseeker.R;
@@ -79,10 +78,8 @@ public class Route extends AppCompatActivity {
 
     public void onBeginDirectionsClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
-        startActivity(intent);
-    }
 
-    public void onBackBtnClicked(View view) {
-        finish();
+
+        startActivity(intent);
     }
 }

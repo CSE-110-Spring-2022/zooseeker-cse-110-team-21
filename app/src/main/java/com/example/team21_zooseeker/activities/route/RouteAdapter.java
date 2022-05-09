@@ -1,6 +1,5 @@
 package com.example.team21_zooseeker.activities.route;
 
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setExhibitText(directions.get(position));
-        holder.exhibitCounter.setText("Exhibit " + (position + 1) + ": ");
     }
 
     @Override
@@ -54,14 +52,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView textView;
-        private final TextView exhibitCounter;
         //private ExhibitDistance exhibitDist;
         private String exhibitDist;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             this.textView = itemView.findViewById(R.id.dir);
-            this.exhibitCounter = itemView.findViewById(R.id.exhibit_title_route);
         }
 
         public String getExhibit(){

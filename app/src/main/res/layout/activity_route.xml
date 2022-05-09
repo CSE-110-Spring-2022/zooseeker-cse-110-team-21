@@ -7,73 +7,26 @@
     tools:context=".activities.route.Route">
 
 
-    <TextView
-        android:id="@+id/route_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Plan"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.185"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exhibit_text"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_marginHorizontal="20dp"
-        android:background="@drawable/back"
-        android:elevation="5dp"
-        android:padding="20dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="409dp"
+        android:layout_height="650dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop ="10dp"
+        app:layout_constraintBottom_toTopOf="@id/begin_directions_btn"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.54" />
+        app:layout_editor_absoluteX="1dp"
+        app:layout_editor_absoluteY="1dp" />
 
     <Button
         android:id="@+id/begin_directions_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:onClick="onBeginDirectionsClicked"
         android:text="Begin Directions"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exhibit_text" />
-
-    <TextView
-        android:id="@+id/overview_caption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Here's a quick overview of your plan:"
-        android:textColor="#707070"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/exhibit_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.116"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/route_header"
-        app:layout_constraintVertical_bias="0.781" />
-
-    <ImageButton
-        android:id="@+id/back_btn_route"
-        android:layout_width="34dp"
-        android:layout_height="31dp"
-        android:backgroundTint="#FFFFFF"
-        android:onClick="onBackBtnClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/route_header"
-        app:layout_constraintHorizontal_bias="0.645"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.052"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

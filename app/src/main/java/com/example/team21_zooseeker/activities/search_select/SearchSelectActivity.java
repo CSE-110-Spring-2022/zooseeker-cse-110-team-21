@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.team21_zooseeker.R;
-import com.example.team21_zooseeker.helpers.StringFilterArrayAdapter;
+import com.example.team21_zooseeker.StringFilterArrayAdapter;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
 import com.example.team21_zooseeker.helpers.ZooData;
