@@ -10,13 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".Route"
+            android:name=".activities.directions.DirectionsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.route.Route"
             android:exported="false" />
         <activity
-            android:name=".LandingPageActivity"
+            android:name=".activities.search_select.SearchSelectActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.landing.LandingPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

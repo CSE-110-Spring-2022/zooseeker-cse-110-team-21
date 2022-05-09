@@ -1,10 +1,12 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.landing;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.R;
 
 public class LandingPageActivity extends AppCompatActivity {
 
@@ -16,7 +18,7 @@ public class LandingPageActivity extends AppCompatActivity {
     }
 
     public void start(View v){
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, SearchSelectActivity.class);
         startActivity(intent);
     }
 

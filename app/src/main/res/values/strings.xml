@@ -6,6 +6,12 @@
     <string name="plan_text">Plan</string>
     <string name="exhibits_selected">Exhibits Selected:</string>
     <string name="exhibit_counter">0</string>
+    <string name="directions_desc">ANDROID_EMU_dma_v1 ANDROID_EMU_direct_mem ANDROID_EMU_host_composition_v1 ANDROID_EMU_host_composition_v2 ANDROID_EMU_YUV_Cache ANDROID_EMU_has_shared_slots_host_memory_allocator ANDROID_EMU_sync_buffer_data ANDROID_EMU_read_color_buffer_dma GL_OES_EGL_image_external_essl3 GL_OES_vertex_array_object GL_KHR_texture_compression_astc_ldr ANDROID_EMU_host_side_tracing ANDROID_EMU_gles_max_version_3_0</string>
+    <string name="directions">Directions</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="welcome_to_the_san_diego_zooseeker_app">Welcome to the San Diego ZooSeeker App!</string>
+    <string name="plan">Plan</string>
 
 
 </resources>

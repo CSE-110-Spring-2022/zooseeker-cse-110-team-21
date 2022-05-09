@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
+import android.util.Pair;
 import android.widget.AutoCompleteTextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -12,6 +13,9 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.helpers.ZooData;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +23,9 @@ import org.junit.runner.RunWith;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -31,17 +37,18 @@ public class SearchTest {
     ArrayList<String> animals = new ArrayList<>();
 
     @Rule
-    public ActivityScenarioRule<MainActivity> scenarioRule = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<SearchSelectActivity> scenarioRule = new ActivityScenarioRule<>(SearchSelectActivity.class);
 
     @Before
     public void addJson(){
-        List<Node> node = Node.loadJSON(InstrumentationRegistry.getTargetContext(),"exhibits.json");
+       Map<String, ZooData.VertexInfo> node = ZooData.loadVertexInfoJSON(InstrumentationRegistry.getTargetContext(),"exhibits.json");
 
-        for (int i = 0; i < node.size(); i++){
-            if (node.get(i).kind.equals("exhibit")){
-                animals.add(node.get(i).name);
-            }
-        }
+        for (String str : node.keySet()){
+
+            // checks if the current node is an animal
+            if (node.get(str).kind.equals(ZooData.VertexInfo.Kind.EXHIBIT)){
+                animals.add(node.get(str).name);
+            } }
     }
 
     /*
@@ -49,7 +56,7 @@ public class SearchTest {
      */
     @Test
     public void correctTextInTest() {
-        ActivityScenario<MainActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> scenario = scenarioRule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
 
@@ -58,10 +65,10 @@ public class SearchTest {
             String test = "Apple Pie";
             AutoCompleteTextView search = activity.findViewById(R.id.search_bar);
             search.setText("Apple Pie");
-            assertEquals(search.getText().toString(), test);
+            assertEquals(test, search.getText().toString());
 
             search.setText("AppleJack");
-            assertNotEquals(search.getText().toString(), test);
+            assertNotEquals(test, search.getText().toString());
 
 
             assertEquals(animals.contains("Arctic Foxes"), true);
@@ -69,26 +76,18 @@ public class SearchTest {
         });
 
         scenario.onActivity(activity -> {
-
-            // InstrumentationRegistry.getTargetContext() gets the context without "this"
-
             String test = "AppleJack";
             AutoCompleteTextView search = activity.findViewById(R.id.search_bar);
 
-
             assertEquals(search.getText().toString(), "AppleJack");
             assertNotEquals(search.getText().toString(), "Arctic");
-
-
         });
-
-
     }
 
     // Tests if the names of animals are correctly in the search list
     @Test
     public void testJsonParse() {
-        ActivityScenario<MainActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> scenario = scenarioRule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
 
