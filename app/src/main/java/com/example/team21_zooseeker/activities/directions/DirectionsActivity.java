@@ -76,4 +76,8 @@ public class DirectionsActivity extends AppCompatActivity {
             prevBtn.setText(directions.get(viewPager.getCurrentItem() - 1).getName());
         }
     }
+
+    public void onBackBtnClicked(View view) {
+        finish();
+    }
 }

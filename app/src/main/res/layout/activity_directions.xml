@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".activities.directions.DirectionsActivity">
 
+    <ImageButton
+        android:id="@+id/back_btn_dir"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
+        android:backgroundTint="#FFFFFF"
+        android:onClick="onBackBtnClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.042"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
     <TextView
         android:id="@+id/directions_header"
         android:layout_width="wrap_content"
@@ -16,15 +30,15 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="409dp"
-        android:layout_height="wrap_content"
+        android:layout_height="450dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -33,13 +47,13 @@
 
     <Button
         android:id="@+id/next_btn"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_width="90dp"
+        android:layout_height="68dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#87B37A"
         android:drawableTop="@android:drawable/ic_media_ff"
         android:onClick="onNextBtnClicked"
         android:text="@string/next"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
@@ -47,14 +61,14 @@
 
     <Button
         android:id="@+id/prev_btn"
-        android:layout_width="100sp"
-        android:layout_height="70dp"
+        android:layout_width="90dp"
+        android:layout_height="68dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#87B37A"
         android:drawableTop="@android:drawable/ic_media_rew"
         android:onClick="onPrevBtnClicked"
         android:text="@string/previous"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
