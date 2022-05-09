@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".MainActivity">
+    tools:context=".activities.search_select.SearchSelectActivity">
 
 
     <AutoCompleteTextView
@@ -76,7 +76,7 @@
         android:backgroundTint="#87B37A"
         android:backgroundTintMode="src_atop"
         android:drawableTop="@android:drawable/ic_dialog_map"
-        android:text="Plan"
+        android:text="@string/plan"
         android:onClick="onPlanButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

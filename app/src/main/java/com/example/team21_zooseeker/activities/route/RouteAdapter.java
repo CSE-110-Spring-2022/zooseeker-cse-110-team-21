@@ -1,4 +1,4 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.route;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.team21_zooseeker.R;
 
 import java.util.Collections;
 import java.util.List;

@@ -2,8 +2,6 @@ package com.example.team21_zooseeker;
 
 import static org.junit.Assert.assertEquals;
 
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -11,20 +9,20 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Iterator;
-
 @RunWith(AndroidJUnit4.class)
 public class SelectAnimalsTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> scenarioRule = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<SearchSelectActivity> scenarioRule = new ActivityScenarioRule<>(SearchSelectActivity.class);
 
     @Test
     public void exhibit_counter_test() {
-        ActivityScenario<MainActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> scenario = scenarioRule.getScenario();
 
         scenario.moveToState(Lifecycle.State.CREATED);
 
@@ -40,7 +38,7 @@ public class SelectAnimalsTest {
 
     @Test
     public void selectAnimals_test() {
-        ActivityScenario<MainActivity> scenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> scenario = scenarioRule.getScenario();
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity(activity -> {

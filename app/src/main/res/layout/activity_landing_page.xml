@@ -4,43 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LandingPageActivity">
+    tools:context=".activities.landing.LandingPageActivity">
 
     <TextView
         android:id="@+id/welcome"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="210dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="267dp"
+        android:layout_height="211dp"
         android:gravity="center"
-        android:text="Welcome to the San Diego ZooSeeker App!"
+        android:text="@string/welcome_to_the_san_diego_zooseeker_app"
         android:textColor="#000000"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/fake_search_bar"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.394" />
 
     <Button
         android:id="@+id/fake_search_bar"
-        android:layout_width="0dp"
+        android:layout_width="331dp"
         android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="240dp"
         android:clickable="true"
         android:completionThreshold="1"
         android:gravity="center"
         android:hint="@string/search_hint"
-        android:inputType="text"
         android:maxLines="1"
         android:onClick="start"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcome" />
+        app:layout_constraintTop_toBottomOf="@+id/welcome"
+        app:layout_constraintVertical_bias="0.077" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

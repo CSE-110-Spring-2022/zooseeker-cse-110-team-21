@@ -1,4 +1,4 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.route;
 
 import org.jgrapht.alg.util.Pair;
 import org.jgrapht.graph.DefaultWeightedEdge;
