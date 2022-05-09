@@ -1,43 +1,25 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.route;
 
 
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.hardware.biometrics.BiometricManager;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.helpers.SharedPrefs;
+import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.*;
-import org.jgrapht.nio.json.JSONImporter;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.IDN;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class Route extends AppCompatActivity {
@@ -91,6 +73,7 @@ public class Route extends AppCompatActivity {
         //call to subList makes it so the exit gate isn't shown in the overview
         adapter.setDirections(initialList.subList(0, initialList.size() - 1));
 
+        SharedPrefs.saveList(this, routeCalc.directions, "directions");
     }
 
     public void onBeginDirectionsClicked(View view) {
@@ -98,6 +81,5 @@ public class Route extends AppCompatActivity {
 
 
         startActivity(intent);
-        System.out.println("Begin directions clicked!!");
     }
 }

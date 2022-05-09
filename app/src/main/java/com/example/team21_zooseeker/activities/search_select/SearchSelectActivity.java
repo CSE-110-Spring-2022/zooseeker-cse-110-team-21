@@ -1,4 +1,4 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.search_select;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,14 +15,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+
+import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.activities.route.Route;
+import com.example.team21_zooseeker.helpers.Alerts;
+import com.example.team21_zooseeker.helpers.ZooData;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class SearchSelectActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private AutoCompleteTextView search_bar;
     private TextView counterDisplay;
-    protected Set<String> selectedAnimals = new HashSet<String>();
+    public Set<String> selectedAnimals = new HashSet<String>();
     private Map<String, ZooData.VertexInfo> node;
     private Map<String, String> nameToId;
 
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_select);
 
         prefs = getSharedPreferences("shared_prefs", MODE_PRIVATE);
         editor = prefs.edit();
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void onPlanButtonClicked(View view) {
         if (this.selectedAnimals.isEmpty()) {
-            Utilities.showAlert(this, "Your plan is empty! Please select some animals.");
+            Alerts.showAlert(this, "Your plan is empty! Please select some animals.");
             return;
         }
         setUserSelection("set", this.selectedAnimals);
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         int prevAnimalCount = this.selectedAnimals.size();
         this.selectedAnimals.add(animal);
         if (prevAnimalCount == this.selectedAnimals.size()) {
-            Utilities.showAlert(this, "You have already selected this animal.");
+            Alerts.showAlert(this, "You have already selected this animal.");
         }
         Log.d("exhibits: ", this.selectedAnimals.toString());
 

@@ -1,35 +1,28 @@
 package com.example.team21_zooseeker;
 
-import static android.content.Context.MODE_PRIVATE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.widget.Button;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.checkerframework.checker.units.qual.A;
+import com.example.team21_zooseeker.activities.route.Route;
+import com.example.team21_zooseeker.activities.route.RouteAdapter;
+import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 @RunWith(AndroidJUnit4.class)
 public class RouteTest {
@@ -38,7 +31,7 @@ public class RouteTest {
     private Context context;
 
     @Rule
-    public ActivityScenarioRule<MainActivity> scenarioRule = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<SearchSelectActivity> scenarioRule = new ActivityScenarioRule<>(SearchSelectActivity.class);
 
 
     @Before
@@ -48,7 +41,7 @@ public class RouteTest {
 
     @Test
     public void testAllExhibits(){
-        ActivityScenario<MainActivity> mainScenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
 
         mainScenario.moveToState(Lifecycle.State.CREATED);
 
@@ -79,7 +72,7 @@ public class RouteTest {
 
     @Test
     public void testOneExhibitSelected(){
-        ActivityScenario<MainActivity> mainScenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
 
         mainScenario.moveToState(Lifecycle.State.CREATED);
 
@@ -105,7 +98,7 @@ public class RouteTest {
 
     @Test
     public void testAllNearByExhibit(){
-        ActivityScenario<MainActivity> mainScenario = scenarioRule.getScenario();
+        ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
 
         mainScenario.moveToState(Lifecycle.State.CREATED);
 

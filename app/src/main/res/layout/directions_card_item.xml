@@ -32,7 +32,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Exhibit 1"
+                    android:text=""
                     android:textAlignment="center"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -44,7 +44,7 @@
                     android:layout_below="@id/exhibit_title"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Bears"
+                    android:text=""
                     android:textAlignment="center"
                     android:textColor="#000000"
                     android:textSize="34sp"
@@ -58,6 +58,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
+                    android:isScrollContainer="true"
                     android:text="@string/directions_desc"
                     android:textColor="#000000"
                     android:textSize="17sp" />

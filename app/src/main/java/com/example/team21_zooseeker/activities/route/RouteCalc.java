@@ -1,18 +1,17 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.activities.route;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.example.team21_zooseeker.helpers.ZooData;
+import com.example.team21_zooseeker.activities.directions.DirectionItem;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class RouteCalc {
     private Graph<String, IdentifiedWeightedEdge> g;
@@ -134,9 +133,10 @@ public class RouteCalc {
 
             List<String> vertices = path.getVertexList();
             int size = vertices.size();
+            String str = "";
             for(int i = 0; i < size-1; i++){
                 IdentifiedWeightedEdge e = g.getEdge(vertices.get(i), vertices.get(i+1));
-                System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
+                str += String.format("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
                         count,
                         g.getEdgeWeight(e),
                         eInfo.get(e.getId()).street,
@@ -144,13 +144,14 @@ public class RouteCalc {
                         vInfo.get(vertices.get(i+1)).name);
                 count++;
             }
-            System.out.println(vInfo.get(path.getEndVertex()).name);
+            System.out.println(new DirectionItem(vInfo.get(path.getEndVertex()).name, str).toString());
             System.out.printf("-------------------------------------------\n");
         }
     }
 
     public List<String> getDirections(List<GraphPath<String, IdentifiedWeightedEdge>> route, boolean verbose){
         List<String> directions = new ArrayList<String>();
+
         for(GraphPath<String, IdentifiedWeightedEdge> path : route) {
             int count = 1;
             List<String> vertices = path.getVertexList();
@@ -225,6 +226,7 @@ public class RouteCalc {
         System.out.println("TEST PRINTOUT TEST PRINTOUT");
         if(directions.size() == 0){
             System.out.println("NO DIRECTIONS!!!");
+
         }
         for(String str : directions){
             System.out.println(str);

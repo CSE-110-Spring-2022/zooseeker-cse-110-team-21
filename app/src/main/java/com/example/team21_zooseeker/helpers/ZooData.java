@@ -1,7 +1,8 @@
-package com.example.team21_zooseeker;
+package com.example.team21_zooseeker.helpers;
 
 import android.content.Context;
 
+import com.example.team21_zooseeker.activities.route.IdentifiedWeightedEdge;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
