@@ -207,7 +207,7 @@ public class RouteCalc {
 
                 //have to add ending string since we needed to look ahead
                 if(i == size-2){
-                    dirs = String.format("%d. Proceed on %s %d ft to %s.\n",
+                    dirs = String.format("%d. Proceed on %s %d ft to %s.",
                             count,
                             eInfo.get(previous.getId()).street,
                             (int) totalWeight,
@@ -215,6 +215,7 @@ public class RouteCalc {
                 }
                 str += dirs;
                 name = vInfo.get(vertices.get(i+1)).name;
+
             }
             directions.add(str);
             this.directions.add(new DirectionItem(name, str));

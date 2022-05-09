@@ -1,5 +1,6 @@
 package com.example.team21_zooseeker.activities.directions;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.Vi
         holder.exhibitTitle.setText(title);
         holder.exhibitName.setText(directionsText.getName());
         holder.directionsDesc.setText(directionsText.getDirDesc());
+        holder.directionsDesc.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @Override
