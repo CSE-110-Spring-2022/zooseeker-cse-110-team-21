@@ -1,5 +1,6 @@
 package com.example.team21_zooseeker.activities.route;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

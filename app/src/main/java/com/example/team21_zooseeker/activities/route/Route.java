@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
 import com.example.team21_zooseeker.R;
