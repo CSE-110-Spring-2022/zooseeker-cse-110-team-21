@@ -78,8 +78,10 @@ public class Route extends AppCompatActivity {
 
     public void onBeginDirectionsClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
-
-
         startActivity(intent);
+    }
+
+    public void onBackBtnClicked(View view) {
+        finish();
     }
 }

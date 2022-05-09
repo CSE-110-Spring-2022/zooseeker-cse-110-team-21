@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".activities.directions.DirectionsActivity">
 
+    <ImageButton
+        android:id="@+id/back_btn_dir"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
+        android:backgroundTint="#FFFFFF"
+        android:onClick="onBackBtnClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.042"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
     <TextView
         android:id="@+id/directions_header"
         android:layout_width="wrap_content"
@@ -16,10 +30,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.036" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
