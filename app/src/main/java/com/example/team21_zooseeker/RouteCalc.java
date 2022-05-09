@@ -18,7 +18,7 @@ public class RouteCalc {
     private Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
-    protected Map<String, String> directions;
+    public ArrayList<DirectionItem> directions;
 
     public RouteCalc(Context context){
         // 1. Load the graph...
@@ -27,6 +27,9 @@ public class RouteCalc {
         // 2. Load the information about our nodes and edges...
         vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
         eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
+
+        directions = new ArrayList<DirectionItem>();
+
     }
 
     /**
@@ -89,6 +92,7 @@ public class RouteCalc {
 
         //check logcat.D to see whats going on
         printDebugInfo(route);
+        getDirections(route, false);
 
         return route;
     }
@@ -145,26 +149,89 @@ public class RouteCalc {
         }
     }
 
-    public void getDirections(List<GraphPath<String, IdentifiedWeightedEdge>> route){
-        directions = new HashMap<>();
+    public List<String> getDirections(List<GraphPath<String, IdentifiedWeightedEdge>> route, boolean verbose){
+        List<String> directions = new ArrayList<String>();
         for(GraphPath<String, IdentifiedWeightedEdge> path : route) {
             int count = 1;
-
             List<String> vertices = path.getVertexList();
             int size = vertices.size();
             String str = "";
-            for(int i = 0; i < size-1; i++){
-                IdentifiedWeightedEdge e = g.getEdge(vertices.get(i), vertices.get(i+1));
-                str += String.format("%d. Walk %.0f meters along %s from '%s' to '%s'.\n",
-                        count,
-                        g.getEdgeWeight(e),
-                        eInfo.get(e.getId()).street,
-                        vInfo.get(vertices.get(i)).name,
-                        vInfo.get(vertices.get(i+1)).name);
-                count++;
+            String name = "";
+            IdentifiedWeightedEdge previous = null;
+            double totalWeight = 0;
+            boolean condensed = true;
+            for (int i = 0; i < size - 1; i++) {
+                IdentifiedWeightedEdge e = g.getEdge(vertices.get(i), vertices.get(i + 1));
+                String dirs = "";
+                if (verbose) {
+                    if (previous == null || !(eInfo.get(e.getId()).street.equals(eInfo.get(previous.getId()).street))) {
+                        dirs += String.format("%d. Proceed on %s %d ft to %s.\n",
+                                count,
+                                eInfo.get(e.getId()).street,
+                                (int) (g.getEdgeWeight(e)),
+                                vInfo.get(vertices.get(i + 1)).name);
+                    } else {
+                        dirs += String.format("%d. Continue on %s %d ft to %s.\n",
+                                count,
+                                eInfo.get(e.getId()).street,
+                                (int) (g.getEdgeWeight(e)),
+                                vInfo.get(vertices.get(i + 1)).name);
+                    }
+                    count++;
+                    previous = e;
+                }
+
+                else {
+                    if (previous == null || eInfo.get(e.getId()).street.equals(eInfo.get(previous.getId()).street)) {
+                        condensed = false;
+                        totalWeight += g.getEdgeWeight(e);
+                    }
+
+                    else{
+                        condensed = true;
+                        dirs += String.format("%d. Proceed on %s %d ft to %s.\n",
+                                count,
+                                eInfo.get(previous.getId()).street,
+                                (int) totalWeight,
+                                vInfo.get(vertices.get(i)).name);
+
+                        totalWeight = g.getEdgeWeight(e);
+                        count++;
+                    }
+
+                    previous = e;
+
+                }
+                if(condensed) {
+                    str += dirs;
+                    dirs = "";
+                }
+
+                //have to add ending string since we needed to look ahead
+                if(i == size-2){
+                    dirs = String.format("%d. Proceed on %s %d ft to %s.\n",
+                            count,
+                            eInfo.get(previous.getId()).street,
+                            (int) totalWeight,
+                            vInfo.get(vertices.get(i+1)).name);
+                }
+                str += dirs;
+                name = vInfo.get(vertices.get(i+1)).name;
             }
-            directions.put(vInfo.get(path.getEndVertex()).name, str);
+            directions.add(str);
+            this.directions.add(new DirectionItem(name, str));
         }
+
+        System.out.println("TEST PRINTOUT TEST PRINTOUT");
+        if(directions.size() == 0){
+            System.out.println("NO DIRECTIONS!!!");
+        }
+        for(String str : directions){
+            System.out.println(str);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        }
+
+        return directions;
     }
 
     /**

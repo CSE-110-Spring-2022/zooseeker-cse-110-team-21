@@ -45,6 +45,7 @@ public class Route extends AppCompatActivity {
     //TODO: This includes sharedprefs name and key, start node, and JSON file names
 
     private RouteCalc routeCalc;
+    private List<String> directions;
 
     public SharedPreferences preferences;
     public RecyclerView recyclerView;
@@ -78,6 +79,7 @@ public class Route extends AppCompatActivity {
         //offload the responsibility of calculation to the routeCalc class...
         List<String> initialList = routeCalc.initialDirections(start, userSelection);
 
+
         //So that we can focus on the screen display!
         RouteAdapter adapter = new RouteAdapter();
         adapter.setHasStableIds(true);
@@ -88,13 +90,13 @@ public class Route extends AppCompatActivity {
 
         //call to subList makes it so the exit gate isn't shown in the overview
         adapter.setDirections(initialList.subList(0, initialList.size() - 1));
-        adapter.setDirections(initialList);
 
-        SharedPrefs.saveMap(this, "directions", routeCalc.directions);
     }
 
     public void onBeginDirectionsClicked(View view) {
         Intent intent = new Intent(this, DirectionsActivity.class);
+
+
         startActivity(intent);
         System.out.println("Begin directions clicked!!");
     }
