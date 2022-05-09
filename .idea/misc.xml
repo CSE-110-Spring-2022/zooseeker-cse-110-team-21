@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.222" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/drawable/ic_launcher_background.xml" value="0.222" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/drawable/ic_mic.xml" value="0.222" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/drawable/trans_circle.xml" value="0.222" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/layout/activity_landing_page.xml" value="0.2" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/layout/activity_start.xml" value="0.17760416666666667" />
+        <entry key="..\:/Users/alext/AndroidStudioProjects/Team21_ZooSeeker/app/src/main/res/layout/searchlayout.xml" value="0.23489583333333333" />
+=======
         <entry key="../../../Library/Android/sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.16893115942028986" />
         <entry key="..\:/Users/Ari Winograd/AndroidStudioProjects/zooseeker-cse-110-team-21/app/src/main/res/layout/activity_route.xml" value="0.25" />
         <entry key="..\:/Users/Ari Winograd/AndroidStudioProjects/zooseeker-cse-110-team-21/app/src/main/res/layout/exhibit_distance.xml" value="0.358695652173913" />
@@ -15,7 +25,11 @@
         <entry key="app/src/main/res/layout/custom_list_item.xml" value="0.18652149145153984" />
         <entry key="app/src/main/res/layout/directions_card_item.xml" value="0.2693237304687501" />
         <entry key="app/src/main/res/layout/exhibit_distance.xml" value="0.2210144927536232" />
+<<<<<<< HEAD
+>>>>>>> main
+=======
         <entry key="app/src/main/res/layout/fragment_directions.xml" value="0.28177083333333336" />
+>>>>>>> 42f256014ba0ea97f3f040e76978a9d873bcdb83
       </map>
     </option>
   </component>
