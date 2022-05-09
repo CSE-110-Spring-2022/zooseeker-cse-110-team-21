@@ -2,35 +2,37 @@ package com.example.team21_zooseeker.activities.search_select;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AppCompatActivity;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.util.Pair;
+import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.StringFilterArrayAdapter;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
 import com.example.team21_zooseeker.helpers.ZooData;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class SearchSelectActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private AutoCompleteTextView search_bar;
     private TextView counterDisplay;
+
     public Set<String> selectedAnimals = new HashSet<String>();
     private Map<String, ZooData.VertexInfo> node;
     private Map<String, String> nameToId;
+    private ArrayList<Pair<String, String>> name_tags;
 
 
     public SharedPreferences prefs;
@@ -48,23 +50,44 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         // get objects
         search_bar = findViewById(R.id.search_bar);
         counterDisplay = findViewById(R.id.exhibit_counter);
-
-        List<String> animals = new ArrayList<>();
         node = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
 
+        // Hashmap is to hold in an animal's name and ID.
         nameToId = new HashMap<String, String>();
 
+        // Creates pairs of an animal's name and their respective tags
+        name_tags = new ArrayList<Pair<String, String>>();
+
+        // loops through each item in the the json file proved
         for (String str : node.keySet()){
+
+            // checks if the current node is an animal
             if (node.get(str).kind.equals(ZooData.VertexInfo.Kind.EXHIBIT)){
-                animals.add(node.get(str).name);
+
+                // places a pair of an animal and its tags into name_tags
+                Pair<String, String> temp_animal = new Pair<>(node.get(str).name, node.get(str).getTag());
+                name_tags.add(temp_animal);
+
             }
             nameToId.put(node.get(str).name, str);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, animals);
-        search_bar.setAdapter(adapter);
+        /* custom arrayadapter for autocomplete
+           allows for checking the subtring of an animal and its tags.
+           Example: "Foxes", tag: "mammal".
+           Before when ArrayAdapter was used, "Foxes" would only pop up
+           if you typed the prefix of the word, i.e. "F~". Now we can type in "xes" and Foxes will pop up.
+           Additionally, we can type in a substring of "mammal", e.g. "mm" and "Foxes" will appear as an option
+           in the autocomplete.
+        */
 
+        StringFilterArrayAdapter adapter = new StringFilterArrayAdapter(this,
+                android.R.layout.simple_list_item_1, name_tags);
+
+        search_bar.setAdapter(adapter);
+        search_bar.setThreshold(1);
+
+        // animation for transitioning MainActivity using a fade
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         // When user clicks on search result item, this will trigger onItemClick function that will

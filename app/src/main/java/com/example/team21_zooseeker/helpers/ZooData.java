@@ -52,6 +52,16 @@ public class ZooData {
             return name;
         }
 
+        public String getTag () {
+            String tagConnected = "";
+
+            for (String tag: tags) {
+                tagConnected +=tag+ ",";
+            }
+            return tagConnected;
+        }
+
+
     }
 
     public static class EdgeInfo {
