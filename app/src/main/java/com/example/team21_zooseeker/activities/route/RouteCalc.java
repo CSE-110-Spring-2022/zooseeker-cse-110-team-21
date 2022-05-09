@@ -181,7 +181,6 @@ public class RouteCalc {
                     count++;
                     previous = e;
                 }
-
                 else {
                     if (previous == null || eInfo.get(e.getId()).street.equals(eInfo.get(previous.getId()).street)) {
                         condensed = false;
@@ -199,12 +198,10 @@ public class RouteCalc {
                         totalWeight = g.getEdgeWeight(e);
                         count++;
                     }
-
                     previous = e;
-
                 }
                 if(condensed) {
-                    str += dirs;
+                    str += dirs + "\n";
                     dirs = "";
                 }
 
