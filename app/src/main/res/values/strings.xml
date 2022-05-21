@@ -15,6 +15,8 @@
     <string name="ZOO_GRAPH">sample_zoo_graph.json</string>
     <string name="NODE_INFO">sample_node_info.json</string>
     <string name="EDGE_INFO">sample_edge_info.json</string>
+    <string name="ENTRANCE_EXIT">entrance_exit_gate</string>
+    <string name="USER_SELECT">user_selection</string>
 
 
 </resources>

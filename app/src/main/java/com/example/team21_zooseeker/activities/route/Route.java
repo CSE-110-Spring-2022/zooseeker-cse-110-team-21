@@ -39,12 +39,15 @@ public class Route extends AppCompatActivity {
     public SharedPreferences preferences;
     public RecyclerView recyclerView;
     public SharedPreferences.Editor editor;
+    public Intent intent;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
+
+        intent = new Intent(this, DirectionsActivity.class);
 
         routeCalc = new RouteCalc(this);
         sf = new StringFormat(this);
@@ -54,7 +57,7 @@ public class Route extends AppCompatActivity {
         editor = preferences.edit();
 
         Set<String> userSelectionSet = preferences.getStringSet("set", null);
-        List<String> userSelection = new ArrayList<String>();
+        ArrayList<String> userSelection = new ArrayList<String>();
 
         //RouteCalc works with List<String>, so we convert the Set to a list
         if(userSelectionSet != null) {
@@ -63,8 +66,10 @@ public class Route extends AppCompatActivity {
             }
         }
 
+        intent.putStringArrayListExtra(this.getString(R.string.USER_SELECT), userSelection);
+
         // start (and, by proxy, end) of each route
-        String start = "entrance_exit_gate";
+        String start = this.getString(R.string.ENTRANCE_EXIT);
 
         //offload the responsibility of calculation to the routeCalc class...
         List<GraphPath<String, IdentifiedWeightedEdge>> route = routeCalc.calculateRoute(start, userSelection);
@@ -94,7 +99,6 @@ public class Route extends AppCompatActivity {
     }
 
     public void onBeginDirectionsClicked(View view) {
-        Intent intent = new Intent(this, DirectionsActivity.class);
         startActivity(intent);
     }
 

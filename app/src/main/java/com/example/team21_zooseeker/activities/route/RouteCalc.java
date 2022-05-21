@@ -19,8 +19,11 @@ public class RouteCalc {
     private Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
+    private Context context;
 
     public RouteCalc(Context context){
+        this.context = context;
+
         // 1. Load the graph...
         g = ZooData.loadZooGraphJSON(context, context.getString(R.string.ZOO_GRAPH));
 
@@ -40,7 +43,7 @@ public class RouteCalc {
      *
      * Calls: findNextClosestExhibit
      */
-    List<GraphPath<String, IdentifiedWeightedEdge>> calculateRoute(String start, List<String> exhibits){
+    public List<GraphPath<String, IdentifiedWeightedEdge>> calculateRoute(String start, List<String> exhibits){
         List<GraphPath<String, IdentifiedWeightedEdge>> route =
                 new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
 
@@ -57,7 +60,7 @@ public class RouteCalc {
         }
 
         //We need to add one last path, from our current location back to the start
-        route.add(DijkstraShortestPath.findPathBetween(g, current, start));
+        route.add(DijkstraShortestPath.findPathBetween(g, current, context.getString(R.string.ENTRANCE_EXIT)));
 
         //check logcat.D to see whats going on
         //printDebugInfo(route);
@@ -92,27 +95,9 @@ public class RouteCalc {
      * singleShortestPath
      * @param start Node to start at
      * @param goal Node to get to
-     *
-     * Not called anywhere, but it was provided and
-     * can be referred back to if needed.
-     * Note: Since it calls specifically for edge source and edge target,
-     * it may output to traverse an edge the wrong way! Remember, the graph is
-     * undirected.
      */
-    void singleShortestPath(String start, String goal){
-
+    GraphPath<String, IdentifiedWeightedEdge> singleShortestPath(String start, String goal){
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
-        System.out.printf("The shortest path from '%s' to '%s' is:\n", start, goal);
-
-        int i = 1;
-        for (IdentifiedWeightedEdge e : path.getEdgeList()) {
-            System.out.printf("  %d. Walk %.0f meters along %s from '%s' to '%s'.\n",
-                    i,
-                    g.getEdgeWeight(e),
-                    eInfo.get(e.getId()).street,
-                    vInfo.get(g.getEdgeSource(e).toString()).name,
-                    vInfo.get(g.getEdgeTarget(e).toString()).name);
-            i++;
-        }
+        return path;
     }
 }
