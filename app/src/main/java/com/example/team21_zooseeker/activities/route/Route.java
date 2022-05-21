@@ -16,8 +16,12 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
 import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.activities.directions.DirectionItem;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
+import com.example.team21_zooseeker.helpers.StringFormat;
+
+import org.jgrapht.GraphPath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,9 @@ public class Route extends AppCompatActivity {
     //TODO: This includes sharedprefs name and key, start node, and JSON file names
 
     private RouteCalc routeCalc;
-    private List<String> directions;
+    private List<DirectionItem> briefDirections;
+    private List<DirectionItem> detailedDirections;
+    private StringFormat sf;
 
     public SharedPreferences preferences;
     public RecyclerView recyclerView;
@@ -41,6 +47,7 @@ public class Route extends AppCompatActivity {
         setContentView(R.layout.activity_route);
 
         routeCalc = new RouteCalc(this);
+        sf = new StringFormat(this);
 
         //User Selection set in sharedPreferences as a Set<String>
         preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
@@ -60,7 +67,18 @@ public class Route extends AppCompatActivity {
         String start = "entrance_exit_gate";
 
         //offload the responsibility of calculation to the routeCalc class...
-        List<String> initialList = routeCalc.initialDirections(start, userSelection);
+        List<GraphPath<String, IdentifiedWeightedEdge>> route = routeCalc.calculateRoute(start, userSelection);
+        List<String> initialList = sf.initialDirections(route);
+
+
+        briefDirections = sf.getDirections(route, false);
+        //detailedDirections = sf.getDirections(route, true);
+
+       // sf.printDebugInfo(route);
+
+        SharedPrefs.saveList(this, new ArrayList<DirectionItem>(briefDirections), "directions");
+       // SharedPrefs.saveList(this, new ArrayList<DirectionItem>(detailedDirections) , "detailed_dirs");
+
 
 
         //So that we can focus on the screen display!
@@ -73,8 +91,6 @@ public class Route extends AppCompatActivity {
 
         //call to subList makes it so the exit gate isn't shown in the overview
         adapter.setDirections(initialList.subList(0, initialList.size() - 1));
-
-        SharedPrefs.saveList(this, routeCalc.directions, "directions");
     }
 
     public void onBeginDirectionsClicked(View view) {

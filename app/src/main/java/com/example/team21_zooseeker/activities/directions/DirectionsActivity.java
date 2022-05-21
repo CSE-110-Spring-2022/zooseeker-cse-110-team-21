@@ -29,6 +29,9 @@ public class DirectionsActivity extends AppCompatActivity {
         prevBtn = findViewById(R.id.prev_btn);
 
         directions = SharedPrefs.loadList(this, "directions");
+        if(directions.size() == 0){
+            System.out.println("I blame Larry Wall");
+        }
 
         DirectionsAdapter directionsAdapter = new DirectionsAdapter(directions);
         viewPager.setAdapter(directionsAdapter);
