@@ -108,11 +108,7 @@ public class StringFormat {
             directionsStr.add(str);
             directions.add(new DirectionItem(name, str));
         }
-        for(String s : directionsStr){
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            System.out.println(s);
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        }
+
         return directions;
     }
 

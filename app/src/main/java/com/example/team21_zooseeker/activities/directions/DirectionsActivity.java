@@ -14,6 +14,7 @@ import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.activities.route.RouteCalc;
 import com.example.team21_zooseeker.activities.route.userLocation;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
+import com.example.team21_zooseeker.helpers.StringFormat;
 
 import org.jgrapht.GraphPath;
 
@@ -27,6 +28,7 @@ public class DirectionsActivity extends AppCompatActivity {
     DirectionsAdapter directionsAdapter;
     userLocation loc;
     RouteCalc rc;
+    StringFormat sf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class DirectionsActivity extends AppCompatActivity {
 
         loc = new userLocation(this, this);
         rc = new RouteCalc(this);
+        sf = new StringFormat(this);
 
         // get views
         viewPager = findViewById(R.id.view_pager);
@@ -69,12 +72,17 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onUpdate(String id){
-        ArrayList<String> userSel = getIntent().getStringArrayListExtra(this.getString(R.string.USER_SELECT));
+        ArrayList<String> userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
+
         List<GraphPath<String, IdentifiedWeightedEdge>> list = rc.calculateRoute(id, userSel);
+        List<DirectionItem> strList = sf.getDirections(list, false);
+        directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList));
+        directionsAdapter.notifyDataSetChanged();
     }
 
     public void setBtnFeatures(int index) {
         int exhibitCounter = directions.size();
+        System.out.println("SIZE: " + exhibitCounter);
         Log.d("index", String.valueOf(index));
 
         if (index == exhibitCounter - 1) {

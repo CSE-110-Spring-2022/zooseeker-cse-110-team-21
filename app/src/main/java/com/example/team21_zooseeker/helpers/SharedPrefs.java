@@ -22,6 +22,15 @@ public class SharedPrefs {
 
     }
 
+    public static void saveStrList(Context context, ArrayList<String> list, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
     public static ArrayList<DirectionItem> loadList(Context context, String key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
@@ -29,4 +38,13 @@ public class SharedPrefs {
         Type type = new TypeToken<ArrayList<DirectionItem>>() {}.getType();
         return gson.fromJson(json, type);
     }
+
+    public static ArrayList<String> loadStrList(Context context, String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(key, null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
 }

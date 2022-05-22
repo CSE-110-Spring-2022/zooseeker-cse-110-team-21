@@ -66,7 +66,7 @@ public class Route extends AppCompatActivity {
             }
         }
 
-        intent.putStringArrayListExtra(this.getString(R.string.USER_SELECT), userSelection);
+      SharedPrefs.saveStrList(this, userSelection, this.getString(R.string.USER_SELECT));
 
         // start (and, by proxy, end) of each route
         String start = this.getString(R.string.ENTRANCE_EXIT);
