@@ -31,7 +31,7 @@ public class SearchBuilder {
 
     }
     public void buildNodeList() {
-        node = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
+        node = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
     }
 
     public void buildNameAndId() {
