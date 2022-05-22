@@ -21,11 +21,11 @@ public class RouteCalc {
 
     public RouteCalc(Context context){
         // 1. Load the graph...
-        g = ZooData.loadZooGraphJSON(context, "sample_zoo_graph.json");
+        g = ZooData.loadZooGraphJSON(context, "zoo_graph.json");
 
         // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context, "sample_node_info.json");
-        eInfo = ZooData.loadEdgeInfoJSON(context, "sample_edge_info.json");
+        vInfo = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
+        eInfo = ZooData.loadEdgeInfoJSON(context, "zoo_edge_info.json");
 
         directions = new ArrayList<DirectionItem>();
 
