@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Build;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.directions.DirectionItem;
@@ -46,7 +48,6 @@ public class Route extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-
         intent = new Intent(this, DirectionsActivity.class);
 
         routeCalc = new RouteCalc(this);
@@ -77,12 +78,12 @@ public class Route extends AppCompatActivity {
 
 
         briefDirections = sf.getDirections(route, false);
-        //detailedDirections = sf.getDirections(route, true);
+        detailedDirections = sf.getDirections(route, true);
 
        // sf.printDebugInfo(route);
 
         SharedPrefs.saveList(this, new ArrayList<DirectionItem>(briefDirections), "directions");
-       // SharedPrefs.saveList(this, new ArrayList<DirectionItem>(detailedDirections) , "detailed_dirs");
+        SharedPrefs.saveList(this, new ArrayList<DirectionItem>(detailedDirections) , "detailed_dirs");
 
 
 

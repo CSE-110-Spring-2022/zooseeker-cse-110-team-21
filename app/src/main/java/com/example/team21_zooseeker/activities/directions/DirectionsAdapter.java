@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.ViewHolder> {
     ArrayList<DirectionItem> directionsList;
-
     public DirectionsAdapter(ArrayList<DirectionItem> directionsList) {
         this.directionsList = directionsList;
     }

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.route.IdentifiedWeightedEdge;
@@ -24,11 +26,14 @@ import java.util.List;
 public class DirectionsActivity extends AppCompatActivity {
     ViewPager2 viewPager;
     Button nextBtn, prevBtn;
-    ArrayList<DirectionItem> directions = new ArrayList<DirectionItem>();
+    ToggleButton toggleDesc;
+    ArrayList<DirectionItem> detailedDirections = new ArrayList<DirectionItem>();
+    ArrayList<DirectionItem> briefDirections = new ArrayList<DirectionItem>();
     DirectionsAdapter directionsAdapter;
     userLocation loc;
     RouteCalc rc;
     StringFormat sf;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +49,38 @@ public class DirectionsActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_btn);
         prevBtn = findViewById(R.id.prev_btn);
 
-        directions = SharedPrefs.loadList(this, "directions");
+        briefDirections = SharedPrefs.loadList(this, "directions");
+        detailedDirections = SharedPrefs.loadList(this, "detailed_dirs");
 
-        directionsAdapter = new DirectionsAdapter(directions);
+        directionsAdapter = new DirectionsAdapter(briefDirections);
         viewPager.setAdapter(directionsAdapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setUserInputEnabled(false);
 
+        //Toggle event
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleDetail);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    directionsAdapter.setDirectionsList(detailedDirections);
+                    directionsAdapter.notifyDataSetChanged();
+                    toggle.setChecked(true);
+                } else {
+                    // The toggle is disabled
+                    directionsAdapter.setDirectionsList(briefDirections);
+                    directionsAdapter.notifyDataSetChanged();
+                    toggle.setChecked(false);
+                }
+            }
+        });
+
         // set previous btn to be invisible initially
         prevBtn.setVisibility(View.INVISIBLE);
-        if (directions.size() == 1)
+        if (briefDirections.size() == 1)
             nextBtn.setVisibility(View.INVISIBLE);
         else
-            nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
+            nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
     }
 
     public void onNextBtnClicked(View view) {
@@ -73,39 +97,47 @@ public class DirectionsActivity extends AppCompatActivity {
 
     public void onUpdate(String id){
         ArrayList<String> userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
-
         List<GraphPath<String, IdentifiedWeightedEdge>> list = rc.calculateRoute(id, userSel);
-        List<DirectionItem> strList = sf.getDirections(list, false);
-        directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList));
+        List<DirectionItem> strList1 = sf.getDirections(list, true);
+        List<DirectionItem> strList2 = sf.getDirections(list, false);
+        toggleDesc = (ToggleButton) findViewById(R.id.toggleDetail);
+        if(toggleDesc.isChecked()){
+            directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList1));
+        }else {
+            directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList2));
+        }
         directionsAdapter.notifyDataSetChanged();
     }
 
     public void setBtnFeatures(int index) {
-        int exhibitCounter = directions.size();
+        int exhibitCounter = briefDirections.size();
         System.out.println("SIZE: " + exhibitCounter);
         Log.d("index", String.valueOf(index));
 
         if (index == exhibitCounter - 1) {
             nextBtn.setVisibility(View.INVISIBLE);
             prevBtn.setVisibility(View.VISIBLE);
-            prevBtn.setText(directions.get(viewPager.getCurrentItem() - 1).getName());
+            prevBtn.setText(briefDirections.get(viewPager.getCurrentItem() - 1).getName());
         }
         else if (index == 0) {
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.INVISIBLE);
-            nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
+            nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
         }
         else {
             nextBtn.setVisibility(View.VISIBLE);
             prevBtn.setVisibility(View.VISIBLE);
-            nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
-            prevBtn.setText(directions.get(viewPager.getCurrentItem() - 1).getName());
+            nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+            prevBtn.setText(briefDirections.get(viewPager.getCurrentItem() - 1).getName());
         }
     }
 
     public void onBackBtnClicked(View view) {
         finish();
     }
+
+
+
 
 
 }
