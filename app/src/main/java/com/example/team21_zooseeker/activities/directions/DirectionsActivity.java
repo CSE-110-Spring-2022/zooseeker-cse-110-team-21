@@ -81,6 +81,8 @@ public class DirectionsActivity extends AppCompatActivity {
             nextBtn.setVisibility(View.INVISIBLE);
         else
             nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+
+
     }
 
     public void onNextBtnClicked(View view) {
@@ -95,18 +97,44 @@ public class DirectionsActivity extends AppCompatActivity {
         setBtnFeatures(currentIndex - 1);
     }
 
+    /**
+     * onUpdate
+     *
+     * Called whenever userLocation is set in class userLocation
+     * First, determines whether or not the closest exhibit is still
+     * the current exhibit
+     *
+     * If it is, updates the directions on the card
+     *
+     * If a different exhibit is closer, delegate to Off-Track Suggestions
+     * @param id Vertex ID of the user's new location
+     */
     public void onUpdate(String id){
+        //userSel must be kept updated; if a user has visited particular locations,
+        //they must be removed from the list kept in SharedPrefs.
         ArrayList<String> userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
-        List<GraphPath<String, IdentifiedWeightedEdge>> list = rc.calculateRoute(id, userSel);
-        List<DirectionItem> strList1 = sf.getDirections(list, true);
-        List<DirectionItem> strList2 = sf.getDirections(list, false);
+
+        ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
+        GraphPath<String, IdentifiedWeightedEdge> rePath = rc.findNextClosestExhibit(id, userSel);
+        ArrayList<GraphPath<String, IdentifiedWeightedEdge>> strList = new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
+        strList.add(rePath);
+        List<DirectionItem> strList1 = sf.getDirections(strList, true);
+        List<DirectionItem> strList2 = sf.getDirections(strList, false);
         toggleDesc = (ToggleButton) findViewById(R.id.toggleDetail);
+        int ind = viewPager.getCurrentItem();
         if(toggleDesc.isChecked()){
-            directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList1));
+            curr_list.remove(ind);
+            curr_list.add(ind, strList1.get(0));
+            directionsAdapter.setDirectionsList(curr_list);
         }else {
-            directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList2));
+            curr_list.remove(ind);
+            curr_list.add(ind, strList2.get(0));
+            directionsAdapter.setDirectionsList(curr_list);
         }
         directionsAdapter.notifyDataSetChanged();
+
+
+
     }
 
     public void setBtnFeatures(int index) {

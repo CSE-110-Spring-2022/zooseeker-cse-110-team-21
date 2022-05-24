@@ -94,7 +94,7 @@ public class StringFormat {
                 }
 
                 //have to add ending string since we needed to look ahead
-                if(i == size-2){
+                if(!verbose && (i == size-2)){
                     dirs = String.format("%d. Proceed on %s %d ft to %s.",
                             count,
                             eInfo.get(previous.getId()).street,

@@ -76,7 +76,7 @@ public class RouteCalc {
      * @param exhibits A list of exhibits we have yet to visit (NOT the user selection list)
      * @return A graph-path from current, to the next closest node in exhibits
      */
-    GraphPath<String, IdentifiedWeightedEdge> findNextClosestExhibit(String current, List<String> exhibits){
+    public GraphPath<String, IdentifiedWeightedEdge> findNextClosestExhibit(String current, List<String> exhibits){
         //Classic find min, we are finding min weight from current to each exhibit in the list
         double minWeight = Double.MAX_VALUE;
         GraphPath<String, IdentifiedWeightedEdge> nextPath = null;

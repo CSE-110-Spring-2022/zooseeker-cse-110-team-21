@@ -77,8 +77,11 @@ public class Route extends AppCompatActivity {
         List<String> initialList = sf.initialDirections(route);
 
 
-        briefDirections = sf.getDirections(route, false);
+
         detailedDirections = sf.getDirections(route, true);
+
+        briefDirections = sf.getDirections(route, false);
+        //detailedDirections = sf.getDirections(route, true);
 
        // sf.printDebugInfo(route);
 
