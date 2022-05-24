@@ -57,6 +57,8 @@ public class DirectionsActivity extends AppCompatActivity {
             nextBtn.setVisibility(View.INVISIBLE);
         else
             nextBtn.setText(directions.get(viewPager.getCurrentItem() + 1).getName());
+
+        loc.setId("gators");
     }
 
     public void onNextBtnClicked(View view) {
@@ -71,13 +73,40 @@ public class DirectionsActivity extends AppCompatActivity {
         setBtnFeatures(currentIndex - 1);
     }
 
+    /**
+     * onUpdate
+     *
+     * Called whenever userLocation is set in class userLocation
+     * First, determines whether or not the closest exhibit is still
+     * the current exhibit
+     *
+     * If it is, updates the directions on the card
+     *
+     * If a different exhibit is closer, delegate to Off-Track Suggestions
+     * @param id Vertex ID of the user's new location
+     */
     public void onUpdate(String id){
+        //userSel must be kept updated; if a user has visited particular locations,
+        //they must be removed from the list kept in SharedPrefs.
         ArrayList<String> userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
+        ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
 
-        List<GraphPath<String, IdentifiedWeightedEdge>> list = rc.calculateRoute(id, userSel);
-        List<DirectionItem> strList = sf.getDirections(list, false);
-        directionsAdapter.setDirectionsList(new ArrayList<DirectionItem>(strList));
-        directionsAdapter.notifyDataSetChanged();
+        GraphPath<String, IdentifiedWeightedEdge> rePath = rc.findNextClosestExhibit(id, userSel);
+        ArrayList<GraphPath<String, IdentifiedWeightedEdge>> strList = new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
+        strList.add(rePath);
+        List<DirectionItem> strPath = sf.getDirections(strList, false);
+
+        int ind = viewPager.getCurrentItem();
+        if(curr_list.get(ind).getName().equals(strPath.get(0).getName())) {
+            curr_list.remove(ind);
+            curr_list.add(ind, strPath.get(0));
+            directionsAdapter.setDirectionsList(curr_list);
+            directionsAdapter.notifyDataSetChanged();
+        }
+        else{
+            System.out.println("Better Route Detected!");
+            //TODO delegate to off-track suggestions
+        }
     }
 
     public void setBtnFeatures(int index) {

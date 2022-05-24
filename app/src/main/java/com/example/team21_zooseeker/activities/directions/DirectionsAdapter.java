@@ -25,6 +25,10 @@ public class DirectionsAdapter extends RecyclerView.Adapter<DirectionsAdapter.Vi
         this.directionsList = dl;
     }
 
+    public ArrayList<DirectionItem> getDirectionsList(){
+        return directionsList;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
