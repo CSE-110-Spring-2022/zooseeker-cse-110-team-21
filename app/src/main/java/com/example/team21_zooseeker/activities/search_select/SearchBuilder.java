@@ -1,6 +1,8 @@
 package com.example.team21_zooseeker.activities.search_select;
 
 
+import static com.example.team21_zooseeker.helpers.ChooseAsset.nodeInfo;
+
 import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
@@ -31,7 +33,7 @@ public class SearchBuilder {
 
     }
     public void buildNodeList() {
-        node = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
+        node = ZooData.loadVertexInfoJSON(context, nodeInfo);
     }
 
     public void buildNameAndId() {

@@ -1,5 +1,9 @@
 package com.example.team21_zooseeker.activities.landing;
 
+import static com.example.team21_zooseeker.helpers.ChooseAsset.edgeInfo;
+import static com.example.team21_zooseeker.helpers.ChooseAsset.nodeInfo;
+import static com.example.team21_zooseeker.helpers.ChooseAsset.zooGraph;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,4 +30,15 @@ public class LandingPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void changeAssetsMS1(View v){
+        zooGraph = this.getString(R.string.ZOO_GRAPH);
+        nodeInfo = this.getString(R.string.NODE_INFO);
+        edgeInfo = this.getString(R.string.EDGE_INFO);
+    }
+
+    public void changeAssetsMS2(View v) {
+        zooGraph = this.getString(R.string.MS2_ZOO_GRAPH);
+        nodeInfo = this.getString(R.string.MS2_NODE_INFO);
+        edgeInfo = this.getString(R.string.MS2_EDGE_INFO);
+    }
 }

@@ -1,5 +1,9 @@
 package com.example.team21_zooseeker.activities.route;
 
+import static com.example.team21_zooseeker.helpers.ChooseAsset.edgeInfo;
+import static com.example.team21_zooseeker.helpers.ChooseAsset.nodeInfo;
+import static com.example.team21_zooseeker.helpers.ChooseAsset.zooGraph;
+
 import android.content.Context;
 
 import com.example.team21_zooseeker.R;
@@ -25,11 +29,11 @@ public class RouteCalc {
         this.context = context;
 
         // 1. Load the graph...
-        g = ZooData.loadZooGraphJSON(context, context.getString(R.string.ZOO_GRAPH));
+        g = ZooData.loadZooGraphJSON(context, zooGraph);
 
         // 2. Load the information about our nodes and edges...
-        vInfo = ZooData.loadVertexInfoJSON(context, context.getString(R.string.NODE_INFO));
-        eInfo = ZooData.loadEdgeInfoJSON(context, context.getString(R.string.EDGE_INFO));
+        vInfo = ZooData.loadVertexInfoJSON(context, nodeInfo);
+        eInfo = ZooData.loadEdgeInfoJSON(context, edgeInfo);
     }
 
 

@@ -12,9 +12,12 @@
     <string name="previous">Previous Button</string>
     <string name="welcome_to_the_san_diego_zooseeker_app">Welcome to the San Diego ZooSeeker App!</string>
     <string name="plan">Plan</string>
-    <string name="ZOO_GRAPH">zoo_graph.json</string>
-    <string name="NODE_INFO">zoo_node_info.json</string>
-    <string name="EDGE_INFO">zoo_edge_info.json</string>
+    <string name="ZOO_GRAPH">sample_zoo_graph.json</string>
+    <string name="NODE_INFO">sample_node_info.json</string>
+    <string name="EDGE_INFO">sample_edge_info.json</string>
+    <string name="MS2_ZOO_GRAPH">zoo_graph.json</string>
+    <string name="MS2_NODE_INFO">zoo_node_info.json</string>
+    <string name="MS2_EDGE_INFO">zoo_edge_info.json</string>
     <string name="ENTRANCE_EXIT">entrance_exit_gate</string>
     <string name="USER_SELECT">user_selection</string>
 

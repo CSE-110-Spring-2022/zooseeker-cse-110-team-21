@@ -1,4 +1,6 @@
 package com.example.team21_zooseeker.activities.search_select;
+import static com.example.team21_zooseeker.helpers.ChooseAsset.nodeInfo;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
