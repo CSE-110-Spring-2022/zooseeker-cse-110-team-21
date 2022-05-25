@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.team21_zooseeker.activities.route.IdentifiedWeightedEdge;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -38,7 +37,7 @@ public class ZooData {
         }
 
         public String id;
-        public String parent_id;
+        public String group_id;
         public Kind kind;
         public String name;
         public List<String> tags;
@@ -54,7 +53,7 @@ public class ZooData {
                     ", kind=" + kind +
                     ", name='" + name + '\'' +
                     ", tags=" + tags + '\'' +
-                    ", parent_id=" + parent_id + '\'' +
+                    ", parent_id=" + group_id + '\'' +
                     ", lat=" + lat + '\''+
                     ", lng=" + lng +
                     '}';
@@ -100,7 +99,7 @@ public class ZooData {
             // e.g. Dove
             zooData.forEach(node -> {
                 parentIdValues.stream().forEach(parent -> {
-                    if (parent.id.equals(node.parent_id)) {
+                    if (parent.id.equals(node.group_id)) {
                         node.lng = parent.lng;
                         node.lat = parent.lat;
                         Log.d("Parent Id Animal", node.toString());

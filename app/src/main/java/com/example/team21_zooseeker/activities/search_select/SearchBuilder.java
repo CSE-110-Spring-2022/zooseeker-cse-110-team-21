@@ -9,9 +9,7 @@ import com.example.team21_zooseeker.helpers.ZooData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class SearchBuilder {
     public Map<String, ZooData.VertexInfo> node;
@@ -40,8 +38,8 @@ public class SearchBuilder {
             // nodes with parent_id will use the parent_id rather than id
             // this is b/c edge edge_info.json will
             // use the parent_id rather than the id for directions
-            if (node.get(id).parent_id != null) {
-                nameToId.put(node.get(id).name, node.get(id).parent_id);
+            if (node.get(id).group_id != null) {
+                nameToId.put(node.get(id).name, node.get(id).group_id);
             } else {
                 nameToId.put(node.get(id).name, id);
             }

@@ -3,9 +3,7 @@ package com.example.team21_zooseeker.activities.route;
 import android.content.Context;
 
 import com.example.team21_zooseeker.R;
-import com.example.team21_zooseeker.helpers.StringFormat;
 import com.example.team21_zooseeker.helpers.ZooData;
-import com.example.team21_zooseeker.activities.directions.DirectionItem;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -43,6 +41,7 @@ public class RouteCalc {
      *
      * Calls: findNextClosestExhibit
      */
+
     public List<GraphPath<String, IdentifiedWeightedEdge>> calculateRoute(String start, List<String> exhibits){
         List<GraphPath<String, IdentifiedWeightedEdge>> route =
                 new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
