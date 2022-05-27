@@ -1,5 +1,7 @@
 package com.example.team21_zooseeker.activities.directions;
 
+import static com.example.team21_zooseeker.activities.route.OffTrackCalc.locationUpdate;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -82,13 +84,16 @@ public class DirectionsActivity extends AppCompatActivity {
         else
             nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
 
-
     }
 
     public void onNextBtnClicked(View view) {
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex + 1, true);
         setBtnFeatures(currentIndex + 1);
+
+        // updates by clicking next button
+        locationUpdate(this);
+
     }
 
     public void onPrevBtnClicked(View view) {

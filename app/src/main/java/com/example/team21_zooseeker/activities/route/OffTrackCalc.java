@@ -1,8 +1,17 @@
 package com.example.team21_zooseeker.activities.route;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.util.Log;
 import android.util.Pair;
 
+import androidx.annotation.NonNull;
+
 import com.example.team21_zooseeker.helpers.ZooData;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Map;
 
@@ -36,6 +45,27 @@ public class OffTrackCalc {
 
         double d_ft = Math.sqrt(Math.pow(d_lat,2) + Math.pow(d_lng,2));
         return base * Math.ceil(d_ft/base);
+    }
+
+    public static void locationUpdate(Context context) {
+        {
+            var provider = LocationManager.GPS_PROVIDER;
+            var locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            var locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    Log.d("LAB7",String.format("Location changed: %s", location));
+
+                    var marker = new MarkerOptions()
+                            .position(new LatLng(
+                                    location.getLatitude(),
+                                    location.getLongitude())).
+                            title("Navigation step");
+                }
+            };
+
+            locationManager.requestLocationUpdates(provider, 0 ,0f, locationListener);
+        }
     }
 }
 
