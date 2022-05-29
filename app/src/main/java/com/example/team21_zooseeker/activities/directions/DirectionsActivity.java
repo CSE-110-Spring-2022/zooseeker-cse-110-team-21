@@ -100,15 +100,20 @@ public class DirectionsActivity extends AppCompatActivity {
         this.future = backgroundThreadExecutor.submit(()-> {
             do {
                 // updates location
-                locationUpdate(this);
-                Log.d("runs","runs");
+                runOnUiThread(()->{
+                    Log.d("runs","run");
+                    locationUpdate(this);
+                });
+
                 Thread.sleep(5000);
                 Pair<String,Double> vd = OffTrackCalc.calculateRoute(OffTrackCalc.currLat,OffTrackCalc.currLong,vInfo);
                 String vertex = vd.first;
                 Double distance = vd.second;
 
-                if (distance > 2000){
-                    Log.d("off","off track");
+                if (distance > 7000){
+                    runOnUiThread(()->{
+                            Log.d("off-track","off");
+                    });
                     break;
 
                 }
@@ -196,6 +201,7 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onBackBtnClicked(View view) {
+        this.future.cancel(true);
         finish();
     }
 
