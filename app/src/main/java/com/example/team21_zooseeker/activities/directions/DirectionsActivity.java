@@ -2,30 +2,38 @@ package com.example.team21_zooseeker.activities.directions;
 
 import static com.example.team21_zooseeker.activities.route.OffTrackCalc.locationUpdate;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.route.IdentifiedWeightedEdge;
-import com.example.team21_zooseeker.activities.route.Route;
+import com.example.team21_zooseeker.activities.route.OffTrackCalc;
 import com.example.team21_zooseeker.activities.route.RouteCalc;
 import com.example.team21_zooseeker.activities.route.userLocation;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.helpers.StringFormat;
+import com.example.team21_zooseeker.helpers.ZooData;
 
 import org.jgrapht.GraphPath;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class DirectionsActivity extends AppCompatActivity {
+    private final ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
+    private Future<Void> future;
     ViewPager2 viewPager;
     Button nextBtn, prevBtn;
     ToggleButton toggleDesc;
@@ -35,6 +43,8 @@ public class DirectionsActivity extends AppCompatActivity {
     userLocation loc;
     RouteCalc rc;
     StringFormat sf;
+    ArrayList<String> exhibits;
+    Map<String,ZooData.VertexInfo> vInfo;
 
 
     @Override
@@ -45,6 +55,8 @@ public class DirectionsActivity extends AppCompatActivity {
         loc = new userLocation(this, this);
         rc = new RouteCalc(this);
         sf = new StringFormat(this);
+        exhibits = SharedPrefs.loadStrList(this,this.getString(R.string.USER_SELECT));
+        vInfo = ZooData.loadVertexInfoJSON(this, this.getString(R.string.NODE_INFO));
 
         // get views
         viewPager = findViewById(R.id.view_pager);
@@ -58,6 +70,7 @@ public class DirectionsActivity extends AppCompatActivity {
         viewPager.setAdapter(directionsAdapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setUserInputEnabled(false);
+
 
         //Toggle event
         ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleDetail);
@@ -84,6 +97,25 @@ public class DirectionsActivity extends AppCompatActivity {
         else
             nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
 
+        this.future = backgroundThreadExecutor.submit(()-> {
+            do {
+                // updates location
+                locationUpdate(this);
+                Log.d("runs","runs");
+                Thread.sleep(5000);
+                Pair<String,Double> vd = OffTrackCalc.calculateRoute(OffTrackCalc.currLat,OffTrackCalc.currLong,vInfo);
+                String vertex = vd.first;
+                Double distance = vd.second;
+
+                if (distance > 2000){
+                    Log.d("off","off track");
+                    break;
+
+                }
+            } while (true);
+
+            return null;
+        });
     }
 
     public void onNextBtnClicked(View view) {
@@ -91,8 +123,6 @@ public class DirectionsActivity extends AppCompatActivity {
         viewPager.setCurrentItem(currentIndex + 1, true);
         setBtnFeatures(currentIndex + 1);
 
-        // updates by clicking next button
-        locationUpdate(this);
 
     }
 
