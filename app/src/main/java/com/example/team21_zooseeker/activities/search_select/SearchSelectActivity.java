@@ -14,9 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -30,6 +34,7 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
 
     public SharedPreferences prefs;
     public SharedPreferences.Editor editor;
+    private ExhibitDao exhibitDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,10 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
             search_bar = findViewById(R.id.search_bar);
             counterDisplay = findViewById(R.id.exhibit_counter);
             searchDataBase = new SearchDataBase();
+
+            // Room Database Dao
+            exhibitDao = ExhibitDatabase.getSingleton(this).exhibitDao();
+
         }
 
         // Build Search Database
@@ -87,9 +96,18 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
             Alerts.showAlert(this, "Your plan is empty! Please select some animals.");
             return;
         }
-        setUserSelection("set", selectedAnimals);
+        exhibitDao.insertAll(convertSetToList(selectedAnimals));
         Intent intent = new Intent(this, Route.class);
         startActivity(intent);
+    }
+
+    public List<ExhibitEntity> convertSetToList(Set<String> selectedAnimals) {
+        List<ExhibitEntity> selectedAnimalsDb = new ArrayList<>();
+        for (String id : selectedAnimals) {
+            ExhibitEntity dbItem = new ExhibitEntity(searchDataBase.node.get(id));
+            selectedAnimalsDb.add(dbItem);
+        }
+        return selectedAnimalsDb;
     }
 
     @VisibleForTesting
