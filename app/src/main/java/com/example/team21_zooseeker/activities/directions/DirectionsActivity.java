@@ -41,7 +41,7 @@ public class DirectionsActivity extends AppCompatActivity {
     StringFormat sf;
 
     ArrayList<String> userSel;
-    ArrayList<String> userVisited;
+    //ArrayList<String> userVisited;
 
 
     @Override
@@ -53,7 +53,6 @@ public class DirectionsActivity extends AppCompatActivity {
         rc = new RouteCalc(this);
         sf = new StringFormat(this);
         userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
-        userVisited = new ArrayList<String>();
 
 
 
@@ -95,7 +94,7 @@ public class DirectionsActivity extends AppCompatActivity {
         else
             nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
 
-        loc.setId("crocodile");
+        //loc.setId("crocodile");
 
     }
 
@@ -133,7 +132,6 @@ public class DirectionsActivity extends AppCompatActivity {
         int ind = viewPager.getCurrentItem();
         ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
 
-        //GraphPath<String, IdentifiedWeightedEdge> rePath = rc.findNextClosestExhibit(id, userSel);
         String goal = "";
         for(String key : sf.vInfo.keySet()){
             if(sf.vInfo.get(key).getName().equals(curr_list.get(ind).getName())){
@@ -141,8 +139,6 @@ public class DirectionsActivity extends AppCompatActivity {
             }
         }
 
-        System.out.println("SOURCE: " + id);
-        System.out.println("SINK: " + goal);
 
         GraphPath<String, IdentifiedWeightedEdge> rePath = rc.singleShortestPath(id, goal);
 
@@ -172,12 +168,6 @@ public class DirectionsActivity extends AppCompatActivity {
 
         directionsAdapter.notifyDataSetChanged();
 
-        if(id.equals(curr_list.get(ind).getName())){
-            userSel.remove(id);
-            userVisited.add(id);
-        }
-
-        System.out.println(sf.vInfo.get(curr_list.get(ind).getName()));
         GraphPath<String, IdentifiedWeightedEdge> closePath = rc.findNextClosestExhibit(id, userSel);
         if(!closePath.getEndVertex().equals(sf.vInfo.get(curr_list.get(ind).getName()))){
             promptOffTrack();
@@ -188,8 +178,26 @@ public class DirectionsActivity extends AppCompatActivity {
         ArrayList<DirectionItem> briefDir = new ArrayList<DirectionItem>();
         ArrayList<DirectionItem> detailedDir = new ArrayList<DirectionItem>();
 
+        ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
+        ArrayList<String> userVisited = new ArrayList<String>();
+        int ind = viewPager.getCurrentItem();
+        for(int i = 0; i < ind; i++){
+            String goal = "";
+            for(String key : sf.vInfo.keySet()){
+                if(sf.vInfo.get(key).getName().equals(curr_list.get(i).getName())){
+                    goal = key;
+                    System.out.println("GOAL: " + goal);
+                }
+            }
+            userVisited.add(goal);
+        }
+
+        briefDirections.clear();
+        detailedDirections.clear();
+
         if(userVisited.size() > 0){
-            List<GraphPath<String, IdentifiedWeightedEdge>> prevPath = rc.calculateRoute(this.getString(R.string.ENTRANCE_EXIT), userVisited);
+            ArrayList<String> userVisitedCopy = new ArrayList<String>(userVisited);
+            List<GraphPath<String, IdentifiedWeightedEdge>> prevPath = rc.calculateRoute(this.getString(R.string.ENTRANCE_EXIT), userVisitedCopy);
 
             //removes excess path to end
             prevPath.remove(prevPath.size() -1);
@@ -201,11 +209,16 @@ public class DirectionsActivity extends AppCompatActivity {
             detailedDir.addAll(prevDirsDetailed);
         }
 
-        if(userSel.size() > 0){
+        ArrayList<String> userSelCopy = new ArrayList<String>(userSel);
+        for(String str: userVisited){
+            userSelCopy.remove(str);
+        }
+
+        if(userSelCopy.size() > 0){
             String start;
             start = loc.loc_id;
 
-            List<GraphPath<String, IdentifiedWeightedEdge>> currPath = rc.calculateRoute(start, userSel);
+            List<GraphPath<String, IdentifiedWeightedEdge>> currPath = rc.calculateRoute(start, userSelCopy);
 
             List<DirectionItem> currDirsBrief = sf.getDirections(currPath, false);
             List<DirectionItem> currDirsDetailed = sf.getDirections(currPath, true);
@@ -214,7 +227,13 @@ public class DirectionsActivity extends AppCompatActivity {
             detailedDir.addAll(currDirsDetailed);
         }
         else{
-            String current = sf.vInfo.get((briefDir.get(briefDir.size() - 1).getName())).id;
+            String goal = "";
+            for(String key : sf.vInfo.keySet()){
+                if(sf.vInfo.get(key).getName().equals(briefDir.get(briefDir.size()-1).getName())){
+                    goal = key;
+                }
+            }
+            String current = sf.vInfo.get(goal).id;
             ArrayList<GraphPath<String, IdentifiedWeightedEdge>> lastItem = new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
             lastItem.add(DijkstraShortestPath.findPathBetween(rc.g, current, this.getString(R.string.ENTRANCE_EXIT)));
 
@@ -234,6 +253,7 @@ public class DirectionsActivity extends AppCompatActivity {
         }
 
         directionsAdapter.notifyDataSetChanged();
+        setBtnFeatures(ind);
     }
 
     /*
@@ -250,7 +270,7 @@ public class DirectionsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 offTrack();
-                System.out.println("POSITIVE BUTTON");
+
             }
         });
 
@@ -258,7 +278,7 @@ public class DirectionsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                System.out.println("NEGATIVE");
+
             }
         });
 
@@ -287,6 +307,24 @@ public class DirectionsActivity extends AppCompatActivity {
             prevBtn.setVisibility(View.VISIBLE);
             nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
             prevBtn.setText(briefDirections.get(viewPager.getCurrentItem() - 1).getName());
+        }
+    }
+
+    public void onSkipBtnClicked(View view){
+        ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
+        int ind = viewPager.getCurrentItem();
+
+        String goal = "";
+        for(String key : sf.vInfo.keySet()){
+            if(sf.vInfo.get(key).getName().equals(curr_list.get(ind).getName())){
+                goal = key;
+            }
+        }
+
+        userSel.remove(goal);
+
+        if(userSel.size() > 0 && (ind != curr_list.size()-1)) {
+            offTrack();
         }
     }
 
