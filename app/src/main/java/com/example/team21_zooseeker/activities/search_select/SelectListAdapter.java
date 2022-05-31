@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
+import org.w3c.dom.Text;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,6 +20,7 @@ import java.util.function.Consumer;
 public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.ViewHolder> {
     private List<ExhibitEntity> selectedAnimalsDb = Collections.emptyList();
     private Consumer<ExhibitEntity> onDeleteClicked;
+    private TextView counterDisplay;
 
     public void setExhibitItems(List<ExhibitEntity> newItems) {
         this.selectedAnimalsDb.clear();
@@ -25,8 +28,9 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public void setOnDeleteClicked(Consumer<ExhibitEntity> onDeleteClicked) {
+    public void setOnDeleteClicked(Consumer<ExhibitEntity> onDeleteClicked, TextView counterDisplay) {
         this.onDeleteClicked = onDeleteClicked;
+        this.counterDisplay =  counterDisplay;
     }
 
     @NonNull
@@ -65,6 +69,7 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.Vi
             this.deleteView.setOnClickListener(view -> {
                 if (onDeleteClicked == null) return;
                 onDeleteClicked.accept(exhibitItem);
+                counterDisplay.setText(String.valueOf(getItemCount() - 1));
             });
         }
 

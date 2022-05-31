@@ -20,7 +20,6 @@ import java.util.List;
 
 public class ViewModel extends AndroidViewModel {
     private LiveData<List<ExhibitEntity>> exhibitEntities;
-    private List<ExhibitEntity> staticExhibitEntities;
     private final ExhibitDao exhibitDao;
 
     public ViewModel(@NonNull Application application) {
@@ -37,18 +36,8 @@ public class ViewModel extends AndroidViewModel {
         return exhibitEntities;
     }
 
-    public List<ExhibitEntity> getStaticExhibitEntities() {
-        if (staticExhibitEntities == null)
-            return new ArrayList<>();
-        return staticExhibitEntities;
-    }
-
     private void loadUsers() {
         exhibitEntities = exhibitDao.getAllLive();
-    }
-
-    private void loadStaticUsers() {
-        staticExhibitEntities = exhibitDao.getAll();
     }
 
     public void deleteCompleted(ExhibitEntity exhibit) {

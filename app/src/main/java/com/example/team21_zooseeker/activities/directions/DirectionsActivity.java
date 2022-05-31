@@ -18,6 +18,9 @@ import com.example.team21_zooseeker.activities.route.IdentifiedWeightedEdge;
 import com.example.team21_zooseeker.activities.route.OffTrackCalc;
 import com.example.team21_zooseeker.activities.route.RouteCalc;
 import com.example.team21_zooseeker.activities.route.userLocation;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.helpers.StringFormat;
 import com.example.team21_zooseeker.helpers.ZooData;
@@ -30,6 +33,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 public class DirectionsActivity extends AppCompatActivity {
     private final ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
@@ -43,6 +47,7 @@ public class DirectionsActivity extends AppCompatActivity {
     userLocation loc;
     RouteCalc rc;
     StringFormat sf;
+    private List<ExhibitEntity> exhibitEntities;
     ArrayList<String> exhibits;
     Map<String,ZooData.VertexInfo> vInfo;
 
@@ -55,7 +60,16 @@ public class DirectionsActivity extends AppCompatActivity {
         loc = new userLocation(this, this);
         rc = new RouteCalc(this);
         sf = new StringFormat(this);
-        exhibits = SharedPrefs.loadStrList(this,this.getString(R.string.USER_SELECT));
+
+        // View Model
+        {
+            ExhibitDao dao = ExhibitDatabase.getSingleton(this).exhibitDao();
+            exhibitEntities = dao.getAll();
+        }
+
+        exhibits = new ArrayList<>(exhibitEntities.stream()
+                .map(v -> v.group_id == null ? v.id : v.group_id)
+                .collect(Collectors.toSet()));
         vInfo = ZooData.loadVertexInfoJSON(this, this.getString(R.string.NODE_INFO));
 
         // get views
@@ -127,8 +141,6 @@ public class DirectionsActivity extends AppCompatActivity {
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex + 1, true);
         setBtnFeatures(currentIndex + 1);
-
-
     }
 
     public void onPrevBtnClicked(View view) {
@@ -172,9 +184,6 @@ public class DirectionsActivity extends AppCompatActivity {
             directionsAdapter.setDirectionsList(curr_list);
         }
         directionsAdapter.notifyDataSetChanged();
-
-
-
     }
 
     public void setBtnFeatures(int index) {

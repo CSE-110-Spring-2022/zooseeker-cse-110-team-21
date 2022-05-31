@@ -63,7 +63,7 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
 
             adapter = new SelectListAdapter();
             adapter.setHasStableIds(true);
-            adapter.setOnDeleteClicked(viewModel::deleteCompleted);
+            adapter.setOnDeleteClicked(viewModel::deleteCompleted, counterDisplay);
 
             viewModel.getExhibitEntities().observe(this, adapter::setExhibitItems);
             this.counterDisplay.setText(viewModel.getCount());
@@ -166,9 +166,5 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         this.counterDisplay.setText(viewModel.getCount());
         // Clear search bar
         this.search_bar.setText("");
-    }
-
-    public void onDeleteButtonClicked(View view) {
-        this.counterDisplay.setText(viewModel.getCount());
     }
 }

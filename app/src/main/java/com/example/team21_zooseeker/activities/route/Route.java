@@ -60,11 +60,8 @@ public class Route extends AppCompatActivity {
         routeCalc = new RouteCalc(this);
         sf = new StringFormat(this);
 
-        //User Selection set in sharedPreferences as a Set<String>
         preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
         editor = preferences.edit();
-
-//        Set<String> userSelectionSet = preferences.getStringSet("set", null);
 
         // View Model
         {
@@ -105,8 +102,6 @@ public class Route extends AppCompatActivity {
 
         SharedPrefs.saveList(this, new ArrayList<DirectionItem>(briefDirections), "directions");
         SharedPrefs.saveList(this, new ArrayList<DirectionItem>(detailedDirections) , "detailed_dirs");
-
-
 
         //So that we can focus on the screen display!
         RouteAdapter adapter = new RouteAdapter();
