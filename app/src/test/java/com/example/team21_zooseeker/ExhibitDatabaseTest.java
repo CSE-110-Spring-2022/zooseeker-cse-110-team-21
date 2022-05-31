@@ -46,10 +46,10 @@ public class ExhibitDatabaseTest {
 
     @Test
     public void testInsert() {
-        ExhibitEntity exhibit1 = new ExhibitEntity("id1", "group_id1", null,
-                "name1", "lat1", "lng1");
-        ExhibitEntity exhibit2 = new ExhibitEntity("id2", "group_id2", null,
-                "name2", "lat2", "lng2");
+        ExhibitEntity exhibit1 = new ExhibitEntity("id1", "group_id1", null,"name1",
+                "lat1", "lng1");
+        ExhibitEntity exhibit2 = new ExhibitEntity("id2", "group_id2", null,"name2",
+                "lat2", "lng2");
 
         long id1 = dao.insert(exhibit1);
         long id2 = dao.insert(exhibit2);
@@ -60,12 +60,12 @@ public class ExhibitDatabaseTest {
 
     @Test
     public void testInsertAll() {
-        ExhibitEntity exhibit1 = new ExhibitEntity("id1", "group_id1", null,
-                "name1", "lat1", "lng1");
-        ExhibitEntity exhibit2 = new ExhibitEntity("id2", "group_id2", null,
-                "name2", "lat2", "lng2");
-        ExhibitEntity exhibit3 = new ExhibitEntity("id3", "group_id3", null,
-                "name3", "lat3", "lng3");
+        ExhibitEntity exhibit1 = new ExhibitEntity("id1", "group_id1",null,"name1",
+                "lat1", "lng1");
+        ExhibitEntity exhibit2 = new ExhibitEntity("id2", "group_id2", null,"name2",
+                "lat2", "lng2");
+        ExhibitEntity exhibit3 = new ExhibitEntity("id3", "group_id3", null,"name3",
+                "lat3", "lng3");
 
         List<ExhibitEntity> exhibitList = Arrays.asList(exhibit1, exhibit2, exhibit3);
 
@@ -73,20 +73,19 @@ public class ExhibitDatabaseTest {
 
         // Check if idList is size 3
         assertEquals(3, dbIdList.size());
-        assertEquals("id1", dao.get(dbIdList.get(0)).id);
+        assertEquals("id1", dao.get("id1").id);
     }
 
     @Test
     public void testGet() {
-        ExhibitEntity insertedItem = new ExhibitEntity("id1", "group_id1", null,
+        ExhibitEntity insertedItem = new ExhibitEntity("id1", "group_id1",null,
                 "name1", "lat1", "lng1");
         long dbId = dao.insert(insertedItem);
 
-        ExhibitEntity item = dao.get(dbId);
+        ExhibitEntity item = dao.get("id1");
         assertEquals(dbId, item.dbId);
         assertEquals(insertedItem.id, item.id);
         assertEquals(insertedItem.group_id, item.group_id);
-        assertEquals(insertedItem.kind, item.kind);
         assertEquals(insertedItem.name, item.name);
         assertEquals(insertedItem.lat, item.lat);
         assertEquals(insertedItem.lng, item.lng);
@@ -94,29 +93,29 @@ public class ExhibitDatabaseTest {
 
     @Test
     public void testUpdate() {
-        ExhibitEntity item = new ExhibitEntity("id1", "group_id1", null,
-                "name1", "lat1", "lng1");
+        ExhibitEntity item = new ExhibitEntity("id1", "group_id1",null, "name1",
+                "lat1", "lng1");
         long id = dao.insert(item);
 
-        item = dao.get(id);
+        item = dao.get("id1");
         item.visited = true;
         int itemsUpdated = dao.updateVisited(item);
         assertEquals(1, itemsUpdated);
 
-        item = dao.get(id);
+        item = dao.get("id1");
         assertNotNull(item);
         assertEquals(true, item.visited);
     }
 
     @Test
     public void testDelete() {
-        ExhibitEntity item = new ExhibitEntity("id1", "group_id1", null,
-                "name1", "lat1", "lng1");
+        ExhibitEntity item = new ExhibitEntity("id1", "group_id1", null,"name1",
+                "lat1", "lng1");
         long id = dao.insert(item);
 
-        item = dao.get(id);
+        item = dao.get("id1");
         int itemsDeleted = dao.delete(item);
         assertEquals(1, itemsDeleted);
-        assertNull(dao.get(id));
+        assertNull(dao.get("id1"));
     }
 }

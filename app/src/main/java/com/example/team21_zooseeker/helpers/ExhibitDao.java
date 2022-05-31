@@ -1,5 +1,6 @@
 package com.example.team21_zooseeker.helpers;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,7 +18,13 @@ public interface ExhibitDao {
     List<Long> insertAll(List<ExhibitEntity> exhibits);
 
     @Query("SELECT * FROM `exhibit_items` WHERE `id`=:id")
-    ExhibitEntity get(long id);
+    ExhibitEntity get(String id);
+
+    @Query("SELECT * FROM `exhibit_items`")
+    List<ExhibitEntity> getAll();
+
+    @Query("SELECT * FROM `exhibit_items`")
+    LiveData<List<ExhibitEntity>> getAllLive();
 
     @Query("SELECT * FROM `exhibit_items` WHERE `visited`=1")
     List<ExhibitEntity> getVisited();
@@ -30,4 +37,7 @@ public interface ExhibitDao {
 
     @Delete
     int delete(ExhibitEntity exhibit);
+
+    @Query("DELETE FROM `exhibit_items`")
+    void deleteAll();
 }

@@ -8,23 +8,31 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.directions.DirectionItem;
+import com.example.team21_zooseeker.activities.search_select.SelectListAdapter;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.helpers.StringFormat;
+import com.example.team21_zooseeker.helpers.ViewModel;
 
 import org.jgrapht.GraphPath;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Route extends AppCompatActivity {
     //TODO: Move hardcoded strings into constants
@@ -34,6 +42,8 @@ public class Route extends AppCompatActivity {
     private List<DirectionItem> briefDirections;
     private List<DirectionItem> detailedDirections;
     private StringFormat sf;
+
+    private List<ExhibitEntity> exhibitEntities;
 
     public SharedPreferences preferences;
     public RecyclerView recyclerView;
@@ -54,7 +64,18 @@ public class Route extends AppCompatActivity {
         preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
         editor = preferences.edit();
 
-        Set<String> userSelectionSet = preferences.getStringSet("set", null);
+//        Set<String> userSelectionSet = preferences.getStringSet("set", null);
+
+        // View Model
+        {
+            ExhibitDao dao = ExhibitDatabase.getSingleton(this).exhibitDao();
+            exhibitEntities = dao.getAll();
+        }
+
+        Set<String> userSelectionSet = exhibitEntities.stream()
+                .map(v -> v.group_id == null ? v.id : v.group_id)
+                .collect(Collectors.toSet());
+
         ArrayList<String> userSelection = new ArrayList<String>();
 
         //RouteCalc works with List<String>, so we convert the Set to a list

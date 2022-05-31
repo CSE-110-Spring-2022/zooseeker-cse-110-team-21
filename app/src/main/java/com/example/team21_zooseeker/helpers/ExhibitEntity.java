@@ -25,9 +25,17 @@ public class ExhibitEntity {
 
     @NonNull
     public String id;
+
+    @Override
+    public String toString() {
+        return "ExhibitEntity{" +
+                "group_id='" + group_id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public String group_id;
     public ZooData.VertexInfo.Kind kind;
-    @NonNull
     public String name;
     public String lat;
     public String lng;

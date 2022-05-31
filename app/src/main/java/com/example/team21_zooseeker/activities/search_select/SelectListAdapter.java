@@ -13,14 +13,20 @@ import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.ViewHolder> {
     private List<ExhibitEntity> selectedAnimalsDb = Collections.emptyList();
+    private Consumer<ExhibitEntity> onDeleteClicked;
 
     public void setExhibitItems(List<ExhibitEntity> newItems) {
         this.selectedAnimalsDb.clear();
         this.selectedAnimalsDb = newItems;
         notifyDataSetChanged();
+    }
+
+    public void setOnDeleteClicked(Consumer<ExhibitEntity> onDeleteClicked) {
+        this.onDeleteClicked = onDeleteClicked;
     }
 
     @NonNull
@@ -42,18 +48,26 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.Vi
         return selectedAnimalsDb.size();
     }
 
-    public long getItemId(int position) {
-        return selectedAnimalsDb.get(position).dbId;
+    public ExhibitEntity getItem(int position) {
+        return selectedAnimalsDb.get(position);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private ExhibitEntity exhibitItem;
+        private TextView deleteView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.textView = itemView.findViewById(R.id.selected_exhibit_name);
+            this.deleteView = itemView.findViewById(R.id.delete_btn);
+
+            this.deleteView.setOnClickListener(view -> {
+                if (onDeleteClicked == null) return;
+                onDeleteClicked.accept(exhibitItem);
+            });
         }
+
 
         public ExhibitEntity getExhibitItem() {
             return exhibitItem;
