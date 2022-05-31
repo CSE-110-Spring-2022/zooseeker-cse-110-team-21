@@ -62,7 +62,7 @@ public class RouteTest {
 
         routeScenario.onActivity(routeActivity -> {
 
-            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
             assertEquals("Alligators, 110ft", holder.getExhibitDist());
@@ -88,7 +88,7 @@ public class RouteTest {
 
         routeScenario.onActivity(routeActivity -> {
 
-            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
             assertEquals("Elephant Odyssey, 510ft", holder.getExhibitDist());
@@ -115,7 +115,7 @@ public class RouteTest {
 
         routeScenario.onActivity(routeActivity -> {
 
-            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
             assertEquals("Alligators, 110ft", holder.getExhibitDist());

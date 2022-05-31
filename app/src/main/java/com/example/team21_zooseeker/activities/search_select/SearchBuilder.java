@@ -13,14 +13,15 @@ import java.util.Map;
 
 public class SearchBuilder {
     public Map<String, ZooData.VertexInfo> node;
+    public Map<String, String> nameToGroupId;
     public Map<String, String> nameToId;
     public ArrayList<Pair<String, String>> name_tags;
 
     private Context context;
 
-
     public SearchBuilder(Context context) {
         this.context = context;
+        nameToGroupId = new HashMap<String, String>();
         nameToId = new HashMap<String, String>();
         name_tags = new ArrayList<Pair<String, String>>();
     }
@@ -32,17 +33,24 @@ public class SearchBuilder {
         node = ZooData.loadVertexInfoJSON(context, "zoo_node_info.json");
     }
 
-    public void buildNameAndId() {
+    public void buildNameAndGroupId() {
         for (String id : node.keySet()){
 
             // nodes with parent_id will use the parent_id rather than id
             // this is b/c edge edge_info.json will
             // use the parent_id rather than the id for directions
             if (node.get(id).group_id != null) {
-                nameToId.put(node.get(id).name, node.get(id).group_id);
+                nameToGroupId.put(node.get(id).name, node.get(id).group_id);
             } else {
-                nameToId.put(node.get(id).name, id);
+                nameToGroupId.put(node.get(id).name, id);
             }
+            Log.d("buildNameAnd GroupID", node.get(id).name + ", " + id);
+        }
+    }
+
+    public void buildNameAndId() {
+        for (String id : node.keySet()){
+            nameToId.put(node.get(id).name, id);
             Log.d("buildNameAnd ID", node.get(id).name + ", " + id);
         }
     }
@@ -60,7 +68,7 @@ public class SearchBuilder {
     }
 
     public SearchDataBase getSearchDatabase() {
-        return new SearchDataBase(node, nameToId, name_tags);
+        return new SearchDataBase(node, nameToGroupId, nameToId, name_tags);
     }
 
 }

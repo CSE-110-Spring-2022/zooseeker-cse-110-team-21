@@ -13,15 +13,18 @@ import java.util.Set;
 
 public class SearchDataBase {
     public Map<String, ZooData.VertexInfo> node;
+    public Map<String, String> nameToGroupId;
     public Map<String, String> nameToId;
     public ArrayList<Pair<String, String>> name_tags;
 
     public SearchDataBase() {
     }
 
-    public SearchDataBase(Map<String, ZooData.VertexInfo> node, Map<String, String> nameToId,
+    public SearchDataBase(Map<String, ZooData.VertexInfo> node, Map<String, String> nameToGroupId,
+                          Map<String, String> nameToId,
                           ArrayList<Pair<String, String>> name_tags) {
         this.node = node;
+        this.nameToGroupId = nameToGroupId;
         this.nameToId = nameToId;
         this.name_tags = name_tags;
     }
@@ -29,6 +32,10 @@ public class SearchDataBase {
     //--------Get Methods---------\\
     public Map<String, ZooData.VertexInfo> getNode() {
         return node;
+    }
+
+    public Map<String, String> getNameToGroupId() {
+        return nameToGroupId;
     }
 
     public Map<String, String> getNameToId() {

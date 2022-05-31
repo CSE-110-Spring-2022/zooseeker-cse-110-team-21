@@ -25,14 +25,11 @@ public class ExhibitEntity {
 
     @NonNull
     public String id;
-    @NonNull
     public String group_id;
     public ZooData.VertexInfo.Kind kind;
     @NonNull
     public String name;
-    @NonNull
     public String lat;
-    @NonNull
     public String lng;
 
     public Boolean visited;

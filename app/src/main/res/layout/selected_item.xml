@@ -6,32 +6,16 @@
     android:layout_height="50dp">
 
     <TextView
-        android:id="@+id/exhibit_title_route"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Exhibit 1: "
-        android:textColor="#555555"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/selected_exhibit_name"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/selected_exhibit_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="left"
-        android:text="@string/directions"
+        android:text="Polar Bear"
         android:textColor="#000000"
         android:textSize="18dp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="@id/exhibit_title_route"
-        app:layout_constraintStart_toEndOf="@+id/exhibit_title_route"
+        app:layout_constraintEnd_toStartOf="@+id/delete_selection"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -45,4 +29,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/delete_selection"
+        android:layout_width="48dp"
+        android:layout_height="34dp"
+        android:backgroundTint="#00FFFFFF"
+        android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
+        android:drawablePadding="0dp"
+        android:drawableTint="#000000"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

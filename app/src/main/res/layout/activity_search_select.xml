@@ -8,6 +8,20 @@
     tools:context=".activities.search_select.SearchSelectActivity">
 
 
+    <TextView
+        android:id="@+id/selection_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your exhibits:"
+        android:textColor="#707070"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/selected_items"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.061"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.931" />
+
     <AutoCompleteTextView
         android:id="@+id/search_bar"
         android:layout_width="333dp"
@@ -25,6 +39,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/selected_items"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="90dp"
+        android:elevation="5dp"
+        android:padding="20dp"
+        android:background="@drawable/back"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/exhibit_counter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/speech_button"
@@ -44,45 +74,40 @@
         android:id="@+id/exhibits_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="620dp"
         android:text="@string/exhibits_selected"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
     <TextView
         android:id="@+id/exhibit_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginTop="620dp"
         android:text="@string/exhibit_counter"
         android:textColor="#000000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/exhibits_selected"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 
     <Button
         android:id="@+id/plan_btn"
         android:layout_width="88dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginTop="632dp"
         android:backgroundTint="#87B37A"
         android:backgroundTintMode="src_atop"
         android:drawableTop="@android:drawable/ic_dialog_map"
-        android:text="@string/plan"
         android:onClick="onPlanButtonClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/plan"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

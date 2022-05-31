@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.04" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/exhibit_text"
+        android:id="@+id/selected_items"
         android:layout_width="match_parent"
         android:layout_height="450dp"
         android:layout_marginHorizontal="20dp"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exhibit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/selected_items" />
 
     <TextView
         android:id="@+id/overview_caption"
@@ -56,7 +56,7 @@
         android:text="Here's a quick overview of your plan:"
         android:textColor="#707070"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/exhibit_text"
+        app:layout_constraintBottom_toTopOf="@+id/selected_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.116"
         app:layout_constraintStart_toStartOf="parent"

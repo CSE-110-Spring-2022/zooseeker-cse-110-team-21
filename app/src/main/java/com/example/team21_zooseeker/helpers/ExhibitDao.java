@@ -16,8 +16,8 @@ public interface ExhibitDao {
     @Insert
     List<Long> insertAll(List<ExhibitEntity> exhibits);
 
-    @Query("SELECT * FROM `exhibit_items` WHERE `dbId`=:dbId")
-    ExhibitEntity get(long dbId);
+    @Query("SELECT * FROM `exhibit_items` WHERE `id`=:id")
+    ExhibitEntity get(long id);
 
     @Query("SELECT * FROM `exhibit_items` WHERE `visited`=1")
     List<ExhibitEntity> getVisited();

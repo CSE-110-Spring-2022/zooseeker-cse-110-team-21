@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
@@ -29,12 +32,16 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
     private AutoCompleteTextView search_bar;
     private TextView counterDisplay;
     public Set<String> selectedAnimals;
+    public List<ExhibitEntity> selectedAnimalsDb;
 
     private SearchBuilder builder;
 
     public SharedPreferences prefs;
     public SharedPreferences.Editor editor;
     private ExhibitDao exhibitDao;
+
+    public RecyclerView recyclerView;
+    private SelectListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +61,14 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
 
             // Room Database Dao
             exhibitDao = ExhibitDatabase.getSingleton(this).exhibitDao();
-
+            selectedAnimalsDb = new ArrayList<>();
         }
 
         // Build Search Database
         {
             builder = new SearchBuilder(this);
             builder.buildNodeList();
+            builder.buildNameAndGroupId();
             builder.buildNameAndId();
             builder.buildNameTags();
             searchDataBase = builder.getSearchDatabase();
@@ -83,6 +91,18 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
             search_bar.setThreshold(1);
         }
 
+        // Recycle View for displaying selected exhibits
+        {
+            adapter = new SelectListAdapter();
+            adapter.setHasStableIds(true);
+
+            recyclerView = findViewById(R.id.selected_items);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+
+            adapter.setExhibitItems(selectedAnimalsDb);
+        }
+
         // animation for transitioning MainActivity using a fade
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
@@ -96,19 +116,19 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
             Alerts.showAlert(this, "Your plan is empty! Please select some animals.");
             return;
         }
-        exhibitDao.insertAll(convertSetToList(selectedAnimals));
+        setUserSelection("set", this.selectedAnimals);
         Intent intent = new Intent(this, Route.class);
         startActivity(intent);
     }
 
-    public List<ExhibitEntity> convertSetToList(Set<String> selectedAnimals) {
-        List<ExhibitEntity> selectedAnimalsDb = new ArrayList<>();
-        for (String id : selectedAnimals) {
-            ExhibitEntity dbItem = new ExhibitEntity(searchDataBase.node.get(id));
-            selectedAnimalsDb.add(dbItem);
-        }
-        return selectedAnimalsDb;
-    }
+//    public List<ExhibitEntity> convertSetToList(Set<String> selectedAnimals) {
+//        List<ExhibitEntity> selectedAnimalsDb = new ArrayList<>();
+//        for (String id : selectedAnimals) {
+//            ExhibitEntity dbItem = new ExhibitEntity(searchDataBase.node.get(id));
+//            selectedAnimalsDb.add(dbItem);
+//        }
+//        return selectedAnimalsDb;
+//    }
 
     @VisibleForTesting
     public void setUserSelection(String str, Set<String> userSelection){
@@ -141,13 +161,19 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
     // set if it's not a duplicate selection.
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Fetch the user selected animal
-        String animal = searchDataBase.nameToId.get(parent.getItemAtPosition(position).toString());
+        String animalID = searchDataBase.nameToId.get(parent.getItemAtPosition(position).toString());
+        String groupID = searchDataBase.nameToGroupId.get(parent.getItemAtPosition(position).toString());
 
         // append to List of selected Animals or show an alert if it has already been selected
         int prevAnimalCount = selectedAnimals.size();
-        selectedAnimals.add(animal);
+        selectedAnimals.add(groupID);
         if (prevAnimalCount == selectedAnimals.size()) {
             Alerts.showAlert(this, "You have already selected this animal.");
+        }
+        else {
+            ExhibitEntity dbItem = new ExhibitEntity(searchDataBase.node.get(animalID));
+            selectedAnimalsDb.add(dbItem);
+            adapter.notifyDataSetChanged();
         }
         Log.d("exhibits: ", selectedAnimals.toString());
 

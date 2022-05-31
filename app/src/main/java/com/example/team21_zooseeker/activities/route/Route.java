@@ -12,10 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.ToggleButton;
 
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.directions.DirectionItem;
@@ -94,7 +91,7 @@ public class Route extends AppCompatActivity {
         RouteAdapter adapter = new RouteAdapter();
         adapter.setHasStableIds(true);
 
-        recyclerView = findViewById(R.id.exhibit_text);
+        recyclerView = findViewById(R.id.selected_items);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
