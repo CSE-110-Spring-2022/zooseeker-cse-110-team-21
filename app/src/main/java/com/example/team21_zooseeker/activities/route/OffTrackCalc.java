@@ -14,6 +14,7 @@ import com.example.team21_zooseeker.helpers.ZooData;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class OffTrackCalc {
@@ -22,9 +23,39 @@ public class OffTrackCalc {
     public static double currLat = 0;
     public static double currLong = 0;
 
-    public static Pair <String,Double> calculateRoute(double currLat, double currLng, Map<String, ZooData.VertexInfo> vInfo) {
+//    public static Pair <String,Double> distanceToNextExhibit(Map<String, ZooData.VertexInfo> vInfo, String exhibit) {
+//
+//        Pair<Double, Double> currLoc = new Pair<>(currLat, currLong);
+//
+//        Pair<Double, Double> vLoc = new Pair<>(Double.parseDouble(vInfo.get(exhibit).lat), Double.parseDouble(vInfo.get(exhibit).lng));
+//        double currDist = distance(currLoc, vLoc);
+//
+//
+//        return new Pair<String,Double>(exhibit, currDist);
+//    }
+//
+//    public static Pair <String,Double> calculateNextClosestExhibit(Map<String, ZooData.VertexInfo> vInfo, ArrayList<String> exhibits) {
+//
+//        Pair<Double, Double> currLoc = new Pair<>(currLat, currLong);
+//
+//        double minDist = Double.MAX_VALUE;
+//        String minVertex = "";
+//
+//        for (String v : exhibits) {
+//            Pair<Double, Double> vLoc = new Pair<>(Double.parseDouble(vInfo.get(v).lat), Double.parseDouble(vInfo.get(v).lng));
+//            double currDist = distance(currLoc, vLoc);
+//            if (currDist < minDist) {
+//                minDist = currDist;
+//                minVertex = v;
+//            }
+//        }
+//
+//        return new Pair<String,Double>(minVertex,minDist);
+//    }
 
-        Pair<Double, Double> currLoc = new Pair<>(currLat, currLng);
+    public static Pair <String,Double> nextClosestVertex(Map<String, ZooData.VertexInfo> vInfo) {
+
+        Pair<Double, Double> currLoc = new Pair<>(currLat, currLong);
 
         double minDist = Double.MAX_VALUE;
         String minVertex = "";
@@ -58,7 +89,7 @@ public class OffTrackCalc {
             var locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
-                    Log.d("LocationChanged", String.format("Location changed: %s", location));
+                    //Log.d("LocationChanged", String.format("Location changed: %s", location));
 
                     var marker = new MarkerOptions()
                             .position(new LatLng(

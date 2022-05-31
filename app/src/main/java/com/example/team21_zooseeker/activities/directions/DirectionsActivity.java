@@ -42,7 +42,8 @@ import java.util.concurrent.Future;
 public class DirectionsActivity extends AppCompatActivity {
     private final ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
     private Future<Void> future;
-    private boolean askForOff = true;
+    private boolean annoyUser;
+
 
     ViewPager2 viewPager;
     Button nextBtn, prevBtn;
@@ -58,8 +59,6 @@ public class DirectionsActivity extends AppCompatActivity {
     //ArrayList<String> userVisited;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +71,8 @@ public class DirectionsActivity extends AppCompatActivity {
             sf = new StringFormat(this);
             exhibits = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
             userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
+            annoyUser = true;
+
         }
 
         // get views
@@ -131,33 +132,15 @@ public class DirectionsActivity extends AppCompatActivity {
                         locationUpdate(this);
                     });
 
-                    Thread.sleep(5000);
-                    // finds next closest exhibit
-                    Pair<String, Double> vd = OffTrackCalc.calculateNextClosestExhibit(sf.vInfo, exhibits);
+                    Thread.sleep(2000);
 
-                    // distance of next exhibit
-                    Pair<String, Double> curr = OffTrackCalc.
-                            distanceToNextExhibit(sf.vInfo,briefDirections.get(viewPager.getCurrentItem()).getId());
+                    Pair<String, Double> n = OffTrackCalc.nextClosestVertex(sf.vInfo);
 
-                    // change to determine how far one has to be from the next exhibit to
-                    // prompt user.
-                    // Always greater than 1, or next exhibit will be considered closer even
-                    // if its not.
-                    double diff_modifier = 1.00;
-                    if (vd.second * diff_modifier < curr.second) {
-                        if (askForOff) {
-                            askForOff = false;
-                            runOnUiThread(() -> {
-                                Log.d("off-track", vd.first + " " + vd.second +
-                                        ", " + curr.first + " " + curr.second);
-                                promptOffTrack();
+                    runOnUiThread(() -> {
+                        Log.d("Curr Loc", n.first);
+                                loc.setId(n.first);
                             });
-                        }
-                    } else {
-                        runOnUiThread(() -> {
-                            Log.d("not-track", vd.first + " " + vd.second +
-                                    ", " + curr.first + " " + curr.second);                        });
-                    }
+
                 } while (true);
 
             });
@@ -166,11 +149,12 @@ public class DirectionsActivity extends AppCompatActivity {
     }
 
     public void onNextBtnClicked(View view) {
-        removeExhibit();
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex + 1, true);
         setBtnFeatures(currentIndex + 1);
 
+
+        annoyUser = true;
 
     }
 
@@ -178,20 +162,17 @@ public class DirectionsActivity extends AppCompatActivity {
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex - 1, true);
         setBtnFeatures(currentIndex - 1);
-        addExhibit();
-
+        annoyUser = true;
     }
 
     /**
      * onUpdate
      *
      * Called whenever userLocation is set in class userLocation
-     * First, determines whether or not the closest exhibit is still
-     * the current exhibit
      *
-     * If it is, updates the directions on the card
-     *
-     * If a different exhibit is closer, delegate to Off-Track Suggestions
+     * First, updates current views
+     * Then, it determines if the userLocation is closest to the current location
+     * If not, a check to prompt Off-Track is called
      * @param id Vertex ID of the user's new location
      */
     public void onUpdate(String id){
@@ -200,6 +181,7 @@ public class DirectionsActivity extends AppCompatActivity {
         int ind = viewPager.getCurrentItem();
         ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
 
+        //loop to get key from exhibit name
         String goal = "";
         for(String key : sf.vInfo.keySet()){
             if(sf.vInfo.get(key).getName().equals(curr_list.get(ind).getName())){
@@ -236,11 +218,25 @@ public class DirectionsActivity extends AppCompatActivity {
         directionsAdapter.notifyDataSetChanged();
 
         GraphPath<String, IdentifiedWeightedEdge> closePath = rc.findNextClosestExhibit(id, userSel);
-        if(!closePath.getEndVertex().equals(sf.vInfo.get(curr_list.get(ind).getName()))){
+        if(!closePath.getEndVertex().equals((curr_list.get(ind).getId())) && annoyUser){
             promptOffTrack();
         }
     }
 
+    /**
+     * offTrack
+     *
+     * Called when "skip" is pressed, or when
+     * "yes" is selected in the Off-track prompt
+     *
+     * Partitions the userSelection set into previous items,
+     * and next items. It preserves previous item order and recalculates
+     * for the next items.
+     *
+     * Note: calls to calculateRoute change the list
+     * that is passed in, so copies of the lists must be passed to maintain
+     * functionality.
+     */
     public void offTrack(){
         ArrayList<DirectionItem> briefDir = new ArrayList<DirectionItem>();
         ArrayList<DirectionItem> detailedDir = new ArrayList<DirectionItem>();
@@ -249,11 +245,14 @@ public class DirectionsActivity extends AppCompatActivity {
         ArrayList<String> userVisited = new ArrayList<String>();
         int ind = viewPager.getCurrentItem();
         for(int i = 0; i < ind; i++){
+
+            //loop to get keys from names
             String goal = "";
             for(String key : sf.vInfo.keySet()){
                 if(sf.vInfo.get(key).getName().equals(curr_list.get(i).getName())){
                     goal = key;
                     Log.d("GOAL: ", goal);
+
                 }
             }
             userVisited.add(goal);
@@ -294,13 +293,21 @@ public class DirectionsActivity extends AppCompatActivity {
             detailedDir.addAll(currDirsDetailed);
         }
         else{
-            String goal = "";
-            for(String key : sf.vInfo.keySet()){
-                if(sf.vInfo.get(key).getName().equals(briefDir.get(briefDir.size()-1).getName())){
-                    goal = key;
+
+            String current = "";
+            if(briefDir.size() > 0) {
+                //loop to get key from names
+                String goal = "";
+                for (String key : sf.vInfo.keySet()) {
+                    if (sf.vInfo.get(key).getName().equals(briefDir.get(briefDir.size() - 1).getName())) {
+                        goal = key;
+                    }
                 }
+                current = sf.vInfo.get(goal).id;
             }
-            String current = sf.vInfo.get(goal).id;
+            else{
+                current = this.getString(R.string.ENTRANCE_EXIT);
+            }
             ArrayList<GraphPath<String, IdentifiedWeightedEdge>> lastItem = new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
             lastItem.add(DijkstraShortestPath.findPathBetween(rc.g, current, this.getString(R.string.ENTRANCE_EXIT)));
 
@@ -326,9 +333,10 @@ public class DirectionsActivity extends AppCompatActivity {
     /*
     * Code for AlertDialog adapted from:
     *  https://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
+    *
+    * Logic for prompting the user when Off-Track
     */
     public void promptOffTrack(){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Off Track!");
@@ -338,7 +346,6 @@ public class DirectionsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 offTrack();
-                askForOff = true;
 
             }
         });
@@ -346,9 +353,8 @@ public class DirectionsActivity extends AppCompatActivity {
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
                 dialogInterface.dismiss();
-
+                annoyUser = false;
             }
         });
 
@@ -380,11 +386,25 @@ public class DirectionsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * onSkipBtnClicked
+     *
+     * Called whenever 'skip' button is clicked
+     *
+     * If there is more than one item in the userSelection,
+     * and the user is not on the last page:
+     * -removes exhibit from the userSelection list
+     * -calls offTrack() to recalculate the route
+     *
+     * @param view
+     */
     public void onSkipBtnClicked(View view){
+
+        annoyUser = true;
         ArrayList<DirectionItem> curr_list = directionsAdapter.getDirectionsList();
         int ind = viewPager.getCurrentItem();
-        removeExhibit();
 
+        //loop to get key from name
         String goal = "";
         for(String key : sf.vInfo.keySet()){
             if(sf.vInfo.get(key).getName().equals(curr_list.get(ind).getName())){
@@ -392,9 +412,8 @@ public class DirectionsActivity extends AppCompatActivity {
             }
         }
 
-        userSel.remove(goal);
-
-        if(userSel.size() > 0 && (ind != curr_list.size()-1)) {
+        if(userSel.size() > 1 && (ind != curr_list.size()-1)) {
+            userSel.remove(goal);
             offTrack();
         }
     }
@@ -402,16 +421,6 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onBackBtnClicked(View view) {
         this.future.cancel(true);
         finish();
-    }
-
-    private void removeExhibit() {
-        String id = briefDirections.get(viewPager.getCurrentItem()).getId();
-        exhibits.remove(id);
-    }
-
-    private void addExhibit() {
-        String id = briefDirections.get(viewPager.getCurrentItem()).getId();
-        exhibits.add(id);
     }
 
 }

@@ -46,6 +46,7 @@ public class StringFormat {
             int size = vertices.size();
             String str = "";
             String name = "";
+            String id = "";
             IdentifiedWeightedEdge previous = null;
             double totalWeight = 0;
             boolean condensed = true;
@@ -94,19 +95,20 @@ public class StringFormat {
                 }
 
                 //have to add ending string since we needed to look ahead
-                if(!verbose && (i == size-2)){
+                if (!verbose && (i == size-2)) {
                     dirs = String.format("%d. Proceed on %s %d ft to %s.",
                             count,
                             eInfo.get(previous.getId()).street,
                             (int) totalWeight,
                             vInfo.get(vertices.get(i+1)).name);
                 }
+
                 str += dirs;
                 name = vInfo.get(vertices.get(i+1)).name;
-
+                id = vInfo.get(vertices.get(i+1)).id;
             }
             directionsStr.add(str);
-            directions.add(new DirectionItem(name, str));
+            directions.add(new DirectionItem(name, str, id));
         }
 
         return directions;

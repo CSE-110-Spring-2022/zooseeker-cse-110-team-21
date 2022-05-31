@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RouteCalc {
-    private Graph<String, IdentifiedWeightedEdge> g;
+    public Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private Context context;
@@ -95,7 +95,7 @@ public class RouteCalc {
      * @param start Node to start at
      * @param goal Node to get to
      */
-    GraphPath<String, IdentifiedWeightedEdge> singleShortestPath(String start, String goal){
+    public GraphPath<String, IdentifiedWeightedEdge> singleShortestPath(String start, String goal){
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
         return path;
     }
