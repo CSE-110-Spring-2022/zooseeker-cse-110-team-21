@@ -44,9 +44,9 @@ public class StringFormat {
             int count = 1;
             List<String> vertices = path.getVertexList();
             int size = vertices.size();
-            String str = "";
-            String name = "";
-            String id = "";
+            String str = "You are here!";
+            String  name = vInfo.get(vertices.get(0)).name;
+            String id = vInfo.get(vertices.get(0)).id;
             IdentifiedWeightedEdge previous = null;
             double totalWeight = 0;
             boolean condensed = true;
