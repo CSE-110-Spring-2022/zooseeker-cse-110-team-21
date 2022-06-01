@@ -39,14 +39,27 @@ public class StringFormat {
     public List<DirectionItem> getDirections(List<GraphPath<String, IdentifiedWeightedEdge>> route, boolean verbose){
         List<DirectionItem> directions = new ArrayList<DirectionItem>();
         List<String> directionsStr = new ArrayList<String>();
+        int singleElement = 1;
 
         for(GraphPath<String, IdentifiedWeightedEdge> path : route) {
             int count = 1;
             List<String> vertices = path.getVertexList();
             int size = vertices.size();
-            String str = "You are here!";
-            String  name = vInfo.get(vertices.get(0)).name;
-            String id = vInfo.get(vertices.get(0)).id;
+
+            String str = "";
+            String name = "";
+            String id = "";
+
+            if (size == singleElement) {
+                 str = "You are here!";
+                 name = vInfo.get(vertices.get(0)).name;
+                 id = vInfo.get(vertices.get(0)).id;
+                 directionsStr.add(str);
+                 directions.add(new DirectionItem(name, str, id));
+                 continue;
+            }
+
+
             IdentifiedWeightedEdge previous = null;
             double totalWeight = 0;
             boolean condensed = true;

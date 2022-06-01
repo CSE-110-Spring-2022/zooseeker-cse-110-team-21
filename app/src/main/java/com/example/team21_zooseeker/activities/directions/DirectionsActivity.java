@@ -25,8 +25,12 @@ import com.example.team21_zooseeker.activities.route.IdentifiedWeightedEdge;
 import com.example.team21_zooseeker.activities.route.OffTrackCalc;
 import com.example.team21_zooseeker.activities.route.RouteCalc;
 import com.example.team21_zooseeker.activities.route.userLocation;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.helpers.StringFormat;
+import com.example.team21_zooseeker.helpers.ViewModel;
 import com.example.team21_zooseeker.helpers.ZooData;
 
 import org.jgrapht.GraphPath;
@@ -38,15 +42,15 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 
 public class DirectionsActivity extends AppCompatActivity {
     private final ExecutorService backgroundThreadExecutor = Executors.newSingleThreadExecutor();
     private Future<Void> future;
     private boolean annoyUser;
-
-
-    ViewPager2 viewPager;
+    @VisibleForTesting
+    public ViewPager2 viewPager;
     Button nextBtn, prevBtn;
     ToggleButton toggleDesc;
     ArrayList<DirectionItem> detailedDirections = new ArrayList<DirectionItem>();
@@ -55,9 +59,10 @@ public class DirectionsActivity extends AppCompatActivity {
     userLocation loc;
     RouteCalc rc;
     StringFormat sf;
+    private List<ExhibitEntity> exhibitEntities;
+    private ExhibitDao dao;
     ArrayList<String> exhibits;
     ArrayList<String> userSel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,16 @@ public class DirectionsActivity extends AppCompatActivity {
             userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
             annoyUser = true;
         }
+
+        // View Model
+        {
+            dao = ExhibitDatabase.getSingleton(this).exhibitDao();
+            exhibitEntities = dao.getAll();
+        }
+
+        userSel = new ArrayList<>(exhibitEntities.stream()
+                .map(v -> v.group_id == null ? v.id : v.group_id)
+                .collect(Collectors.toSet()));
 
         // get views
         {
@@ -91,7 +106,6 @@ public class DirectionsActivity extends AppCompatActivity {
         viewPager.setAdapter(directionsAdapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setUserInputEnabled(false);
-
 
         //Toggle event
         {
@@ -145,6 +159,26 @@ public class DirectionsActivity extends AppCompatActivity {
             });
 
         }
+        int loadIndex = SharedPrefs.loadInt(this, "directions_index");
+        Log.d("loadIndex Directions", String.valueOf(loadIndex));
+        if (loadIndex > -1) {
+            viewPager.setCurrentItem(loadIndex, true);
+        }
+        else {
+            // set previous btn to be invisible initially
+            prevBtn.setVisibility(View.INVISIBLE);
+            if (briefDirections.size() == 1)
+                nextBtn.setVisibility(View.INVISIBLE);
+            else
+                nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+        }
+    }
+
+    protected void onStop() {
+        super.onStop();
+        int currentIndex = viewPager.getCurrentItem();
+        SharedPrefs.saveInt(this, currentIndex, "directions_index");
+        Log.d("saving into loadIndex", String.valueOf(currentIndex));
     }
 
     public void onNextBtnClicked(View view) {
@@ -154,6 +188,8 @@ public class DirectionsActivity extends AppCompatActivity {
 
         annoyUser = false;
         onUpdate(loc.loc_id);
+
+
         annoyUser = true;
 
     }
@@ -219,9 +255,29 @@ public class DirectionsActivity extends AppCompatActivity {
         }
 
         directionsAdapter.notifyDataSetChanged();
+        ArrayList<String> userVisited = new ArrayList<String>();
+        ind = viewPager.getCurrentItem();
+        for(int i = 0; i < ind; i++){
 
-        GraphPath<String, IdentifiedWeightedEdge> closePath = rc.findNextClosestExhibit(id, userSel);
-        if(!closePath.getEndVertex().equals((curr_list.get(ind).getId())) && annoyUser){
+            //loop to get keys from names
+            goal = "";
+            for(String key : sf.vInfo.keySet()){
+                if(sf.vInfo.get(key).getName().equals(curr_list.get(i).getName())){
+                    goal = key;
+                    Log.d("GOAL: ", goal);
+                }
+            }
+            userVisited.add(goal);
+        }
+        ArrayList<String> userSelCopy = new ArrayList<>(userSel);
+
+        userSelCopy.removeAll(userVisited);
+
+        GraphPath<String, IdentifiedWeightedEdge> closePath =
+                rc.findNextClosestExhibit(id, userSelCopy);
+
+        if((!(closePath == null) &&
+                !closePath.getEndVertex().equals((curr_list.get(ind).getId())) ) && annoyUser){
             promptOffTrack();
         }
     }
@@ -432,12 +488,15 @@ public class DirectionsActivity extends AppCompatActivity {
 
         if(userSel.size() > 1 && (ind != curr_list.size()-1)) {
             userSel.remove(goal);
+            if (dao.get(goal) == null)
+                dao.deleteAllByGroupId(goal);
+            else
+                dao.deleteById(goal);
             offTrack();
         }
     }
 
     public void onBackBtnClicked(View view) {
-        this.future.cancel(true);
         finish();
     }
 

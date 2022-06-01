@@ -63,7 +63,7 @@ public class RouteTest {
 
         routeScenario.onActivity(routeActivity -> {
 
-            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
             assertEquals("Flamingos, 5300ft", holder.getExhibitDist());
 
@@ -99,10 +99,40 @@ public class RouteTest {
 
         routeScenario.onActivity(routeActivity -> {
 
-            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
+            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
             assertEquals("Parker Aviary, 7400ft", holder.getExhibitDist());
         });
     }
+
+
+    @Test
+    public void testAllNearByExhibit(){
+        ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
+
+        mainScenario.moveToState(Lifecycle.State.CREATED);
+
+        mainScenario.onActivity(activity -> {
+            Set<String> fullZoo = new HashSet<String>();
+            fullZoo.add("gorillas");
+            fullZoo.add("arctic_foxes");
+            fullZoo.add("gators");
+            activity.setUserSelection("set", fullZoo);
+
+        });
+
+        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
+        routeScenario.moveToState(Lifecycle.State.CREATED);
+
+        routeScenario.onActivity(routeActivity -> {
+
+            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
+            RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
+
+            assertEquals("Alligators, 110ft", holder.getExhibitDist());
+        });
+    }
+
+
 }

@@ -101,7 +101,7 @@ public class OffTrackTest {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity( activity -> {
-            activity.setUserSelection("set", exhibits_noGroup);
+            activity.setUserSelection("user_selection", exhibits_noGroup);
         });
 
         // needed for DirectionActivity to not have a bunch of null fields
@@ -118,6 +118,7 @@ public class OffTrackTest {
             // Sets location to Capuchin Monkeys,
             // we should be prompted to go to Crocodiles instead.
             directionsActivity.setLocManually("capuchin");
+            directionsActivity.viewPager.setCurrentItem(0, true);
             directionsActivity.offTrack();
 
             // Should've changed Orangutans to Crocodiles
