@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder>{
     public void setDirections(List<String> directions){
         this.directions.clear();
         this.directions = directions;
-        //notifyDataSetChanged();
+        // notifyDataSetChanged();
     }
 
     @NonNull

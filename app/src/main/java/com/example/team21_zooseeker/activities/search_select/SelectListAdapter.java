@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.ViewHolder> {
     private List<ExhibitEntity> selectedAnimalsDb = Collections.emptyList();
     private Consumer<ExhibitEntity> onDeleteClicked;
-    private TextView counterDisplay;
 
     public void setExhibitItems(List<ExhibitEntity> newItems) {
         this.selectedAnimalsDb.clear();
@@ -28,9 +27,8 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public void setOnDeleteClicked(Consumer<ExhibitEntity> onDeleteClicked, TextView counterDisplay) {
+    public void setOnDeleteClicked(Consumer<ExhibitEntity> onDeleteClicked) {
         this.onDeleteClicked = onDeleteClicked;
-        this.counterDisplay =  counterDisplay;
     }
 
     @NonNull
@@ -69,7 +67,6 @@ public class SelectListAdapter extends RecyclerView.Adapter<SelectListAdapter.Vi
             this.deleteView.setOnClickListener(view -> {
                 if (onDeleteClicked == null) return;
                 onDeleteClicked.accept(exhibitItem);
-                counterDisplay.setText(String.valueOf(getItemCount() - 1));
             });
         }
 

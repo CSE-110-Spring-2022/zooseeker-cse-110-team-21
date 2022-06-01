@@ -50,6 +50,9 @@ public class Route extends AppCompatActivity {
     public SharedPreferences.Editor editor;
     public Intent intent;
 
+    private RouteAdapter adapter;
+    private ExhibitDao dao;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +63,27 @@ public class Route extends AppCompatActivity {
         routeCalc = new RouteCalc(this);
         sf = new StringFormat(this);
 
-        preferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
-        editor = preferences.edit();
-
         // View Model
         {
-            ExhibitDao dao = ExhibitDatabase.getSingleton(this).exhibitDao();
+            dao = ExhibitDatabase.getSingleton(this).exhibitDao();
             exhibitEntities = dao.getAll();
         }
+        calculateRoute();
 
+        int loadIndex = SharedPrefs.loadInt(this, "directions_index");
+        Log.d("loadIndex Route", String.valueOf(loadIndex));
+        if (loadIndex > -1) {
+            startActivity(intent);
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        exhibitEntities = dao.getAll();
+        calculateRoute();
+    }
+
+    public void calculateRoute() {
         Set<String> userSelectionSet = exhibitEntities.stream()
                 .map(v -> v.group_id == null ? v.id : v.group_id)
                 .collect(Collectors.toSet());
@@ -82,8 +97,6 @@ public class Route extends AppCompatActivity {
             }
         }
 
-      SharedPrefs.saveStrList(this, userSelection, this.getString(R.string.USER_SELECT));
-
         // start (and, by proxy, end) of each route
         String start = this.getString(R.string.ENTRANCE_EXIT);
 
@@ -91,20 +104,18 @@ public class Route extends AppCompatActivity {
         List<GraphPath<String, IdentifiedWeightedEdge>> route = routeCalc.calculateRoute(start, userSelection);
         List<String> initialList = sf.initialDirections(route);
 
-
-
         detailedDirections = sf.getDirections(route, true);
 
         briefDirections = sf.getDirections(route, false);
         //detailedDirections = sf.getDirections(route, true);
 
-       // sf.printDebugInfo(route);
+        // sf.printDebugInfo(route);
 
         SharedPrefs.saveList(this, new ArrayList<DirectionItem>(briefDirections), "directions");
         SharedPrefs.saveList(this, new ArrayList<DirectionItem>(detailedDirections) , "detailed_dirs");
 
         //So that we can focus on the screen display!
-        RouteAdapter adapter = new RouteAdapter();
+        adapter = new RouteAdapter();
         adapter.setHasStableIds(true);
 
         recyclerView = findViewById(R.id.selected_items);
@@ -113,6 +124,12 @@ public class Route extends AppCompatActivity {
 
         //call to subList makes it so the exit gate isn't shown in the overview
         adapter.setDirections(initialList.subList(0, initialList.size() - 1));
+    }
+
+    protected void onStop() {
+        super.onStop();
+        SharedPrefs.saveInt(this, -1, "directions_index");
+        Log.d("onStop Route:", "called");
     }
 
     public void onBeginDirectionsClicked(View view) {

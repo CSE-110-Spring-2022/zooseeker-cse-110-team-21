@@ -23,6 +23,9 @@ public interface ExhibitDao {
     @Query("SELECT * FROM `exhibit_items`")
     List<ExhibitEntity> getAll();
 
+    @Query("SELECT * FROM `exhibit_items` where `group_id`=:group_id")
+    List<ExhibitEntity> getAllByGroupId(String group_id);
+
     @Query("SELECT * FROM `exhibit_items`")
     LiveData<List<ExhibitEntity>> getAllLive();
 
@@ -40,4 +43,10 @@ public interface ExhibitDao {
 
     @Query("DELETE FROM `exhibit_items`")
     void deleteAll();
+
+    @Query("DELETE FROM `exhibit_items` WHERE `group_id`=:group_id")
+    void deleteAllByGroupId(String group_id);
+
+    @Query("DELETE FROM `exhibit_items` WHERE `id`=:id")
+    void deleteById(String id);
 }

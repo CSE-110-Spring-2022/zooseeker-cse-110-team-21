@@ -87,12 +87,13 @@
 
     <Button
         android:id="@+id/skip_btn"
-        android:layout_width="90dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="165dp"
-        android:layout_marginBottom="16dp"
-        android:text="SKIP"
+        android:layout_width="74dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="168dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#66BBFF"
         android:onClick="onSkipBtnClicked"
+        android:text="SKIP"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

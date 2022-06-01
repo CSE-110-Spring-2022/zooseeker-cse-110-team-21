@@ -1,21 +1,26 @@
 package com.example.team21_zooseeker.activities.search_select;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team21_zooseeker.R;
+import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
+import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.helpers.ViewModel;
 
 import java.util.ArrayList;
@@ -26,7 +31,7 @@ import java.util.Set;
 public class SearchSelectActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     public SearchDataBase searchDataBase;
     private AutoCompleteTextView search_bar;
-    private TextView counterDisplay;
+     TextView counterDisplay;
     public Set<String> selectedAnimals;
 
     private SearchBuilder builder;
@@ -60,10 +65,11 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         {
             viewModel = new ViewModelProvider(this)
                     .get(ViewModel.class);
+            viewModel.setCounterDisplay(this.counterDisplay);
 
             adapter = new SelectListAdapter();
             adapter.setHasStableIds(true);
-            adapter.setOnDeleteClicked(viewModel::deleteCompleted, counterDisplay);
+            adapter.setOnDeleteClicked(viewModel::deleteCompleted);
 
             viewModel.getExhibitEntities().observe(this, adapter::setExhibitItems);
             this.counterDisplay.setText(viewModel.getCount());
@@ -106,6 +112,23 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         // When user clicks on search result item, this will trigger onItemClick function that will
         // populate the selectedAnimals set accordingly.
         search_bar.setOnItemClickListener(this);
+
+        int loadIndex = SharedPrefs.loadInt(this, "directions_index");
+        Log.d("loadIndex SearchSelect", String.valueOf(loadIndex));
+        if (loadIndex > -1) {
+            startActivity(new Intent(this, Route.class));
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        this.counterDisplay.setText(viewModel.getCount());
+    }
+
+    protected void onStop() {
+        super.onStop();
+        SharedPrefs.saveInt(this, -1, "directions_index");
+        Log.d("onStop Search Select:", "called");
     }
 
     public void onPlanButtonClicked(View view) {
@@ -117,12 +140,14 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         startActivity(intent);
     }
 
-//    @VisibleForTesting
-//    public void setUserSelection(String str, Set<String> userSelection){
-//        editor.clear().apply();
-//        editor.putStringSet(str, userSelection);
-//        editor.apply();
-//    }
+    @VisibleForTesting
+    public void setUserSelection(String str, Set<String> userSelection){
+        SharedPreferences prefs = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear().apply();
+        editor.putStringSet(str, userSelection);
+        editor.apply();
+    }
 
     // Source: https://www.youtube.com/watch?v=0bLwXw5aFOs
     // gets speech from user and places the words into search_Bar
@@ -162,8 +187,8 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
 
         // Log.d("exhibits: ", selectedAnimals.toString());
 
-        // Update counter
-        this.counterDisplay.setText(viewModel.getCount());
+//        // Update counter
+//        this.counterDisplay.setText(viewModel.getCount());
         // Clear search bar
         this.search_bar.setText("");
     }

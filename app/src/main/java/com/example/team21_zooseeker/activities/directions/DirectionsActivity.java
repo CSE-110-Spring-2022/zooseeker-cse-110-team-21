@@ -28,6 +28,7 @@ import com.example.team21_zooseeker.helpers.ExhibitDatabase;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.helpers.StringFormat;
+import com.example.team21_zooseeker.helpers.ViewModel;
 import com.example.team21_zooseeker.helpers.ZooData;
 
 import org.jgrapht.GraphPath;
@@ -53,6 +54,7 @@ public class DirectionsActivity extends AppCompatActivity {
     RouteCalc rc;
     StringFormat sf;
     private List<ExhibitEntity> exhibitEntities;
+    private ExhibitDao dao;
     ArrayList<String> exhibits;
     Map<String,ZooData.VertexInfo> vInfo;
 
@@ -60,7 +62,6 @@ public class DirectionsActivity extends AppCompatActivity {
     //ArrayList<String> userVisited;
 
     boolean annoyUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +73,9 @@ public class DirectionsActivity extends AppCompatActivity {
         sf = new StringFormat(this);
         annoyUser = true;
 
-
-
         // View Model
         {
-            ExhibitDao dao = ExhibitDatabase.getSingleton(this).exhibitDao();
+            dao = ExhibitDatabase.getSingleton(this).exhibitDao();
             exhibitEntities = dao.getAll();
         }
 
@@ -116,13 +115,26 @@ public class DirectionsActivity extends AppCompatActivity {
             }
         });
 
-        // set previous btn to be invisible initially
-        prevBtn.setVisibility(View.INVISIBLE);
-        if (briefDirections.size() == 1)
-            nextBtn.setVisibility(View.INVISIBLE);
-        else
-            nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+        int loadIndex = SharedPrefs.loadInt(this, "directions_index");
+        Log.d("loadIndex Directions", String.valueOf(loadIndex));
+        if (loadIndex > -1) {
+            viewPager.setCurrentItem(loadIndex, true);
+        }
+        else {
+            // set previous btn to be invisible initially
+            prevBtn.setVisibility(View.INVISIBLE);
+            if (briefDirections.size() == 1)
+                nextBtn.setVisibility(View.INVISIBLE);
+            else
+                nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+        }
+    }
 
+    protected void onStop() {
+        super.onStop();
+        int currentIndex = viewPager.getCurrentItem();
+        SharedPrefs.saveInt(this, currentIndex, "directions_index");
+        Log.d("saving into loadIndex", String.valueOf(currentIndex));
     }
 
     public void onNextBtnClicked(View view) {
@@ -392,6 +404,10 @@ public class DirectionsActivity extends AppCompatActivity {
 
         if(userSel.size() > 1 && (ind != curr_list.size()-1)) {
             userSel.remove(goal);
+            if (dao.get(goal) == null)
+                dao.deleteAllByGroupId(goal);
+            else
+                dao.deleteById(goal);
             offTrack();
         }
     }
