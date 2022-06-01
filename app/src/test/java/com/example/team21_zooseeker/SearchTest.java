@@ -71,7 +71,7 @@ public class SearchTest {
             assertNotEquals(test, search.getText().toString());
 
 
-            assertEquals(animals.contains("Arctic Foxes"), true);
+            assertEquals(animals.contains("Gorillas"), true);
 
         });
 
@@ -91,7 +91,7 @@ public class SearchTest {
         scenario.moveToState(Lifecycle.State.CREATED);
         scenario.onActivity(activity -> {
 
-            assertEquals(animals.contains("Arctic Foxes"), true);
+            assertEquals(animals.contains("Gorillas"), true);
 
             assertEquals(animals.contains("Velociraptor"), false);
 

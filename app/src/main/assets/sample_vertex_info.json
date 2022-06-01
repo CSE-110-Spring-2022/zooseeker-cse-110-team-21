@@ -1,0 +1,263 @@
+[
+  {
+    "id": "entrance_exit_gate",
+    "kind": "gate",
+    "name": "Entrance and Exit Gate",
+    "tags": []
+  },
+  {
+    "id": "intxn_front_treetops",
+    "kind": "intersection",
+    "name": "Front Street / Treetops Way",
+    "tags": []
+  },
+  {
+    "id": "intxn_front_monkey",
+    "kind": "intersection",
+    "name": "Front Street / Monkey Trail",
+    "tags": []
+  },
+  {
+    "id": "intxn_front_lagoon_1",
+    "kind": "intersection",
+    "name": "Front Street / Terrace Lagoon Loop (South)",
+    "tags": []
+  },
+  {
+    "id": "intxn_front_lagoon_2",
+    "kind": "intersection",
+    "name": "Front Street / Terrace Lagoon Loop (North)",
+    "tags": []
+  },
+  {
+    "id": "intxn_treetops_fern_trail",
+    "kind": "intersection",
+    "name": "Treetops Way / Fern Canyon Trail",
+    "tags": []
+  },
+  {
+    "id": "intxn_treetops_orangutan_trail",
+    "kind": "intersection",
+    "name": "Treetops Way / Orangutan Trail",
+    "tags": []
+  },
+  {
+    "id": "intxn_treetops_hippo_trail",
+    "kind": "intersection",
+    "name": "Treetops Way / Hippo Trail",
+    "tags": []
+  },
+  {
+    "id": "intxn_hippo_monkey_trails",
+    "kind": "intersection",
+    "name": "Monkey Trail / Hippo Trail",
+    "tags": []
+  },
+  {
+    "id": "koi",
+    "kind": "exhibit",
+    "name": "Koi Fish",
+    "tags": [
+      "koi",
+      "fish",
+      "aquatic",
+      "pond",
+      "goldfish",
+      "japan",
+      "asia"
+    ]
+  },
+  {
+    "id": "flamingo",
+    "kind": "exhibit",
+    "name": "Flamingos",
+    "tags": [
+      "flamingo",
+      "bird",
+      "flamingo",
+      "pink",
+      "lawn decoration",
+      "south",
+      "america"
+    ]
+  },
+  {
+    "id": "capuchin",
+    "kind": "exhibit",
+    "name": "Capuchin Monkeys",
+    "tags": [
+      "tufted",
+      "capuchin",
+      "monkey",
+      "mammal",
+      "primate",
+      "south",
+      "america"
+    ]
+  },
+  {
+    "id": "gorilla",
+    "kind": "exhibit",
+    "name": "Gorillas",
+    "tags": [
+      "gorilla",
+      "primate",
+      "mammal",
+      "great",
+      "ape",
+      "primate",
+      "africa"
+    ]
+  },
+  {
+    "id": "orangutan",
+    "kind": "exhibit",
+    "name": "Orangutans",
+    "tags": [
+      "orangutan",
+      "mammal",
+      "terrestrial",
+      "primate",
+      "ape",
+      "orange",
+      "asia"
+    ]
+  },
+  {
+    "id": "siamang",
+    "kind": "exhibit",
+    "name": "Siamangs",
+    "tags": [
+      "siamang",
+      "mammal",
+      "terrestrial",
+      "primate",
+      "orange",
+      "asia"
+    ]
+  },
+  {
+    "id": "fern_canyon",
+    "kind": "exhibit",
+    "name": "Fern Canyon",
+    "tags": [
+      "plants",
+      "ferns",
+      "green"
+    ]
+  },
+  {
+    "id": "parker_aviary",
+    "kind": "intersection",
+    "name": "Parker Aviary",
+    "tags": []
+  },
+  {
+    "id": "toucan",
+    "kind": "exhibit",
+    "name": "Toucan",
+    "tags": [
+      "bird",
+      "avian",
+      "toucan",
+      "colorful",
+      "orange",
+      "south",
+      "america"
+    ]
+  },
+  {
+    "id": "motmot",
+    "kind": "exhibit",
+    "name": "Blue Capped Motmot",
+    "tags": [
+      "bird",
+      "avian",
+      "blue",
+      "colorful",
+      "central",
+      "america"
+    ]
+  },
+  {
+    "id": "owens_aviary",
+    "kind": "intersection",
+    "name": "Owens Aviary",
+    "tags": []
+  },
+  {
+    "id": "scripps_aviary",
+    "kind": "intersection",
+    "name": "Scripps Aviary",
+    "tags": []
+  },
+  {
+    "id": "spoonbill",
+    "kind": "exhibit",
+    "name": "Spoonbill",
+    "tags": [
+      "spoon",
+      "bill",
+      "bird",
+      "avian",
+      "blue",
+      "beak",
+      "flat"
+    ]
+  },
+  {
+    "id": "hippo",
+    "kind": "exhibit",
+    "name": "Hippos",
+    "tags": [
+      "hippo",
+      "mammal",
+      "africa",
+      "big"
+    ]
+  },
+  {
+    "id": "crocodile",
+    "kind": "exhibit",
+    "name": "Crocodiles",
+    "tags": [
+      "croc",
+      "crocodile",
+      "reptile",
+      "africa",
+      "teeth",
+      "scary"
+    ]
+  },
+  {
+    "id": "mynah",
+    "kind": "exhibit",
+    "name": "Bali Mynah",
+    "tags": [
+      "bali",
+      "mynah",
+      "bird",
+      "endangered",
+      "indonesia"
+    ]
+  },
+  {
+    "id": "dove",
+    "kind": "exhibit",
+    "name": "Emerald Dove",
+    "tags": [
+      "emerald",
+      "dove",
+      "bird",
+      "south",
+      "east",
+      "asia"
+    ]
+  },
+  {
+    "id": "benchley_plaza",
+    "kind": "intersection",
+    "name": "Benchley Plaza",
+    "tags": []
+  }
+]

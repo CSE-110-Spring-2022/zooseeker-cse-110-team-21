@@ -39,13 +39,27 @@ public class StringFormat {
     public List<DirectionItem> getDirections(List<GraphPath<String, IdentifiedWeightedEdge>> route, boolean verbose){
         List<DirectionItem> directions = new ArrayList<DirectionItem>();
         List<String> directionsStr = new ArrayList<String>();
+        int singleElement = 1;
 
         for(GraphPath<String, IdentifiedWeightedEdge> path : route) {
             int count = 1;
             List<String> vertices = path.getVertexList();
             int size = vertices.size();
+
             String str = "";
             String name = "";
+            String id = "";
+
+            if (size == singleElement) {
+                 str = "You are here!";
+                 name = vInfo.get(vertices.get(0)).name;
+                 id = vInfo.get(vertices.get(0)).id;
+                 directionsStr.add(str);
+                 directions.add(new DirectionItem(name, str, id));
+                 continue;
+            }
+
+
             IdentifiedWeightedEdge previous = null;
             double totalWeight = 0;
             boolean condensed = true;
@@ -94,19 +108,20 @@ public class StringFormat {
                 }
 
                 //have to add ending string since we needed to look ahead
-                if(!verbose && (i == size-2)){
+                if (!verbose && (i == size-2)) {
                     dirs = String.format("%d. Proceed on %s %d ft to %s.",
                             count,
                             eInfo.get(previous.getId()).street,
                             (int) totalWeight,
                             vInfo.get(vertices.get(i+1)).name);
                 }
+
                 str += dirs;
                 name = vInfo.get(vertices.get(i+1)).name;
-
+                id = vInfo.get(vertices.get(i+1)).id;
             }
             directionsStr.add(str);
-            directions.add(new DirectionItem(name, str));
+            directions.add(new DirectionItem(name, str, id));
         }
 
         return directions;

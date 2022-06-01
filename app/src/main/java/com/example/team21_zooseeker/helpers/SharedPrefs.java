@@ -1,5 +1,7 @@
 package com.example.team21_zooseeker.helpers;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -31,6 +33,14 @@ public class SharedPrefs {
         editor.apply();
     }
 
+    public static void saveInt(Context context, int index, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(key, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.putInt(key, index);
+        editor.apply();
+    }
+
     public static ArrayList<DirectionItem> loadList(Context context, String key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
@@ -47,4 +57,9 @@ public class SharedPrefs {
         return gson.fromJson(json, type);
     }
 
+    public static int loadInt(Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(key, MODE_PRIVATE);
+        int index = prefs.getInt(key, -1);
+        return index;
+    }
 }

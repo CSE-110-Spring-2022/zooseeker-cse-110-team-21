@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -12,66 +11,86 @@ import android.widget.TextView;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.team21_zooseeker.R;
-import com.example.team21_zooseeker.helpers.StringFilterArrayAdapter;
+import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
-import com.example.team21_zooseeker.helpers.ZooData;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
+import com.example.team21_zooseeker.helpers.SharedPrefs;
+import com.example.team21_zooseeker.helpers.ViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 public class SearchSelectActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    public SearchDataBase searchDataBase;
     private AutoCompleteTextView search_bar;
-    private TextView counterDisplay;
+     TextView counterDisplay;
+    public Set<String> selectedAnimals;
 
-    public Set<String> selectedAnimals = new HashSet<String>();
-    private Map<String, ZooData.VertexInfo> node;
-    private Map<String, String> nameToId;
-    private ArrayList<Pair<String, String>> name_tags;
+    private SearchBuilder builder;
 
+//    public SharedPreferences prefs;
+//    public SharedPreferences.Editor editor;
 
-    public SharedPreferences prefs;
-    public SharedPreferences.Editor editor;
+    public RecyclerView recyclerView;
+    private SelectListAdapter adapter;
+
+    private ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        selectedAnimals = new HashSet<>();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_select);
 
-        prefs = getSharedPreferences("shared_prefs", MODE_PRIVATE);
-        editor = prefs.edit();
+        // Setup
+        {
+//            prefs = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+//            editor = prefs.edit();
 
-        // get objects
-        search_bar = findViewById(R.id.search_bar);
-        counterDisplay = findViewById(R.id.exhibit_counter);
-        node = ZooData.loadVertexInfoJSON(this,"sample_node_info.json");
-
-        // Hashmap is to hold in an animal's name and ID.
-        nameToId = new HashMap<String, String>();
-
-        // Creates pairs of an animal's name and their respective tags
-        name_tags = new ArrayList<Pair<String, String>>();
-
-        // loops through each item in the the json file proved
-        for (String str : node.keySet()){
-
-            // checks if the current node is an animal
-            if (node.get(str).kind.equals(ZooData.VertexInfo.Kind.EXHIBIT)){
-
-                // places a pair of an animal and its tags into name_tags
-                Pair<String, String> temp_animal = new Pair<>(node.get(str).name, node.get(str).getTag());
-                name_tags.add(temp_animal);
-
-            }
-            nameToId.put(node.get(str).name, str);
+            search_bar = findViewById(R.id.search_bar);
+            counterDisplay = findViewById(R.id.exhibit_counter);
+            searchDataBase = new SearchDataBase();
         }
 
+        // Recycle View for displaying selected exhibits
+        {
+            viewModel = new ViewModelProvider(this)
+                    .get(ViewModel.class);
+            viewModel.setCounterDisplay(this.counterDisplay);
+
+            adapter = new SelectListAdapter();
+            adapter.setHasStableIds(true);
+            adapter.setOnDeleteClicked(viewModel::deleteCompleted);
+
+            viewModel.getExhibitEntities().observe(this, adapter::setExhibitItems);
+            this.counterDisplay.setText(viewModel.getCount());
+
+            recyclerView = findViewById(R.id.selected_items);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+        }
+
+        // Build Search Database
+        {
+            builder = new SearchBuilder(this);
+            builder.buildNodeList();
+            builder.buildNameAndGroupId();
+            builder.buildNameAndId();
+            builder.buildNameTags();
+            searchDataBase = builder.getSearchDatabase();
+        }
+
+        // Adding substring and tag search
+        {
         /* custom arrayadapter for autocomplete
            allows for checking the subtring of an animal and its tags.
            Example: "Foxes", tag: "mammal".
@@ -80,12 +99,12 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
            Additionally, we can type in a substring of "mammal", e.g. "mm" and "Foxes" will appear as an option
            in the autocomplete.
         */
+            StringFilterArrayAdapter adapter = new StringFilterArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, searchDataBase.name_tags);
 
-        StringFilterArrayAdapter adapter = new StringFilterArrayAdapter(this,
-                android.R.layout.simple_list_item_1, name_tags);
-
-        search_bar.setAdapter(adapter);
-        search_bar.setThreshold(1);
+            search_bar.setAdapter(adapter);
+            search_bar.setThreshold(1);
+        }
 
         // animation for transitioning MainActivity using a fade
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -93,20 +112,38 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         // When user clicks on search result item, this will trigger onItemClick function that will
         // populate the selectedAnimals set accordingly.
         search_bar.setOnItemClickListener(this);
+
+        int loadIndex = SharedPrefs.loadInt(this, "directions_index");
+        Log.d("loadIndex SearchSelect", String.valueOf(loadIndex));
+        if (loadIndex > -1) {
+            startActivity(new Intent(this, Route.class));
+        }
+    }
+
+    protected void onResume() {
+        super.onResume();
+        this.counterDisplay.setText(viewModel.getCount());
+    }
+
+    protected void onStop() {
+        super.onStop();
+        SharedPrefs.saveInt(this, -1, "directions_index");
+        Log.d("onStop Search Select:", "called");
     }
 
     public void onPlanButtonClicked(View view) {
-        if (this.selectedAnimals.isEmpty()) {
+        if (Integer.parseInt(viewModel.getCount()) == 0) {
             Alerts.showAlert(this, "Your plan is empty! Please select some animals.");
             return;
         }
-        setUserSelection("set", this.selectedAnimals);
         Intent intent = new Intent(this, Route.class);
         startActivity(intent);
     }
 
     @VisibleForTesting
     public void setUserSelection(String str, Set<String> userSelection){
+        SharedPreferences prefs = getSharedPreferences("shared_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         editor.clear().apply();
         editor.putStringSet(str, userSelection);
         editor.apply();
@@ -136,18 +173,22 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
     // set if it's not a duplicate selection.
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Fetch the user selected animal
-        String animal = nameToId.get(parent.getItemAtPosition(position).toString());
+        String animalID = searchDataBase.nameToId.get(parent.getItemAtPosition(position).toString());
 
-        // append to List of selected Animals or show an alert if it has already been selected
-        int prevAnimalCount = this.selectedAnimals.size();
-        this.selectedAnimals.add(animal);
-        if (prevAnimalCount == this.selectedAnimals.size()) {
-            Alerts.showAlert(this, "You have already selected this animal.");
-        }
-        Log.d("exhibits: ", this.selectedAnimals.toString());
+//        // append to List of selected Animals or show an alert if it has already been selected
+//        int prevAnimalCount = selectedAnimals.size();
+//        selectedAnimals.add(groupID);
+//        if (prevAnimalCount == selectedAnimals.size()) {
+//            Alerts.showAlert(this, "You have already selected this animal.");
+//        }
+//        else {
+        ExhibitEntity dbItem = new ExhibitEntity(searchDataBase.node.get(animalID));
+        viewModel.insertExhibit(this, dbItem);
 
-        // Update the exhibit counter
-        this.counterDisplay.setText(String.valueOf(selectedAnimals.size()));
+        // Log.d("exhibits: ", selectedAnimals.toString());
+
+//        // Update counter
+//        this.counterDisplay.setText(viewModel.getCount());
         // Clear search bar
         this.search_bar.setText("");
     }

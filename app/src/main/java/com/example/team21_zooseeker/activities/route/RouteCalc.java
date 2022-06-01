@@ -3,9 +3,7 @@ package com.example.team21_zooseeker.activities.route;
 import android.content.Context;
 
 import com.example.team21_zooseeker.R;
-import com.example.team21_zooseeker.helpers.StringFormat;
 import com.example.team21_zooseeker.helpers.ZooData;
-import com.example.team21_zooseeker.activities.directions.DirectionItem;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class RouteCalc {
-    private Graph<String, IdentifiedWeightedEdge> g;
+    public Graph<String, IdentifiedWeightedEdge> g;
     private Map<String, ZooData.VertexInfo> vInfo;
     private Map<String, ZooData.EdgeInfo> eInfo;
     private Context context;
@@ -43,6 +41,7 @@ public class RouteCalc {
      *
      * Calls: findNextClosestExhibit
      */
+
     public List<GraphPath<String, IdentifiedWeightedEdge>> calculateRoute(String start, List<String> exhibits){
         List<GraphPath<String, IdentifiedWeightedEdge>> route =
                 new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
@@ -96,7 +95,7 @@ public class RouteCalc {
      * @param start Node to start at
      * @param goal Node to get to
      */
-    GraphPath<String, IdentifiedWeightedEdge> singleShortestPath(String start, String goal){
+    public GraphPath<String, IdentifiedWeightedEdge> singleShortestPath(String start, String goal){
         GraphPath<String, IdentifiedWeightedEdge> path = DijkstraShortestPath.findPathBetween(g, start, goal);
         return path;
     }
