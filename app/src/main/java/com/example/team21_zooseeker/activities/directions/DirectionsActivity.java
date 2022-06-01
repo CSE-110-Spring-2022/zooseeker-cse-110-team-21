@@ -153,7 +153,8 @@ public class DirectionsActivity extends AppCompatActivity {
         viewPager.setCurrentItem(currentIndex + 1, true);
         setBtnFeatures(currentIndex + 1);
 
-
+        annoyUser = false;
+        onUpdate(loc.loc_id);
         annoyUser = true;
 
     }
@@ -162,6 +163,9 @@ public class DirectionsActivity extends AppCompatActivity {
         int currentIndex = viewPager.getCurrentItem();
         viewPager.setCurrentItem(currentIndex - 1, true);
         setBtnFeatures(currentIndex - 1);
+
+        annoyUser = false;
+        onUpdate(loc.loc_id);
         annoyUser = true;
     }
 
@@ -263,10 +267,23 @@ public class DirectionsActivity extends AppCompatActivity {
 
         if(userVisited.size() > 0){
             ArrayList<String> userVisitedCopy = new ArrayList<String>(userVisited);
-            List<GraphPath<String, IdentifiedWeightedEdge>> prevPath = rc.calculateRoute(this.getString(R.string.ENTRANCE_EXIT), userVisitedCopy);
 
+            //Deprecated call - could possibly reorder previous exhibits
+            //List<GraphPath<String, IdentifiedWeightedEdge>> prevPath = rc.calculateRoute(this.getString(R.string.ENTRANCE_EXIT), userVisitedCopy);
+
+            List<GraphPath<String, IdentifiedWeightedEdge>> prevPath = new ArrayList<GraphPath<String, IdentifiedWeightedEdge>>();
+            for(int i = 0; i < userVisitedCopy.size(); i++){
+                String prevString = this.getString(R.string.ENTRANCE_EXIT);
+                if(i > 0){
+                    prevString = userVisitedCopy.get(i-1);
+                }
+                GraphPath<String, IdentifiedWeightedEdge> gp = rc.singleShortestPath(prevString, userVisitedCopy.get(i));
+                prevPath.add(gp);
+            }
+
+            //not needed anyone since GraphPaths manually calculated to preserve order:
             //removes excess path to end
-            prevPath.remove(prevPath.size() -1);
+            //prevPath.remove(prevPath.size() -1);
 
             List<DirectionItem> prevDirsBrief = sf.getDirections(prevPath, false);
             List<DirectionItem> prevDirsDetailed = sf.getDirections(prevPath, true);
