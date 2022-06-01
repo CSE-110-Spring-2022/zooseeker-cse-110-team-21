@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.example.team21_zooseeker.helpers.ZooData;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,36 +23,6 @@ public class OffTrackCalc {
     public static final double DEG_LNG = 307515.50;
     public static double currLat = 0;
     public static double currLong = 0;
-
-//    public static Pair <String,Double> distanceToNextExhibit(Map<String, ZooData.VertexInfo> vInfo, String exhibit) {
-//
-//        Pair<Double, Double> currLoc = new Pair<>(currLat, currLong);
-//
-//        Pair<Double, Double> vLoc = new Pair<>(Double.parseDouble(vInfo.get(exhibit).lat), Double.parseDouble(vInfo.get(exhibit).lng));
-//        double currDist = distance(currLoc, vLoc);
-//
-//
-//        return new Pair<String,Double>(exhibit, currDist);
-//    }
-//
-//    public static Pair <String,Double> calculateNextClosestExhibit(Map<String, ZooData.VertexInfo> vInfo, ArrayList<String> exhibits) {
-//
-//        Pair<Double, Double> currLoc = new Pair<>(currLat, currLong);
-//
-//        double minDist = Double.MAX_VALUE;
-//        String minVertex = "";
-//
-//        for (String v : exhibits) {
-//            Pair<Double, Double> vLoc = new Pair<>(Double.parseDouble(vInfo.get(v).lat), Double.parseDouble(vInfo.get(v).lng));
-//            double currDist = distance(currLoc, vLoc);
-//            if (currDist < minDist) {
-//                minDist = currDist;
-//                minVertex = v;
-//            }
-//        }
-//
-//        return new Pair<String,Double>(minVertex,minDist);
-//    }
 
     public static Pair <String,Double> nextClosestVertex(Map<String, ZooData.VertexInfo> vInfo) {
 
@@ -104,6 +75,16 @@ public class OffTrackCalc {
 
             locationManager.requestLocationUpdates(provider, 0, 0f, locationListener);
         }
+    }
+
+    @VisibleForTesting
+    public static void setCurrLat(double currLat) {
+        OffTrackCalc.currLat = currLat;
+    }
+
+    @VisibleForTesting
+    public static void setCurrLong(double currLong) {
+        OffTrackCalc.currLong = currLong;
     }
 }
 

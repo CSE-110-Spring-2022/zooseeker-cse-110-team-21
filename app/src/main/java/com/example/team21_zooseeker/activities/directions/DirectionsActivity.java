@@ -2,6 +2,7 @@ package com.example.team21_zooseeker.activities.directions;
 
 import static com.example.team21_zooseeker.activities.route.OffTrackCalc.locationUpdate;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -56,7 +57,6 @@ public class DirectionsActivity extends AppCompatActivity {
     StringFormat sf;
     ArrayList<String> exhibits;
     ArrayList<String> userSel;
-    //ArrayList<String> userVisited;
 
 
     @Override
@@ -72,7 +72,6 @@ public class DirectionsActivity extends AppCompatActivity {
             exhibits = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
             userSel = SharedPrefs.loadStrList(this, this.getString(R.string.USER_SELECT));
             annoyUser = true;
-
         }
 
         // get views
@@ -237,6 +236,7 @@ public class DirectionsActivity extends AppCompatActivity {
      * that is passed in, so copies of the lists must be passed to maintain
      * functionality.
      */
+    @VisibleForTesting
     public void offTrack(){
         ArrayList<DirectionItem> briefDir = new ArrayList<DirectionItem>();
         ArrayList<DirectionItem> detailedDir = new ArrayList<DirectionItem>();
@@ -398,6 +398,7 @@ public class DirectionsActivity extends AppCompatActivity {
      *
      * @param view
      */
+    @VisibleForTesting
     public void onSkipBtnClicked(View view){
 
         annoyUser = true;
@@ -421,6 +422,16 @@ public class DirectionsActivity extends AppCompatActivity {
     public void onBackBtnClicked(View view) {
         this.future.cancel(true);
         finish();
+    }
+
+    @VisibleForTesting
+    public void setLocManually(String s) {
+        loc.setId(s);
+    }
+
+    @VisibleForTesting
+    public ArrayList getbriefDirections() {
+        return briefDirections;
     }
 
 }
