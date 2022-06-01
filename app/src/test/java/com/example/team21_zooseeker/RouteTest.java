@@ -48,11 +48,11 @@ public class RouteTest {
         mainScenario.onActivity(activity -> {
             Set<String> fullZoo = new HashSet<String>();
 
-            fullZoo.add("gorillas");
-            fullZoo.add("arctic_foxes");
-            fullZoo.add("elephant_odyssey");
-            fullZoo.add("lions");
-            fullZoo.add("gators");
+            fullZoo.add("flamingo");
+            fullZoo.add("crocodile");
+            fullZoo.add("parker_aviary");
+            fullZoo.add("owens_aviary");
+            fullZoo.add("koi");
 
             activity.setUserSelection("set", fullZoo);
 
@@ -65,8 +65,19 @@ public class RouteTest {
 
             RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
+            assertEquals("Flamingos, 5300ft", holder.getExhibitDist());
 
-            assertEquals("Alligators, 110ft", holder.getExhibitDist());
+            holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(1);
+            assertEquals("Crocodiles, 12200ft", holder.getExhibitDist());
+
+            holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(2);
+            assertEquals("Parker Aviary, 17500ft", holder.getExhibitDist());
+
+            holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(3);
+            assertEquals("Owens Aviary, 18800ft", holder.getExhibitDist());
+
+            holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(4);
+            assertEquals("Koi Fish, 31800ft", holder.getExhibitDist());
         });
     }
 
@@ -78,8 +89,7 @@ public class RouteTest {
 
         mainScenario.onActivity(activity -> {
             Set<String> fullZoo = new HashSet<String>();
-            //Selected only the elephant_odyssey
-            fullZoo.add("elephant_odyssey");
+            fullZoo.add("parker_aviary");
             activity.setUserSelection("set", fullZoo);
 
         });
@@ -92,36 +102,7 @@ public class RouteTest {
             RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
-            assertEquals("Elephant Odyssey, 510ft", holder.getExhibitDist());
+            assertEquals("Parker Aviary, 7400ft", holder.getExhibitDist());
         });
     }
-
-    @Test
-    public void testAllNearByExhibit(){
-        ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
-
-        mainScenario.moveToState(Lifecycle.State.CREATED);
-
-        mainScenario.onActivity(activity -> {
-            Set<String> fullZoo = new HashSet<String>();
-            fullZoo.add("gorillas");
-            fullZoo.add("arctic_foxes");
-            fullZoo.add("gators");
-            activity.setUserSelection("set", fullZoo);
-
-        });
-
-        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
-        routeScenario.moveToState(Lifecycle.State.CREATED);
-
-        routeScenario.onActivity(routeActivity -> {
-
-            RecyclerView rcview = routeActivity.findViewById(R.id.exhibit_text);
-            RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
-
-            assertEquals("Alligators, 110ft", holder.getExhibitDist());
-        });
-    }
-
-
 }
