@@ -30,7 +30,8 @@ public class RouteTest {
     private Context context;
 
     @Rule
-    public ActivityScenarioRule<SearchSelectActivity> scenarioRule = new ActivityScenarioRule<>(SearchSelectActivity.class);
+    public ActivityScenarioRule<SearchSelectActivity> scenarioRule =
+            new ActivityScenarioRule<>(SearchSelectActivity.class);
 
 
     @Before
@@ -57,7 +58,7 @@ public class RouteTest {
 
         });
 
-        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
+        ActivityScenario<Route> routeScenario = ActivityScenario.launch(Route.class);
         routeScenario.moveToState(Lifecycle.State.CREATED);
 
         routeScenario.onActivity(routeActivity -> {
