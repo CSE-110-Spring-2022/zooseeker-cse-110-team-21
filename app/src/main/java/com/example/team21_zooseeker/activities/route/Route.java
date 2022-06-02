@@ -1,31 +1,26 @@
 package com.example.team21_zooseeker.activities.route;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.team21_zooseeker.R;
 import com.example.team21_zooseeker.activities.directions.DirectionItem;
-import com.example.team21_zooseeker.activities.search_select.SelectListAdapter;
+import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.helpers.ExhibitDao;
 import com.example.team21_zooseeker.helpers.ExhibitDatabase;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
-import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.helpers.StringFormat;
-import com.example.team21_zooseeker.helpers.ViewModel;
 
 import org.jgrapht.GraphPath;
 
@@ -51,7 +46,7 @@ public class Route extends AppCompatActivity {
     public Intent intent;
 
     private RouteAdapter adapter;
-    private ExhibitDao dao;
+    public ExhibitDao dao;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -64,11 +59,50 @@ public class Route extends AppCompatActivity {
         sf = new StringFormat(this);
 
         // View Model
-        {
-            dao = ExhibitDatabase.getSingleton(this).exhibitDao();
-            exhibitEntities = dao.getAll();
+
+        dao = ExhibitDatabase.getSingleton(this).exhibitDao();
+        exhibitEntities = dao.getAll();
+
+        Set<String> userSelectionSet = exhibitEntities.stream()
+                .map(v -> v.group_id == null ? v.id : v.group_id)
+                .collect(Collectors.toSet());
+
+        ArrayList<String> userSelection = new ArrayList<String>();
+
+        //RouteCalc works with List<String>, so we convert the Set to a list
+        if(userSelectionSet != null) {
+            for (String s : userSelectionSet) {
+                userSelection.add(s);
+            }
         }
-        calculateRoute();
+
+        // start (and, by proxy, end) of each route
+        String start = this.getString(R.string.ENTRANCE_EXIT);
+
+        //offload the responsibility of calculation to the routeCalc class...
+        List<GraphPath<String, IdentifiedWeightedEdge>> route = routeCalc.calculateRoute(start, userSelection);
+        List<String> initialList = sf.initialDirections(route);
+
+        detailedDirections = sf.getDirections(route, true);
+
+        briefDirections = sf.getDirections(route, false);
+        //detailedDirections = sf.getDirections(route, true);
+
+        // sf.printDebugInfo(route);
+
+        SharedPrefs.saveList(this, new ArrayList<DirectionItem>(briefDirections), "directions");
+        SharedPrefs.saveList(this, new ArrayList<DirectionItem>(detailedDirections) , "detailed_dirs");
+
+        //So that we can focus on the screen display!
+        adapter = new RouteAdapter();
+        adapter.setHasStableIds(true);
+
+        recyclerView = findViewById(R.id.selected_items);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        //call to subList makes it so the exit gate isn't shown in the overview
+        adapter.setDirections(initialList.subList(0, initialList.size() - 1));
 
         int loadIndex = SharedPrefs.loadInt(this, "directions_index");
         Log.d("loadIndex Route", String.valueOf(loadIndex));

@@ -2,12 +2,6 @@ package com.example.team21_zooseeker.activities.directions;
 
 import static com.example.team21_zooseeker.activities.route.OffTrackCalc.locationUpdate;
 
-import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +11,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -30,15 +26,12 @@ import com.example.team21_zooseeker.helpers.ExhibitDatabase;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
 import com.example.team21_zooseeker.helpers.SharedPrefs;
 import com.example.team21_zooseeker.helpers.StringFormat;
-import com.example.team21_zooseeker.helpers.ViewModel;
-import com.example.team21_zooseeker.helpers.ZooData;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -60,7 +53,7 @@ public class DirectionsActivity extends AppCompatActivity {
     RouteCalc rc;
     StringFormat sf;
     private List<ExhibitEntity> exhibitEntities;
-    private ExhibitDao dao;
+    public ExhibitDao dao;
     ArrayList<String> exhibits;
     ArrayList<String> userSel;
 

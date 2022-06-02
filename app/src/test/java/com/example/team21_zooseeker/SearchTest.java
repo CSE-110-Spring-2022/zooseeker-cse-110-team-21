@@ -1,10 +1,8 @@
 package com.example.team21_zooseeker;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
-import android.util.Pair;
 import android.widget.AutoCompleteTextView;
 
 import androidx.lifecycle.Lifecycle;
@@ -21,10 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,7 +36,7 @@ public class SearchTest {
 
     @Before
     public void addJson(){
-       Map<String, ZooData.VertexInfo> node = ZooData.loadVertexInfoJSON(InstrumentationRegistry.getTargetContext(),"exhibits.json");
+       Map<String, ZooData.VertexInfo> node = ZooData.loadVertexInfoJSON(InstrumentationRegistry.getTargetContext(),"zoo_node_info.json");
 
         for (String str : node.keySet()){
 

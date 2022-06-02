@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.team21_zooseeker.R;
-import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.helpers.Alerts;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
@@ -42,7 +41,7 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
     public RecyclerView recyclerView;
     private SelectListAdapter adapter;
 
-    private ViewModel viewModel;
+    public ViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

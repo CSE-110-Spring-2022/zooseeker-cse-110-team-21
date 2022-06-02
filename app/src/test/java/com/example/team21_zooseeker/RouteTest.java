@@ -14,14 +14,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.activities.route.RouteAdapter;
 import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class RouteTest {
@@ -35,26 +33,27 @@ public class RouteTest {
 
 
     @Before
-    public void setup(){
+    public void setup() {
 
     }
 
     @Test
-    public void testAllExhibits(){
+    public void testAllExhibits() {
         ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
 
         mainScenario.moveToState(Lifecycle.State.CREATED);
 
         mainScenario.onActivity(activity -> {
-            Set<String> fullZoo = new HashSet<String>();
-
-            fullZoo.add("flamingo");
-            fullZoo.add("crocodile");
-            fullZoo.add("parker_aviary");
-            fullZoo.add("owens_aviary");
-            fullZoo.add("koi");
-
-            activity.setUserSelection("set", fullZoo);
+            ExhibitEntity dbItem = new ExhibitEntity(activity.searchDataBase.node.get("flamingo"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("crocodile"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("parker_aviary"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("owens_aviary"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("koi"));
+            activity.viewModel.insertExhibit(activity, dbItem);
 
         });
 
@@ -78,23 +77,23 @@ public class RouteTest {
 
             holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(4);
             assertEquals("Koi Fish, 31800ft", holder.getExhibitDist());
+
+            routeActivity.dao.deleteAll();
         });
     }
 
     @Test
-    public void testOneExhibitSelected(){
+    public void testOneExhibitSelected() {
         ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
 
         mainScenario.moveToState(Lifecycle.State.CREATED);
 
         mainScenario.onActivity(activity -> {
-            Set<String> fullZoo = new HashSet<String>();
-            fullZoo.add("parker_aviary");
-            activity.setUserSelection("set", fullZoo);
-
+            ExhibitEntity dbItem = new ExhibitEntity(activity.searchDataBase.node.get("parker_aviary"));
+            activity.viewModel.insertExhibit(activity, dbItem);
         });
 
-        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
+        ActivityScenario<Route> routeScenario = ActivityScenario.launch(Route.class);
         routeScenario.moveToState(Lifecycle.State.CREATED);
 
         routeScenario.onActivity(routeActivity -> {
@@ -105,34 +104,4 @@ public class RouteTest {
             assertEquals("Parker Aviary, 7400ft", holder.getExhibitDist());
         });
     }
-
-
-    @Test
-    public void testAllNearByExhibit(){
-        ActivityScenario<SearchSelectActivity> mainScenario = scenarioRule.getScenario();
-
-        mainScenario.moveToState(Lifecycle.State.CREATED);
-
-        mainScenario.onActivity(activity -> {
-            Set<String> fullZoo = new HashSet<String>();
-            fullZoo.add("gorillas");
-            fullZoo.add("arctic_foxes");
-            fullZoo.add("gators");
-            activity.setUserSelection("set", fullZoo);
-
-        });
-
-        ActivityScenario<Route>  routeScenario = ActivityScenario.launch(Route.class);
-        routeScenario.moveToState(Lifecycle.State.CREATED);
-
-        routeScenario.onActivity(routeActivity -> {
-
-            RecyclerView rcview = routeActivity.findViewById(R.id.selected_items);
-            RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
-
-            assertEquals("Alligators, 110ft", holder.getExhibitDist());
-        });
-    }
-
-
 }

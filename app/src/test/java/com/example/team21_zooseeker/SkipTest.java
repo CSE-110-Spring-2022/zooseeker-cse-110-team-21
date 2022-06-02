@@ -2,8 +2,6 @@ package com.example.team21_zooseeker;
 
 import static org.junit.Assert.assertEquals;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.widget.Button;
 
 import androidx.lifecycle.Lifecycle;
@@ -15,6 +13,7 @@ import com.example.team21_zooseeker.activities.directions.DirectionItem;
 import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -65,7 +64,12 @@ public class SkipTest {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity( activity -> {
-            activity.setUserSelection("set", exhibits_noGroup);
+            ExhibitEntity dbItem = new ExhibitEntity(activity.searchDataBase.node.get("crocodile"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("orangutan"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("gorilla"));
+            activity.viewModel.insertExhibit(activity, dbItem);
         });
 
         // needed for DirectionActivity to not have a bunch of null fields
@@ -86,6 +90,7 @@ public class SkipTest {
             String exhibit_name = exhibit_names.get(0).getName();
 
             assertEquals("Crocodiles", exhibit_name);
+            directionsActivity.dao.deleteAll();
         });
     }
 
@@ -95,7 +100,12 @@ public class SkipTest {
         scenario.moveToState(Lifecycle.State.CREATED);
 
         scenario.onActivity( activity -> {
-            activity.setUserSelection("set", exhibits_noGroup);
+            ExhibitEntity dbItem = new ExhibitEntity(activity.searchDataBase.node.get("crocodile"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("orangutan"));
+            activity.viewModel.insertExhibit(activity, dbItem);
+            dbItem = new ExhibitEntity(activity.searchDataBase.node.get("gorilla"));
+            activity.viewModel.insertExhibit(activity, dbItem);
         });
 
         // needed for DirectionActivity to not have a bunch of null fields
@@ -119,6 +129,9 @@ public class SkipTest {
             String exhibit_name = exhibit_names.get(1).getName();
 
             assertEquals("Gorillas", exhibit_name);
+            directionsActivity.dao.deleteAll();
         });
+
+
     }
 }
