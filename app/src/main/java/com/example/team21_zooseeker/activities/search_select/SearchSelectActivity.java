@@ -119,11 +119,13 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
         }
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
         this.counterDisplay.setText(viewModel.getCount());
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         SharedPrefs.saveInt(this, -1, "directions_index");
@@ -190,5 +192,9 @@ public class SearchSelectActivity extends AppCompatActivity implements AdapterVi
 //        this.counterDisplay.setText(viewModel.getCount());
         // Clear search bar
         this.search_bar.setText("");
+    }
+
+    public void onClearAllBtnClicked(View view) {
+        viewModel.deleteAll();
     }
 }

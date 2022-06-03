@@ -2,10 +2,13 @@ package com.example.team21_zooseeker;
 
 import static org.junit.Assert.assertEquals;
 
+import android.content.Context;
 import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
+import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -13,13 +16,17 @@ import com.example.team21_zooseeker.activities.directions.DirectionItem;
 import com.example.team21_zooseeker.activities.directions.DirectionsActivity;
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +42,19 @@ public class OffTrackTest {
     // Exhibit 1 should change to Crocodiles from orangutans
     private double lat = 32.756035;
     private double lon = -117.168192;
+
+    private ExhibitDao dao;
+
+    @Before
+    public void createDb() {
+        Context context = ApplicationProvider.getApplicationContext();
+        dao = ExhibitDatabase.getSingleton(context).exhibitDao();
+    }
+
+    @After
+    public void closeDb() throws IOException {
+        dao.deleteAll();
+    }
 
     @Rule
     public ActivityScenarioRule<SearchSelectActivity> scenarioRule =

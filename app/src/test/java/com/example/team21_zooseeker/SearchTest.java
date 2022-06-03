@@ -3,22 +3,29 @@ package com.example.team21_zooseeker;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import android.content.Context;
 import android.widget.AutoCompleteTextView;
 
 import androidx.lifecycle.Lifecycle;
+import androidx.room.Room;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
 import com.example.team21_zooseeker.helpers.ZooData;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 

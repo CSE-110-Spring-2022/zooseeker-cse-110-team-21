@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.example.team21_zooseeker.activities.directions.DirectionItem;
 import com.google.gson.Gson;
@@ -34,6 +35,7 @@ public class SharedPrefs {
     }
 
     public static void saveInt(Context context, int index, String key) {
+        Log.d("SharedPrefs", "Saving index: " + index);
         SharedPreferences prefs = context.getSharedPreferences(key, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();

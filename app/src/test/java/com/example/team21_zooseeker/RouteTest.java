@@ -7,19 +7,26 @@ import android.content.SharedPreferences;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.team21_zooseeker.activities.route.Route;
 import com.example.team21_zooseeker.activities.route.RouteAdapter;
 import com.example.team21_zooseeker.activities.search_select.SearchSelectActivity;
+import com.example.team21_zooseeker.helpers.ExhibitDao;
+import com.example.team21_zooseeker.helpers.ExhibitDatabase;
 import com.example.team21_zooseeker.helpers.ExhibitEntity;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
 
 @RunWith(AndroidJUnit4.class)
 public class RouteTest {
@@ -32,10 +39,23 @@ public class RouteTest {
             new ActivityScenarioRule<>(SearchSelectActivity.class);
 
 
-    @Before
-    public void setup() {
+    private ExhibitDao dao;
+    private ExhibitDatabase db;
 
+    @Before
+    public void createDb() {
+        Context context = ApplicationProvider.getApplicationContext();
+        db = Room.inMemoryDatabaseBuilder(context, ExhibitDatabase.class)
+                .allowMainThreadQueries()
+                .build();
+        dao = db.exhibitDao();
     }
+
+    @After
+    public void closeDb() throws IOException {
+        db.close();
+    }
+
 
     @Test
     public void testAllExhibits() {
@@ -102,6 +122,7 @@ public class RouteTest {
             RouteAdapter.ViewHolder holder = (RouteAdapter.ViewHolder) rcview.findViewHolderForAdapterPosition(0);
 
             assertEquals("Parker Aviary, 7400ft", holder.getExhibitDist());
+            routeActivity.dao.deleteAll();
         });
     }
 }

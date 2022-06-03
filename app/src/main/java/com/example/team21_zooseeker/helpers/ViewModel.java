@@ -54,6 +54,11 @@ public class ViewModel extends AndroidViewModel {
         updateCounterDisplay();
     }
 
+    public void deleteAll() {
+        exhibitDao.deleteAll();
+        updateCounterDisplay();
+    }
+
     public void insertExhibit(Activity activity, ExhibitEntity exhibit) {
         if (exhibitDao.get(exhibit.id) != null)
             Alerts.showAlert(activity, "You have already selected this animal.");

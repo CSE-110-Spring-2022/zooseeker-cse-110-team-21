@@ -111,6 +111,7 @@ public class Route extends AppCompatActivity {
         }
     }
 
+    @Override
     protected void onResume() {
         super.onResume();
         exhibitEntities = dao.getAll();
@@ -160,6 +161,7 @@ public class Route extends AppCompatActivity {
         adapter.setDirections(initialList.subList(0, initialList.size() - 1));
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         SharedPrefs.saveInt(this, -1, "directions_index");

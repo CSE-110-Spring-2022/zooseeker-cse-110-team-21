@@ -34,9 +34,10 @@ public class LandingPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
-        SharedPrefs.saveInt(this, -1, "directions_index");
+        //SharedPrefs.saveInt(this, -1, "directions_index");
         Log.d("onStop Landingpage:", "called");
     }
 

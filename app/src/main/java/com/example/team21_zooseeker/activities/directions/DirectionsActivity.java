@@ -152,21 +152,21 @@ public class DirectionsActivity extends AppCompatActivity {
             });
 
         }
+        // set previous btn to be invisible initially
+        prevBtn.setVisibility(View.INVISIBLE);
+        if (briefDirections.size() == 1)
+            nextBtn.setVisibility(View.INVISIBLE);
+        else
+            nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+
         int loadIndex = SharedPrefs.loadInt(this, "directions_index");
         Log.d("loadIndex Directions", String.valueOf(loadIndex));
-        if (loadIndex > -1) {
-            viewPager.setCurrentItem(loadIndex, true);
-        }
-        else {
-            // set previous btn to be invisible initially
-            prevBtn.setVisibility(View.INVISIBLE);
-            if (briefDirections.size() == 1)
-                nextBtn.setVisibility(View.INVISIBLE);
-            else
-                nextBtn.setText(briefDirections.get(viewPager.getCurrentItem() + 1).getName());
+        while (viewPager.getCurrentItem() < loadIndex) {
+            onNextBtnClicked(findViewById(R.id.next_btn));
         }
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         int currentIndex = viewPager.getCurrentItem();
